@@ -1,0 +1,135 @@
+#include "stdcall.as"
+#include "migs_stabilizer.as"
+if windowisnotfirstrun=0{
+windowisnotfirstrun=1
+}
+if mainlpjump=1{goto *mainlp}
+dehlforchk=0
+mainlpjump=1
+#module
+#deffunc z80memaccess int prm_0,int prm_1,int prm_2
+switch prm_2
+case 0
+poke memory@,prm_0,prm_1
+return
+swbreak
+case 1
+return peek(memory@,prm_0)
+swbreak
+case 2
+switch prm_0&0xFF
+case 0
+syscallid=prm_1
+swbreak
+case 1
+poke dehlforchk@,0,prm_1
+swbreak
+case 2
+poke dehlforchk@,1,prm_1
+swbreak
+case 3
+poke dehlforchk@,2,prm_1
+swbreak
+case 4
+poke dehlforchk@,3,prm_1
+swbreak
+swend
+return
+swbreak
+case 3
+switch prm_0&0xFF
+case 0
+ret=syscall(7,syscallid,wpeek(dehlforchk@,0),wpeek(dehlforchk@,2))
+if hspstat&1{logmes@hsp "syscallptraddressesresult:"+strf("%08X",dehlforchk@)}
+wpoke dehlforchk@,2,wpeek(syscallopt@stdcallinterface(3),0)
+return ret
+swbreak
+case 1
+return peek(dehlforchk@,0)
+swbreak
+case 2
+return peek(dehlforchk@,1)
+swbreak
+case 3
+return peek(dehlforchk@,2)
+swbreak
+case 4
+return peek(dehlforchk@,3)
+swbreak
+swend
+return 0xFF
+swbreak
+swend
+return 0
+#global
+#include "z80.as"
+sdim memory,65536
+cmdline="":cmdline=oscmdline:repeat:if strmid(cmdline,cnt,1)=" "{cmdline=strmid(cmdline,1,strlen(cmdline))}else{break}:loop:sdim cmdname,128,512:i=0:for cntx,0,strlen(cmdline),1:if peek(cmdline,cntx)=' '{i=i+1}else{cmdlinesliced="":poke cmdlinesliced,0,peek(cmdline,cntx):cmdname(i)=cmdname(i)+cmdlinesliced}:next
+cmdlinearg=""
+cmdlinearginstr=-1:for cntx,0,strlen(cmdline),1:if peek(cmdline,cntx)=' '{cmdlinearginstr=cntx:_break}:next
+if cmdlinearginstr!=-1{for cntx,0,(strlen(cmdline)-cmdlinearginstr),1:poke cmdlinearg,cntx,peek(cmdline,cmdlinearginstr+cntx):next}
+memcpy memory,cmdlinearg,strlen(cmdlinearg),0x81,0
+poke memory,0x80,strlen(cmdlinearg)
+ret=syscall(7,25,0x80)
+storexint=-1:dirlistvarx=""+cmdname(1):for cntx,0,strlen(dirlistvarx),1:if peek(dirlistvarx,cntx)>='a' and peek(dirlistvarx,cntx)<='z'{poke dirlistvarx,cntx,peek(dirlistvarx,cntx)-32}:next:dirlistvarx2="":storex="":for cntx,0,8,1:if peek(dirlistvarx,cntx)='.'{storexint=cntx:_break}else{storexy="":poke storexy,0,peek(dirlistvarx,cntx):storex=storex+storexy}:next:memcpy memory,storex,strlen(storex),0x5c+1,0:if storexint=-1{storex=""}else{storex="":for cntx,0,3,1:poke storex,cntx,peek(dirlistvarx,storexint+1+cntx):next}:memcpy memory,storex,3,0x5c+1+8,0
+storexint=-1:dirlistvarx=""+cmdname(2):for cntx,0,strlen(dirlistvarx),1:if peek(dirlistvarx,cntx)>='a' and peek(dirlistvarx,cntx)<='z'{poke dirlistvarx,cntx,peek(dirlistvarx,cntx)-32}:next:dirlistvarx2="":storex="":for cntx,0,8,1:if peek(dirlistvarx,cntx)='.'{storexint=cntx:_break}else{storexy="":poke storexy,0,peek(dirlistvarx,cntx):storex=storex+storexy}:next:memcpy memory,storex,strlen(storex),0x6c+1,0:if storexint=-1{storex=""}else{storex="":for cntx,0,3,1:poke storex,cntx,peek(dirlistvarx,storexint+1+cntx):next}:memcpy memory,storex,3,0x6c+1+8,0
+cmdnamexyz=""
+cmdnamexyz=cmdname(0)+".COM":exist cmdname(0)+".COM":strsize2=strsize
+if strsize2=-1{cmdnamexyz=cmdname(0):exist cmdname(0):strsize2=strsize}
+if strsize2!-1{
+sdim pdata,strsize2
+bload cmdnamexyz,pdata
+memcpy memory,pdata,strsize2,0x100,0
+}
+poke memory,0x0000,0xC3
+wpoke memory,0x0001,0xF200
+poke memory,0x0005,0xC3
+wpoke memory,0x0006,0xF500
+
+poke memory,0xF200,0x0E
+poke memory,0xF201,0x00
+poke memory,0xF202,0xC3
+wpoke memory,0xF203,0x0005
+poke memory,0xF205,0xC3
+wpoke memory,0xF206,0xF205
+
+poke memory,0xF300,0x31
+wpoke memory,0xF301,0xFA00
+poke memory,0xF303,0xC3
+wpoke memory,0xF304,0x0100
+
+poke memory,0xF500,0x7B
+poke memory,0xF501,0xD3
+poke memory,0xF502,0x01
+poke memory,0xF503,0x7A
+poke memory,0xF504,0xD3
+poke memory,0xF505,0x02
+poke memory,0xF506,0x7D
+poke memory,0xF507,0xD3
+poke memory,0xF508,0x03
+poke memory,0xF509,0x7C
+poke memory,0xF50A,0xD3
+poke memory,0xF50B,0x04
+poke memory,0xF50C,0x79
+poke memory,0xF50D,0xD3
+poke memory,0xF50E,0x00
+poke memory,0xF50F,0xDB
+poke memory,0xF510,0x00
+poke memory,0xF511,0x32
+wpoke memory,0xF512,0xF520
+poke memory,0xF514,0xDB
+poke memory,0xF515,0x03
+poke memory,0xF516,0x6F
+poke memory,0xF517,0xDB
+poke memory,0xF518,0x04
+poke memory,0xF519,0x67
+poke memory,0xF51A,0x3A
+wpoke memory,0xF51B,0xF520
+poke memory,0xF51D,0xC9
+address=0xF300
+*mainlp
+ret=syscall(8,varptr(memory))
+repeat 4200
+z80run address,0
+loop
+return

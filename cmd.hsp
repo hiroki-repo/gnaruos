@@ -1,0 +1,36 @@
+#include "stdcall.as"
+if windowisnotfirstrun=0{
+comexec=0
+windowx=pid*8
+windowy=pid*8
+windowmaxx=128
+windowmaxy=192-11
+dupptr iconno,sysvalptr@stdcallinterface(20),4,4
+iconno=1
+/*cmdlineopx="ccp.com"
+//cmdlineopx="zasm.com"
+ret=syscall(12,varptr(cmdlineopx))*/
+cmdlineopx2="ccp.ax"
+cmdline="":cmdline=oscmdline:repeat:if strmid(cmdline,cnt,1)=" "{cmdline=strmid(cmdline,1,strlen(cmdline))}else{break}:loop:sdim cmdname,128,512:i=0:for cntx,0,strlen(cmdline),1:if peek(cmdline,cntx)=' '{i=i+1}else{cmdlinesliced="":poke cmdlinesliced,0,peek(cmdline,cntx):cmdname(i)=cmdname(i)+cmdlinesliced}:next
+if cmdname(0)=""{}else{
+progarg=""
+progarg=cmdname(0)
+cmdexex="":cmdexex=strmid(cmdline,strlen(cmdname)+1,strlen(cmdline))
+exist progarg
+if strsize=-1{progarg=cmdname(0)+".OTW":exist progarg
+if strsize=-1{progarg=cmdname(0)+".COM":exist progarg:comexec=1}
+}
+if comexec=0{cmdlineopx2=progarg:ret=syscall(12,varptr(cmdexex))}else{cmdlineopx2="GCVDM.OTW":ret=syscall(12,varptr(oscmdline))}
+}
+ret=syscall(11,varptr(cmdlineopx2))
+windowisnotfirstrun=1
+}
+if pnotfirstrun=1{
+windowtaskenable=1
+color 1,1,1
+boxf windowx,windowy+8,windowx+windowmaxx,windowy+windowmaxy
+ret=syscall(9)
+//sdim messages,64:messages="C:\\>\na":repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8,varptr("BGF1"),peek(messages,cnt),0,varptr(1.0)):loop
+}
+pnotfirstrun=1
+return

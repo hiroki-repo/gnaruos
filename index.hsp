@@ -1,0 +1,8 @@
+#packopt hide 1
+exist "KERNEL.SYS"
+if strsize!-1{
+run "KERNEL.SYS",dir_cmdline
+}else{
+bgscr 0,ginfo(20),ginfo(21),0,0,0:chgdisp 0,ginfo(20),ginfo(21):cls 4:color 255,255,255
+mes "Cannot find the kernel file!"
+}

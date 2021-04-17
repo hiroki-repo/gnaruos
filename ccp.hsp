@@ -1,0 +1,157 @@
+#include "stdcall.as"
+if windowisnotfirstrun=0{
+windowisnotfirstrun=1
+}
+if mainlpjump=1{goto *mainlp}
+mainlpjump=1
+#module
+#deffunc mesc str prm_0,int prm_1
+prm_0x=prm_0
+for cntx,0,strlen(prm_0x),1
+ret=syscall(7,2,peek(prm_0x,cntx))
+next
+if prm_1=0{ret=syscall(7,2,0x0D)}
+return
+#global
+
+//syscall(7,syscallid,[DE],[HL])
+//syscallopt@stdcallinterface(3) [HL Result]
+ret=syscall(7,2,0x0D)
+*mainlp
+if crdelay=1{ret=syscall(7,2,0x0D):crdelay=0}
+ret=syscall(7,2,syscall(7,25)+65)
+ret=syscall(7,2,'>')
+sdim cmdline,256
+sdim cmdlinex,258:poke cmdlinex,0,255
+ret=syscall(7,10,varptr(cmdlinex)):memcpy cmdline,cmdlinex,peek(cmdlinex,1),0,2:for cntx,0,strlen(cmdline),1:cmdnamecvmchk=peek(cmdline,cntx):if cmdnamecvmchk>='a' and cmdnamecvmchk<='z'{poke cmdline,cntx,cmdnamecvmchk-32}:next
+sdim cmdname,128,512:if strmid(cmdline,1,1)=":" {if peek(cmdline,0)>='A' and peek(cmdline,0)<='Z' {drivebak=1:driveold=drive:drive=peek(cmdline,0)-'A':if drive>=16{drive=driveold}:ret=syscall(7,14,drive)}:cmdline=strmid(cmdline,2,strlen(cmdline))}:i=0:for cntx,0,strlen(cmdline),1:if peek(cmdline,cntx)=' '{i=i+1}else{if peek(cmdline,cntx)='='{i=i+1:equalcheck=1}else{cmdlinesliced="":poke cmdlinesliced,0,peek(cmdline,cntx):cmdname(i)=cmdname(i)+cmdlinesliced}}:next
+switch cmdname(0)
+case "DIR"
+dirlistvar="":dirformat="":dirformat=cmdname(1):dirlistvarx=""
+if strmid(dirformat,1,1)=":"{dirformat=strmid(dirformat,2,strlen(dirformat))}
+if dirformat=""{dirformat="????????.???"}
+dirlist dirlistvar,dirformat,1
+cnt2=0
+notesel dirlistvar
+ntmxpls=0:ntmxplsa=0
+if (notemax-((notemax/4)*4))<=3 and (notemax\4)!=0{ntmxplsa=2:ntmxpls=1}
+//if notemax<=3{ntmxplsa=1:ntmxpls=1}
+for cntx,0,(notemax/4)+ntmxpls,1
+/*driveletterstr="":poke driveletterstr,0,'A'+drive
+mesc driveletterstr,1*/
+ret=syscall(7,2,'A'+drive)
+ntmxplsx=4
+//if ntmxplsa=1{ntmxplsx=notemax}
+if ntmxpls=1{if (notemax-(cntx*4))>3{ntmxplsx=4}else{ntmxplsx=notemax-((notemax/4)*4)}}
+for cntx3,0,ntmxplsx,1:if syscall(7,11){dirbreakreq=1:_break}:storexint=-1:noteget dirlistvarx,cntx3+cnt2:for cntx2,0,strlen(dirlistvarx),1:if peek(dirlistvarx,cntx2)>='a' and peek(dirlistvarx,cntx2)<='z'{poke dirlistvarx,cntx2,peek(dirlistvarx,cntx2)-32}:next:dirlistvarx2="":storex="":for cntx2,0,strlen(dirlistvarx),1:if strmid(dirlistvarx,cntx2,1)="."{storexint=cntx2:_break}else{if cntx2<8{storex=storex+strmid(dirlistvarx,cntx2,1)}}:next:dirlistvarx2=strmid(storex,0,8):for cntx2,0,(8-strlen(dirlistvarx2)),1:dirlistvarx2=dirlistvarx2+" ":next:if storexint=-1{storex=""}else{storex=strmid(dirlistvarx,storexint+1,3)}:dirlistvarx2=dirlistvarx2+" "+storex:for cntx2,0,(12-strlen(dirlistvarx2)),1:dirlistvarx2=dirlistvarx2+" ":next:ret=syscall(7,2,':'):ret=syscall(7,2,' '):for cntxyz,0,strlen(dirlistvarx2),1:ret=syscall(7,2,peek(dirlistvarx2,cntxyz)):next:ret=syscall(7,2,' '):next:cnt2=cnt2+4
+//mesc "\n",1
+ret=syscall(7,2,0x0D)
+if dirbreakreq=1{_break}
+next
+swbreak
+case "ERA"
+dirlistvar="":dirformat="":dirformat=cmdname(1):dirlistvarx=""
+if strmid(dirformat,1,1)=":"{dirformat=strmid(dirformat,2,strlen(dirformat))}
+if dirformat=""{mesc "NO FILE"}else{
+//exist dirformat
+dirlistvar=""
+dirlist dirlistvar,dirformat,1
+stat2=stat
+if stat2=0{mesc "NO FILE",1}else{
+dirformatinstrsubst=-1:for cntx,0,strlen(dirformat),1:if peek(dirformat,cntx)='*'{dirformatinstrsubst=cntx:_break}:next
+dirformatinstrsubst2=-1:for cntx,0,strlen(dirformat),1:if peek(dirformat,cntx)='?'{dirformatinstrsubst2=cntx:_break}:next
+if dirformatinstrsubst=-1 and dirformatinstrsubst2=-1 {ucforrm="Y"}else{mesc "All (Y/N)?",1
+sdim ucforrm,256
+sdim ucforrmx,258:poke ucforrmx,0,1
+ret=syscall(7,10,varptr(ucforrmx))
+memcpy ucforrm,cmdlinex,peek(ucforrmx,1),0,2
+}
+if ucforrm="Y" or ucforrm="y"{
+notesel dirlistvar
+for cntx,0,stat2,1
+noteget dirformat,cntx
+delete dirformat
+next
+}
+}}
+ret=syscall(7,2,0x0D)
+swbreak
+case "TYPE"
+dirlistvar="":dirformat="":dirformat=cmdname(1):dirlistvarx=""
+if strmid(dirformat,1,1)=":"{dirformat=strmid(dirformat,2,strlen(dirformat))}
+if dirformat=""{mesc "?"}else{
+exist dirformat
+if strsize=-1{mesc dirformat+"?",1}else{
+//notesel viewfile
+exist dirformat
+strsize2=strsize
+sdim viewfile,strsize2
+bload dirformat,viewfile
+for cntx,0,strsize2,1
+if syscall(7,11){_break}
+viewfilesliced=""
+lpoke viewfilesliced,0,peek(viewfile,cntx)
+mesc viewfilesliced,1
+next
+}}
+mesc "\n",1
+swbreak
+case "REN"
+if equalcheck=1{
+dirlistvar="":dirformat="":dirformat=cmdname(1):dirlistvarx=""
+if strmid(dirformat,1,1)=":"{dirformat=strmid(dirformat,2,strlen(dirformat))}:dirformat1=""+dirformat:dirformat=cmdname(2)
+if strmid(dirformat,1,1)=":"{dirformat=strmid(dirformat,2,strlen(dirformat))}:dirformat2=""+dirformat
+if dirformat2=""{mesc "?"}else{
+exist dirformat2
+if strsize=-1{mesc "NO FILE",1}else{
+bcopy dirformat2,dirformat1
+delete dirformat2
+}}}else{mesc "?"}
+mesc "\n",1
+swbreak
+case "SAVE"
+mesc "\n",1
+swbreak
+case "USER"
+if cmdname(1)=""{mesc "?":mesc "\n",1}else{
+userid=int(cmdname(1)) & 0xFF
+if userid>=16{userid=15}
+ret=syscall(7,32,userid)
+}
+mesc "\n",1
+swbreak
+case ""
+mesc "\n",1
+swbreak
+default
+exist cmdname(0)+".COM"
+if strsize!-1{
+ret=syscall(12,varptr(cmdline))
+ret=syscall(28,varptr("gcvdm.otw"))
+crdelay=1
+}else{
+exist cmdname(0)+".OTW"
+if strsize!-1{
+cmdexex="":cmdexex=strmid(cmdline,strlen(cmdname)+1,strlen(cmdline))
+ret=syscall(12,varptr(cmdexex))
+optforexec="":optforexec=cmdname(0)+".OTW"
+ret=syscall(28,varptr(optforexec))
+crdelay=1
+}else{
+exist cmdname(0)+".CAX"
+if strsize!-1{
+cmdexex="":cmdexex=strmid(cmdline,strlen(cmdname)+1,strlen(cmdline))
+ret=syscall(12,varptr(cmdexex))
+optforexec="":optforexec=cmdname(0)+".CAX"
+ret=syscall(28,varptr(optforexec))
+crdelay=1
+}else{for cntx,0,strlen(cmdname(0)),1
+ret=syscall(7,2,peek(cmdname(0),cntx))
+next
+ret=syscall(7,2,'?')}
+}
+}
+ret=syscall(7,2,0x0D)
+swbreak
+swend
+return

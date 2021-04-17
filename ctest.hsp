@@ -1,0 +1,42 @@
+#include "stdcall.as"
+#include "migs_stabilizer.as"
+#module
+#defcfunc strcmp array prm_0,array prm_1
+return syscall(63,2,varptr(prm_0),varptr(prm_1))
+#defcfunc memcmp array prm_0,array prm_1,int prm_2
+return syscall(63,4,varptr(prm_0),varptr(prm_1),prm_2)
+#defcfunc memmove array prm_0,array prm_1,int prm_2
+return syscall(63,7,varptr(prm_0),varptr(prm_1),prm_2)
+#global
+dupptr inkey,sysvalptr@stdcallinterface(17),4,4
+dupptr mclick,sysvalptr@stdcallinterface(18),4,4
+if windowisnotfirstrun=0{
+windowx=pid*8
+windowy=pid*8
+windowmaxx=128
+windowmaxy=96
+windowisnotfirstrun=1
+inket="":inkeys=""
+buttoni1=0
+buttoni2=0
+buttoni3=""
+iconno=48
+a="ABC"
+b="AAAA"
+c="abcdefghijklmnopqrstu"
+result=""
+result+=str(strcmp(a,b))+"\n"
+dupptr d,varptr(c)+5,64,2
+dupptr memmovetest,memmove(d,c,10),64,2
+result+=c+"\n"
+}
+if pnotfirstrun=1{
+windowtaskenable=1
+color 255,255,255
+boxf windowx,windowy+8,windowx+windowmaxx,windowy+windowmaxy
+repeat strlen(result):ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8,varptr("BGF1"),peek(result,cnt),1,varptr(1.0)):loop
+/*if inkey!inkeyold{if inkey=0x0D or inkey=0x0A {inkey=0:inkeyold=0:inketx="":inketx=inket+".otw":ret=syscall(11,varptr(inketx)):ret=syscall(7,0)}else{poke inkeys,0,inkey:inket+=inkeys}}
+sdim messages,64:messages=inket:repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8,varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop*/
+}
+pnotfirstrun=1
+return

@@ -1,0 +1,7 @@
+#include "stdcall.as"
+iconno=0
+ret=syscall(54,syscall(10))
+ldim ptrforaccess,1
+bload "MEM:ORY",ptrforaccess,4,4*3
+gosub ptrforaccess
+return

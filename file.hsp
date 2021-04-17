@@ -1,0 +1,11 @@
+#include "stdcall.as"
+iconno=2
+enableicon=1
+if dragging=0{
+if mx>=8*0 and my>=0 and mx<=256 and my<=192-10 and mclick=1{windowenableedforpid=pid}
+}
+color 255,255,255
+boxf 0,0,255,8
+color 250,250,250
+boxf 0,9,255,192-9
+return
