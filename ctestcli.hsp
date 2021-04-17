@@ -1,0 +1,17 @@
+#include "stdcall.as"
+#include "libc.as"
+a="ABC"
+b="AAAA"
+c="abcdefghijklmnopqrstu"
+result=""
+result+=str(strcmp(a,b))+"\n"
+str1="sprintf"
+str2="append"
+dupptr d,varptr(c)+5,64,2
+dupptr memmovetest,memmove(varptr(d),varptr(c),10),64,2
+result+=c+"\n"
+sdim buf,64
+ret=sprintf(varptr(buf),varptr("%s is easy \nto %s for"),varptr(str1),varptr(str2))
+ret=prnt(result)
+ret=syscall(7,0)
+return

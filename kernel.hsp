@@ -54852,21 +54852,34 @@ case 63//libc
 		statue=syscallptval(2)
 	swbreak
 	case 8//sprintf
+		syscallmemcpyeex=""
 		dupptr syscallmemcpyee0,syscallptval(2),0x7FFFFFFF,2
-		dupptr syscallmemcpyee1,syscallptval(3),0x7FFFFFFF,2:if varptr(syscallmemcpyee1)=0{syscallmemcpyee1=""}
-		dupptr syscallmemcpyee2,syscallptval(4),0x7FFFFFFF,2:if varptr(syscallmemcpyee2)=0{syscallmemcpyee2=""}
-		dupptr syscallmemcpyee3,syscallptval(5),0x7FFFFFFF,2:if varptr(syscallmemcpyee3)=0{syscallmemcpyee3=""}
-		dupptr syscallmemcpyee4,syscallptval(6),0x7FFFFFFF,2:if varptr(syscallmemcpyee4)=0{syscallmemcpyee4=""}
-		dupptr syscallmemcpyee5,syscallptval(7),0x7FFFFFFF,2:if varptr(syscallmemcpyee5)=0{syscallmemcpyee5=""}
-		dupptr syscallmemcpyee6,syscallptval(8),0x7FFFFFFF,2:if varptr(syscallmemcpyee6)=0{syscallmemcpyee6=""}
-		dupptr syscallmemcpyee7,syscallptval(9),0x7FFFFFFF,2:if varptr(syscallmemcpyee7)=0{syscallmemcpyee7=""}
-		dupptr syscallmemcpyee8,syscallptval(10),0x7FFFFFFF,2:if varptr(syscallmemcpyee8)=0{syscallmemcpyee8=""}
-		dupptr syscallmemcpyee9,syscallptval(11),0x7FFFFFFF,2:if varptr(syscallmemcpyee9)=0{syscallmemcpyee9=""}
-		dupptr syscallmemcpyee10,syscallptval(12),0x7FFFFFFF,2:if varptr(syscallmemcpyee10)=0{syscallmemcpyee10=""}
-		dupptr syscallmemcpyee11,syscallptval(13),0x7FFFFFFF,2:if varptr(syscallmemcpyee11)=0{syscallmemcpyee11=""}
-		dupptr syscallmemcpyee12,syscallptval(14),0x7FFFFFFF,2:if varptr(syscallmemcpyee12)=0{syscallmemcpyee12=""}
-		dupptr syscallmemcpyee13,syscallptval(15),0x7FFFFFFF,2:if varptr(syscallmemcpyee13)=0{syscallmemcpyee13=""}
-		syscallmemcpyeex="":syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2,syscallmemcpyee3,syscallmemcpyee4,syscallmemcpyee5,syscallmemcpyee6,syscallmemcpyee7,syscallmemcpyee8,syscallmemcpyee9,syscallmemcpyee10,syscallmemcpyee11,syscallmemcpyee12,syscallmemcpyee13)
+		dupptr syscallmemcpyee1,syscallptval(3),0x7FFFFFFF,2
+		dupptr syscallmemcpyee2,syscallptval(4),0x7FFFFFFF,2
+		dupptr syscallmemcpyee3,syscallptval(5),0x7FFFFFFF,2
+		dupptr syscallmemcpyee4,syscallptval(6),0x7FFFFFFF,2
+		dupptr syscallmemcpyee5,syscallptval(7),0x7FFFFFFF,2
+		dupptr syscallmemcpyee6,syscallptval(8),0x7FFFFFFF,2
+		dupptr syscallmemcpyee7,syscallptval(9),0x7FFFFFFF,2
+		dupptr syscallmemcpyee8,syscallptval(10),0x7FFFFFFF,2
+		dupptr syscallmemcpyee9,syscallptval(11),0x7FFFFFFF,2
+		dupptr syscallmemcpyee10,syscallptval(12),0x7FFFFFFF,2
+		dupptr syscallmemcpyee11,syscallptval(13),0x7FFFFFFF,2
+		dupptr syscallmemcpyee12,syscallptval(14),0x7FFFFFFF,2
+		dupptr syscallmemcpyee13,syscallptval(15),0x7FFFFFFF,2
+		if varptr(syscallmemcpyee13)=0{syscallmemcpyee13=""}else{if syscallmemcpyeex=""{syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2,syscallmemcpyee3,syscallmemcpyee4,syscallmemcpyee5,syscallmemcpyee6,syscallmemcpyee7,syscallmemcpyee8,syscallmemcpyee9,syscallmemcpyee10,syscallmemcpyee11,syscallmemcpyee12,syscallmemcpyee13)}}
+		if varptr(syscallmemcpyee12)=0{syscallmemcpyee12=""}else{if syscallmemcpyeex=""{syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2,syscallmemcpyee3,syscallmemcpyee4,syscallmemcpyee5,syscallmemcpyee6,syscallmemcpyee7,syscallmemcpyee8,syscallmemcpyee9,syscallmemcpyee10,syscallmemcpyee11,syscallmemcpyee12)}}
+		if varptr(syscallmemcpyee11)=0{syscallmemcpyee11=""}else{if syscallmemcpyeex=""{syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2,syscallmemcpyee3,syscallmemcpyee4,syscallmemcpyee5,syscallmemcpyee6,syscallmemcpyee7,syscallmemcpyee8,syscallmemcpyee9,syscallmemcpyee10,syscallmemcpyee11)}}
+		if varptr(syscallmemcpyee10)=0{syscallmemcpyee10=""}else{if syscallmemcpyeex=""{syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2,syscallmemcpyee3,syscallmemcpyee4,syscallmemcpyee5,syscallmemcpyee6,syscallmemcpyee7,syscallmemcpyee8,syscallmemcpyee9,syscallmemcpyee10)}}
+		if varptr(syscallmemcpyee9)=0{syscallmemcpyee9=""}else{if syscallmemcpyeex=""{syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2,syscallmemcpyee3,syscallmemcpyee4,syscallmemcpyee5,syscallmemcpyee6,syscallmemcpyee7,syscallmemcpyee8,syscallmemcpyee9)}}
+		if varptr(syscallmemcpyee8)=0{syscallmemcpyee8=""}else{if syscallmemcpyeex=""{syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2,syscallmemcpyee3,syscallmemcpyee4,syscallmemcpyee5,syscallmemcpyee6,syscallmemcpyee7,syscallmemcpyee8)}}
+		if varptr(syscallmemcpyee7)=0{syscallmemcpyee7=""}else{if syscallmemcpyeex=""{syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2,syscallmemcpyee3,syscallmemcpyee4,syscallmemcpyee5,syscallmemcpyee6,syscallmemcpyee7)}}
+		if varptr(syscallmemcpyee6)=0{syscallmemcpyee6=""}else{if syscallmemcpyeex=""{syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2,syscallmemcpyee3,syscallmemcpyee4,syscallmemcpyee5,syscallmemcpyee6)}}
+		if varptr(syscallmemcpyee5)=0{syscallmemcpyee5=""}else{if syscallmemcpyeex=""{syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2,syscallmemcpyee3,syscallmemcpyee4,syscallmemcpyee5)}}
+		if varptr(syscallmemcpyee4)=0{syscallmemcpyee4=""}else{if syscallmemcpyeex=""{syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2,syscallmemcpyee3,syscallmemcpyee4)}}
+		if varptr(syscallmemcpyee3)=0{syscallmemcpyee3=""}else{if syscallmemcpyeex=""{syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2,syscallmemcpyee3)}}
+		if varptr(syscallmemcpyee2)=0{syscallmemcpyee2=""}else{if syscallmemcpyeex=""{syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2)}}
+		if varptr(syscallmemcpyee1)=0{syscallmemcpyee1=""}
 		memcpy syscallmemcpyee0,syscallmemcpyeex,strlen(syscallmemcpyeex),0,0
 		statue=strlen(syscallmemcpyeex)
 	swbreak
@@ -54883,21 +54896,34 @@ case 63//libc
 		statue=syscallptval(2)
 	swbreak
 	case 11//snprintf
+		syscallmemcpyeex=""
 		dupptr syscallmemcpyee0,syscallptval(2),0x7FFFFFFF,2
-		dupptr syscallmemcpyee1,syscallptval(4),0x7FFFFFFF,2:if varptr(syscallmemcpyee1)=0{syscallmemcpyee1=""}
-		dupptr syscallmemcpyee2,syscallptval(5),0x7FFFFFFF,2:if varptr(syscallmemcpyee2)=0{syscallmemcpyee2=""}
-		dupptr syscallmemcpyee3,syscallptval(6),0x7FFFFFFF,2:if varptr(syscallmemcpyee3)=0{syscallmemcpyee3=""}
-		dupptr syscallmemcpyee4,syscallptval(7),0x7FFFFFFF,2:if varptr(syscallmemcpyee4)=0{syscallmemcpyee4=""}
-		dupptr syscallmemcpyee5,syscallptval(8),0x7FFFFFFF,2:if varptr(syscallmemcpyee5)=0{syscallmemcpyee5=""}
-		dupptr syscallmemcpyee6,syscallptval(9),0x7FFFFFFF,2:if varptr(syscallmemcpyee6)=0{syscallmemcpyee6=""}
-		dupptr syscallmemcpyee7,syscallptval(10),0x7FFFFFFF,2:if varptr(syscallmemcpyee7)=0{syscallmemcpyee7=""}
-		dupptr syscallmemcpyee8,syscallptval(11),0x7FFFFFFF,2:if varptr(syscallmemcpyee8)=0{syscallmemcpyee8=""}
-		dupptr syscallmemcpyee9,syscallptval(12),0x7FFFFFFF,2:if varptr(syscallmemcpyee9)=0{syscallmemcpyee9=""}
-		dupptr syscallmemcpyee10,syscallptval(13),0x7FFFFFFF,2:if varptr(syscallmemcpyee10)=0{syscallmemcpyee10=""}
-		dupptr syscallmemcpyee11,syscallptval(14),0x7FFFFFFF,2:if varptr(syscallmemcpyee11)=0{syscallmemcpyee11=""}
-		dupptr syscallmemcpyee12,syscallptval(15),0x7FFFFFFF,2:if varptr(syscallmemcpyee12)=0{syscallmemcpyee12=""}
-		dupptr syscallmemcpyee13,syscallptval(16),0x7FFFFFFF,2:if varptr(syscallmemcpyee13)=0{syscallmemcpyee13=""}
-		syscallmemcpyeex="":syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2,syscallmemcpyee3,syscallmemcpyee4,syscallmemcpyee5,syscallmemcpyee6,syscallmemcpyee7,syscallmemcpyee8,syscallmemcpyee9,syscallmemcpyee10,syscallmemcpyee11,syscallmemcpyee12,syscallmemcpyee13)
+		dupptr syscallmemcpyee1,syscallptval(4),0x7FFFFFFF,2
+		dupptr syscallmemcpyee2,syscallptval(5),0x7FFFFFFF,2
+		dupptr syscallmemcpyee3,syscallptval(6),0x7FFFFFFF,2
+		dupptr syscallmemcpyee4,syscallptval(7),0x7FFFFFFF,2
+		dupptr syscallmemcpyee5,syscallptval(8),0x7FFFFFFF,2
+		dupptr syscallmemcpyee6,syscallptval(9),0x7FFFFFFF,2
+		dupptr syscallmemcpyee7,syscallptval(10),0x7FFFFFFF,2
+		dupptr syscallmemcpyee8,syscallptval(11),0x7FFFFFFF,2
+		dupptr syscallmemcpyee9,syscallptval(12),0x7FFFFFFF,2
+		dupptr syscallmemcpyee10,syscallptval(13),0x7FFFFFFF,2
+		dupptr syscallmemcpyee11,syscallptval(14),0x7FFFFFFF,2
+		dupptr syscallmemcpyee12,syscallptval(15),0x7FFFFFFF,2
+		dupptr syscallmemcpyee13,syscallptval(16),0x7FFFFFFF,2
+		if varptr(syscallmemcpyee13)=0{syscallmemcpyee13=""}else{if syscallmemcpyeex=""{syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2,syscallmemcpyee3,syscallmemcpyee4,syscallmemcpyee5,syscallmemcpyee6,syscallmemcpyee7,syscallmemcpyee8,syscallmemcpyee9,syscallmemcpyee10,syscallmemcpyee11,syscallmemcpyee12,syscallmemcpyee13)}}
+		if varptr(syscallmemcpyee12)=0{syscallmemcpyee12=""}else{if syscallmemcpyeex=""{syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2,syscallmemcpyee3,syscallmemcpyee4,syscallmemcpyee5,syscallmemcpyee6,syscallmemcpyee7,syscallmemcpyee8,syscallmemcpyee9,syscallmemcpyee10,syscallmemcpyee11,syscallmemcpyee12)}}
+		if varptr(syscallmemcpyee11)=0{syscallmemcpyee11=""}else{if syscallmemcpyeex=""{syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2,syscallmemcpyee3,syscallmemcpyee4,syscallmemcpyee5,syscallmemcpyee6,syscallmemcpyee7,syscallmemcpyee8,syscallmemcpyee9,syscallmemcpyee10,syscallmemcpyee11)}}
+		if varptr(syscallmemcpyee10)=0{syscallmemcpyee10=""}else{if syscallmemcpyeex=""{syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2,syscallmemcpyee3,syscallmemcpyee4,syscallmemcpyee5,syscallmemcpyee6,syscallmemcpyee7,syscallmemcpyee8,syscallmemcpyee9,syscallmemcpyee10)}}
+		if varptr(syscallmemcpyee9)=0{syscallmemcpyee9=""}else{if syscallmemcpyeex=""{syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2,syscallmemcpyee3,syscallmemcpyee4,syscallmemcpyee5,syscallmemcpyee6,syscallmemcpyee7,syscallmemcpyee8,syscallmemcpyee9)}}
+		if varptr(syscallmemcpyee8)=0{syscallmemcpyee8=""}else{if syscallmemcpyeex=""{syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2,syscallmemcpyee3,syscallmemcpyee4,syscallmemcpyee5,syscallmemcpyee6,syscallmemcpyee7,syscallmemcpyee8)}}
+		if varptr(syscallmemcpyee7)=0{syscallmemcpyee7=""}else{if syscallmemcpyeex=""{syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2,syscallmemcpyee3,syscallmemcpyee4,syscallmemcpyee5,syscallmemcpyee6,syscallmemcpyee7)}}
+		if varptr(syscallmemcpyee6)=0{syscallmemcpyee6=""}else{if syscallmemcpyeex=""{syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2,syscallmemcpyee3,syscallmemcpyee4,syscallmemcpyee5,syscallmemcpyee6)}}
+		if varptr(syscallmemcpyee5)=0{syscallmemcpyee5=""}else{if syscallmemcpyeex=""{syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2,syscallmemcpyee3,syscallmemcpyee4,syscallmemcpyee5)}}
+		if varptr(syscallmemcpyee4)=0{syscallmemcpyee4=""}else{if syscallmemcpyeex=""{syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2,syscallmemcpyee3,syscallmemcpyee4)}}
+		if varptr(syscallmemcpyee3)=0{syscallmemcpyee3=""}else{if syscallmemcpyeex=""{syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2,syscallmemcpyee3)}}
+		if varptr(syscallmemcpyee2)=0{syscallmemcpyee2=""}else{if syscallmemcpyeex=""{syscallmemcpyeex=strf(syscallmemcpyee1,syscallmemcpyee2)}}
+		if varptr(syscallmemcpyee1)=0{syscallmemcpyee1=""}
 		memcpy syscallmemcpyee0,syscallmemcpyeex,syscallptval(3),0,0
 		if syscallptval(2)>strlen(syscallmemcpyeex){statue=strlen(syscallmemcpyeex)}else{statue=syscallptval(2)}
 	swbreak

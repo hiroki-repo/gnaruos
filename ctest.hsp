@@ -25,9 +25,9 @@ a="ABC"
 b="AAAA"
 c="abcdefghijklmnopqrstu"
 result=""
-result+=str(strcmp(a,b))+"\n"
+result+=str(strcmp(varptr(a),varptr(b)))+"\n"
 dupptr d,varptr(c)+5,64,2
-dupptr memmovetest,memmove(d,c,10),64,2
+dupptr memmovetest,memmove(varptr(d),varptr(c),10),64,2
 result+=c+"\n"
 }
 if pnotfirstrun=1{
