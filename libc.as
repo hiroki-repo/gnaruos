@@ -29,8 +29,8 @@ return syscall(63,17,varptr(prm_0),prm_1)
 return syscall(63,19,prm_0)
 #defcfunc toupper int prm_0
 return syscall(63,20,prm_0)
-#defcfunc prnt array prm_0
-return syscall(63,21,varptr(prm_0))
+#defcfunc prnt str prm_0
+prm_0x=prm_0:return syscall(63,21,varptr(prm_0x))
 #defcfunc strrchr array prm_0,int prm_1
 return syscall(63,22,varptr(prm_0),prm_1)
 #defcfunc bzero array prm_0,int prm_1
