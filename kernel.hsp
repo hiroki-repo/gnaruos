@@ -2,6 +2,7 @@
 #include "migs.as"
 #include "gdi32.as"
 #include "kernel32.as"
+#include "user32.as"
 onexit *onexits
 
 nowdir="":nowdir=dir_cur
@@ -51936,7 +51937,7 @@ if lpeek(windowlabelval(programi-1),0)!0{windowiconno@(programi-1,windowlabelsta
 return programi-1
 #deffunc apploadexcproc str fname
 /*notesel program:noteload fname*/
-programi=0:programi=windowi@+1:windowprogramdirstack@(programi-1)=windowprogramdirstackbak@(programi-1,windowlabelstackexcid@(programi-1)):windowprogramdirstack@(programi-1)=dir_cur:windowprevid@(programi-1)=windowi@:/*:windowinfofortab(programi-1,0)=program*/:taskoptivestack@((programi-1),windowlabelstackexcid@(programi-1))=taskoptive@(programi-1):taskoptive@(programi-1)=windowopttmp:windowopttmp="":windowinfofortabstack@(programi-1,1,windowlabelstackexcid@(programi-1))=windowinfofortab(programi-1,1):windowinfofortab(programi-1,1)=fname:windowinfofortabstack@(programi-1,2,windowlabelstackexcid@(programi-1))=windowinfofortab(programi-1,2):windowinfofortab(programi-1,2)="1"
+programi=0:programi=windowi@+1:windowprogramdirstack@(programi-1)=windowprogramdirstackbak@(programi-1,windowlabelstackexcid@(programi-1)):windowprogramdirstack@(programi-1)=dir_cur:windowprevid@(programi-1)=windowi@:/*:windowinfofortab(programi-1,0)=program*/:taskoptivestack@((programi-1),windowlabelstackexcid@(programi-1))=taskoptive@(programi-1):taskoptive@(programi-1)=windowopttmp:windowopttmp="":windowinfofortabstack@(programi-1,1,windowlabelstackexcid@(programi-1))=windowinfofortab(programi-1,1):windowinfofortab(programi-1,1)=fname:windowinfofortabstack@(programi-1,2,windowlabelstackexcid@(programi-1))=windowinfofortab(programi-1,2):windowinfofortabstack@(programi-1,3,windowlabelstackexcid@(programi-1))=windowinfofortab(programi-1,3):windowinfofortab(programi-1,3)="":windowinfofortab(programi-1,2)="1"
 loadedlibraryibak@(programi-1,windowlabelstackexcid@(programi-1))=loadedlibraryi@(programi-1):windowsuserid@(programi-1)=windowsuserid@(windowi@):windowuserid@(programi-1)=windowuserid@(windowi@):repeat 8:windowxystack@(programi-1,cnt,windowlabelstackexcid@(programi-1))=windowxy@(programi-1,cnt):loop:windowisnotfirstrunstack@(programi-1,windowlabelstackexcid@(programi-1))=windowisnotfirstrun@:windowlabelstackexc@(programi-1,windowlabelstackexcid@(programi-1))=lpeek(windowlabelval(programi-1),0):windowlabelstackexcid@(programi-1)+=1:lpoke windowlabelval(programi-1),0,_faddproc(fname)
 windowisnotfirstrun@=0
 if lpeek(windowlabelval(programi-1),0)!0{windowiconno@(programi-1,windowlabelstackexcid@(programi-1))=48}else{windowiconno@(programi-1,windowlabelstackexcid@(programi-1))=0}:windowiconhide@(programi-1)=1
@@ -51944,7 +51945,7 @@ if lpeek(windowlabelval(programi-1),0)!0{windowiconno@(programi-1,windowlabelsta
 return programi-1
 #deffunc apploadexcproc2 str fname
 /*notesel program:noteload fname*/
-programi=0:programi=windowi@+1:windowprogramdirstack@(programi-1)=windowprogramdirstackbak@(programi-1,windowlabelstackexcid@(programi-1)):windowprogramdirstack@(programi-1)=dir_cur:windowprevid@(programi-1)=windowi@:/*:windowinfofortab(programi-1,0)=program*/:taskoptivestack@((programi-1),windowlabelstackexcid@(programi-1))=taskoptive@(programi-1):taskoptive@(programi-1)=windowopttmp:windowopttmp="":windowinfofortabstack@(programi-1,1,windowlabelstackexcid@(programi-1))=windowinfofortab(programi-1,1):windowinfofortab(programi-1,1)=fname:windowinfofortabstack@(programi-1,2,windowlabelstackexcid@(programi-1))=windowinfofortab(programi-1,2):windowinfofortab(programi-1,2)="1"
+programi=0:programi=windowi@+1:windowprogramdirstack@(programi-1)=windowprogramdirstackbak@(programi-1,windowlabelstackexcid@(programi-1)):windowprogramdirstack@(programi-1)=dir_cur:windowprevid@(programi-1)=windowi@:/*:windowinfofortab(programi-1,0)=program*/:taskoptivestack@((programi-1),windowlabelstackexcid@(programi-1))=taskoptive@(programi-1):taskoptive@(programi-1)=windowopttmp:windowopttmp="":windowinfofortabstack@(programi-1,1,windowlabelstackexcid@(programi-1))=windowinfofortab(programi-1,1):windowinfofortab(programi-1,1)=fname:windowinfofortabstack@(programi-1,2,windowlabelstackexcid@(programi-1))=windowinfofortab(programi-1,2):windowinfofortabstack@(programi-1,3,windowlabelstackexcid@(programi-1))=windowinfofortab(programi-1,3):windowinfofortab(programi-1,3)="":windowinfofortab(programi-1,2)="1"
 loadedlibraryibak@(programi-1,windowlabelstackexcid@(programi-1))=loadedlibraryi@(programi-1):windowsuserid@(programi-1)=windowsuserid@(windowi@):windowuserid@(programi-1)=windowuserid@(windowi@):repeat 8:windowxystack@(programi-1,cnt,windowlabelstackexcid@(programi-1))=windowxy@(programi-1,cnt):loop:windowisnotfirstrunstack@(programi-1,windowlabelstackexcid@(programi-1))=windowisnotfirstrun@:windowlabelstackexc@(programi-1,windowlabelstackexcid@(programi-1))=lpeek(windowlabelval(programi-1),0):lpoke windowlabelval(programi-1),0,_faddproc(fname)
 windowisnotfirstrun@=0
 if lpeek(windowlabelval(programi-1),0)!0{windowiconno@(programi-1,windowlabelstackexcid@(programi-1))=48}else{windowiconno@(programi-1,windowlabelstackexcid@(programi-1))=0}:windowiconhide@(programi-1)=1
@@ -51957,12 +51958,14 @@ lpoke windowlabelval(pid),0,windowlabelstackexc@(pid,windowlabelstackexcid@(pid)
 taskoptive@(pid)=taskoptivestack@((pid),windowlabelstackexcid@(pid))
 windowinfofortab(pid,1)=windowinfofortabstack@(pid,1,windowlabelstackexcid@(pid))
 windowinfofortab(pid,2)=windowinfofortabstack@(pid,2,windowlabelstackexcid@(pid))
+windowinfofortab(pid,3)=windowinfofortabstack@(pid,3,windowlabelstackexcid@(pid))
 windowisnotfirstrun@=windowisnotfirstrunstack@(pid,windowlabelstackexcid@(pid))
 windowprogramdirstack@(pid)=windowprogramdirstackbak@(pid,windowlabelstackexcid@(pid))
 repeat 8:windowxy@(pid,cnt)=windowxystack@(pid,cnt,windowlabelstackexcid@(pid)):loop
 windowiconno@(pid,windowlabelstackexcid@(pid))=0
 loadedlibraryi@(pid)=loadedlibraryibak@(pid,windowlabelstackexcid@(pid))
 }else{
+windowinfofortab(pid,3)=""
 repeat fdescriptermax@
 fileobjdata0@(pid,cnt+3)=""
 fileobjdata1@(pid,cnt+3)=""
@@ -51984,6 +51987,7 @@ loadedlibraryi@(pid)=0
 windowdisabledtask@(windowprevid@(pid))=0
 return
 #deffunc appcloseforce int pid
+windowinfofortab(pid,3)=""
 repeat fdescriptermax@
 fileobjdata0@(pid,cnt+3)=""
 fileobjdata1@(pid,cnt+3)=""
@@ -53511,6 +53515,7 @@ windowxy(windowi,1)=windowy
 windowxy(windowi,2)=windowmaxx
 windowxy(windowi,3)=windowmaxy
 windowxy(windowi,4)=windowisnotfirstrun
+if windowtitle=""{windowtitle=windowinfofortab@m2(windowi,3)}
 consstock(windowi)=consstock2
 windowenabled(windowi)=windowenabled2
 windowiconhide(windowi)=(windowtaskenable=0)
@@ -55049,6 +55054,16 @@ case 63//libc
 		fileobjdata2(windowi,syscallptval(2))=0
 		statue=0
 		}
+	swbreak
+	swend
+swbreak
+case 64
+	switch syscallptval(1)
+	case 0
+		VirtualAlloc syscallptval(2),syscallptval(3),syscallptval(4),syscallptval(5)
+	swbreak
+	case 1
+		VirtualFree syscallptval(2),syscallptval(3)
 	swbreak
 	swend
 swbreak
