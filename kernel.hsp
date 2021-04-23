@@ -52428,7 +52428,7 @@ color 255,255,255
 conslinesex=""
 repeat ((windowxy@(windowi@,3)/8)-1)
 noteget conslinesexsl,latestlineforshowcons+cnt:conslinesexsl+="\n"
-repeat:if instr(conslinesexsl,0,"\n")>((windowxy@(windowi@,2)/6)){conslinesex+=strmid(conslinesexsl,0,((windowxy@(windowi@,2)/6)-1))+"\n":conslinesexsl=strmid(conslinesexsl,((windowxy@(windowi@,2)/6)-1),strlen(conslinesexsl))}else{break}:loop
+repeat:if instr(conslinesexsl,0,"\n")>((windowxy@(windowi@,2)/6)){conslinesex+=strmid(conslinesexsl,0,((windowxy@(windowi@,2)/6)))+"\n":conslinesexsl=strmid(conslinesexsl,((windowxy@(windowi@,2)/6)),strlen(conslinesexsl))}else{break}:loop
 conslinesex+=conslinesexsl
 loop
 notesel conslinesex
