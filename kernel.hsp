@@ -52432,9 +52432,12 @@ repeat:if instr(conslinesexsl,0,"\n")>((windowxy@(windowi@,2)/6)){conslinesex+=s
 conslinesex+=conslinesexsl
 loop
 notesel conslinesex
+latestlineforshowcons=0
 if ((notemax*8)+8)>=windowxy@(windowi@,3){latestlineforshowcons=notemax-((windowxy@(windowi@,3)/8)-1)}
+conslinesabc=""
 repeat ((windowxy@(windowi@,3)/8)-1)
 noteget conslines,latestlineforshowcons+cnt
+conslinesabc+=conslines+"\n"
 yforconsole=cnt
 for i,0,strlen(conslines),1
 chrforcons=peek(conslines,i)
@@ -52447,6 +52450,7 @@ if ((yforconsole*8)+8)>=windowxy@(windowi@,3){_break}
 next
 loop
 color nowrgbr,nowrgbg,nowrgbb
+if latestlineforshowcons!0{messageforconsoleapp@(consoleidforproc@(windowi@)-1)=strmid(conslinesabc,0,strlen(conslinesabc)-2)}
 }
 }
 return
