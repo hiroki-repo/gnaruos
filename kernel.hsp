@@ -53564,7 +53564,8 @@ for windowtitlei,0,strlen(windowtitle),1:gputchr windowxy(windowi,0)+(windowtitl
 gputchr windowxy(windowi,2)+windowxy(windowi,0)-6,windowxy(windowi,1),"BGA1",14,0,1//gputchr windowxy(windowi,2)+windowxy(windowi,0)-5,windowxy(windowi,1)-1,"BGF1",0x78,1,1
 if windowenableedforpid=windowi{
 if mx>=windowxy(windowi,0)+windowxy(windowi,2)-8 and my>=windowxy(windowi,1) and mx<=windowxy(windowi,0)+windowxy(windowi,2)+1 and my<=windowxy(windowi,1)+8 and mclick&1{if lpeek(winmessageptr(0x112&0xFFFF,windowi),0)=0{if lpeek(windowendhandler(windowi),0)=0{appclose windowi}else{gosub windowendhandler(windowi)}}else{lpoke syscallptval(3),0,0xF060:lpoke syscallptval(4),0,0:gosub winmessageptr(0x112&0xFFFF,windowi)}:mclick&=0xFFFFFFFE}
-if mx>=windowxy(windowi,0) and my>=windowxy(windowi,1) and mx<=windowxy(windowi,0)+windowxy(windowi,2)-8 and my<=windowxy(windowi,1)+8 and mclick&1{windowxy(windowi,0)=mx-8:windowxy(windowi,1)=my-4:dragging=1}
+if mx>=windowxy(windowi,0) and my>=windowxy(windowi,1) and mx<=windowxy(windowi,0)+windowxy(windowi,2)-8 and my<=windowxy(windowi,1)+8 and mclick&1{if draggingx=0{wxb=mx-windowxy(windowi,0):wyb=my-windowxy(windowi,1)}:windowxy(windowi,0)=mx-wxb:windowxy(windowi,1)=my-wyb:dragging=1}
+draggingx=dragging
 }
 if dragging=0{
 if mx>=windowxy(windowi,0) and my>=windowxy(windowi,1) and mx<=windowxy(windowi,0)+windowxy(windowi,2) and my<=windowxy(windowi,1)+windowxy(windowi,3) and mclick&1{if mx>=windowxy(windowenableedforpid,0) and my>=windowxy(windowenableedforpid,1) and mx<=windowxy(windowenableedforpid,0)+windowxy(windowenableedforpid,2) and my<=windowxy(windowenableedforpid,1)+windowxy(windowenableedforpid,3) and mclick&1{}else{windowenableedforpid=windowi}}
