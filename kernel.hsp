@@ -52425,6 +52425,14 @@ notesel messageforconsoleapp@(consoleidforproc@(windowi@)-1)
 if ((notemax*8)+8)>=windowxy@(windowi@,3){latestlineforshowcons=notemax-((windowxy@(windowi@,3)/8)-1)}
 nowrgbr=ginfo(16):nowrgbg=ginfo(17):nowrgbb=ginfo(18)
 color 255,255,255
+conslinesex=""
+repeat ((windowxy@(windowi@,3)/8)-1)
+noteget conslinesexsl,latestlineforshowcons+cnt:conslinesexsl+="\n"
+repeat:if instr(conslinesexsl,0,"\n")>((windowxy@(windowi@,2)/6)){conslinesex+=strmid(conslinesexsl,0,((windowxy@(windowi@,2)/6)-1))+"\n":conslinesexsl=strmid(conslinesexsl,((windowxy@(windowi@,2)/6)-1),strlen(conslinesexsl))}else{break}:loop
+conslinesex+=conslinesexsl
+loop
+notesel conslinesex
+if ((notemax*8)+8)>=windowxy@(windowi@,3){latestlineforshowcons=notemax-((windowxy@(windowi@,3)/8)-1)}
 repeat ((windowxy@(windowi@,3)/8)-1)
 noteget conslines,latestlineforshowcons+cnt
 yforconsole=cnt
