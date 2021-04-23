@@ -52450,7 +52450,7 @@ if ((yforconsole*8)+8)>=windowxy@(windowi@,3){_break}
 next
 loop
 color nowrgbr,nowrgbg,nowrgbb
-if latestlineforshowcons!0{messageforconsoleapp@(consoleidforproc@(windowi@)-1)=strmid(conslinesabc,0,strlen(conslinesabc)-2)}
+if latestlineforshowcons!0{messageforconsoleapp@(consoleidforproc@(windowi@)-1)=conslinesabc}
 }
 }
 return
