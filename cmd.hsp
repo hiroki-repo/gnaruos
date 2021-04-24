@@ -27,8 +27,8 @@ windowisnotfirstrun=1
 }
 if pnotfirstrun=1{
 windowtaskenable=1
-	titlestr="ccp.ax"
-	ret=syscall(4,pid,varptr(titlestr))
+titlestr="":titlestr=progarg
+	ret=syscall(4,pid,varptr(cmdlineopx2))
 color 1,1,1
 boxf windowx,windowy+8,windowx+windowmaxx,windowy+windowmaxy
 ret=syscall(9)
