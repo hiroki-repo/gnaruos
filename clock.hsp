@@ -9,6 +9,8 @@ inket="":inkeys=""
 buttoni1=0
 buttoni2=0
 buttoni3=""
+dupptr iconno,sysvalptr@stdcallinterface(20),4,4
+iconno=4
 dim timex,61
 dim timey,61
 timex(0)=26,25,24,22,20,18,16,14,12,10,8,6,4,2,1,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,31,32,34,36,38,40,42,44,46,48,50,52,54,56,54,53,52,50,48,46,44,42,40,38,36,34,32,30,28
