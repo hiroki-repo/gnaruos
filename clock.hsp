@@ -22,7 +22,7 @@ color 255,255,255
 boxf windowx,windowy+8,windowx+windowmaxx,windowy+windowmaxy
 color 0x96,0x4b,0x00
 circle windowx,windowy+8+1,windowx+windowmaxx+1,windowy+windowmaxy+1,0
-gtmx(0)=gettime(6),gettime(5),int(5*gettime(4)):if gtmx(2)>=60{gtmx(2)-=60}
+gtmx(0)=gettime(6),gettime(5),int((5*gettime(4))+(gettime(5)/12)):if gtmx(2)>=60{gtmx(2)-=60}
 color 255,0,0
 line windowx+timex(59-gtmx(0)),windowy+8+timey(59-gtmx(0)),windowx+28,windowy+8+28
 color 150,150,150
