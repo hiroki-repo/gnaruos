@@ -53560,7 +53560,7 @@ boxf windowxy(windowi,0)-1,windowxy(windowi,1),windowxy(windowi,2)+windowxy(wind
 line windowxy(windowi,0)-1,windowxy(windowi,1),windowxy(windowi,0)-1,windowxy(windowi,3)+windowxy(windowi,1)+1
 line windowxy(windowi,2)+windowxy(windowi,0)+1,windowxy(windowi,1)-1,windowxy(windowi,2)+windowxy(windowi,0)+1,windowxy(windowi,3)+windowxy(windowi,1)+1
 line windowxy(windowi,0)-1,windowxy(windowi,3)+windowxy(windowi,1)+1,windowxy(windowi,2)+windowxy(windowi,0)+1,windowxy(windowi,3)+windowxy(windowi,1)+1
-for windowtitlei,0,strlen(windowtitle),1:gputchr windowxy(windowi,0)+(windowtitlei*6),windowxy(windowi,1)-1,"BGF1",peek(windowtitle,windowtitlei),1,1:next
+windowiconnocnx=windowiconno(windowi,windowlabelstackexcid(windowi)):if windowiconnocnx!0 and windowiconhide(windowi)=0{gputchr windowxy(windowi,0),windowxy(windowi,1),"BGA1",windowiconnocnx,0,1:for windowtitlei,0,strlen(windowtitle),1:gputchr windowxy(windowi,0)+(windowtitlei*6)+8,windowxy(windowi,1)-1,"BGF1",peek(windowtitle,windowtitlei),1,1:next}else{for windowtitlei,0,strlen(windowtitle),1:gputchr windowxy(windowi,0)+(windowtitlei*6),windowxy(windowi,1)-1,"BGF1",peek(windowtitle,windowtitlei),1,1:next}
 gputchr windowxy(windowi,2)+windowxy(windowi,0)-6,windowxy(windowi,1),"BGA1",14,0,1//gputchr windowxy(windowi,2)+windowxy(windowi,0)-5,windowxy(windowi,1)-1,"BGF1",0x78,1,1
 if windowenableedforpid=windowi{
 if mx>=windowxy(windowi,0)+windowxy(windowi,2)-8 and my>=windowxy(windowi,1) and mx<=windowxy(windowi,0)+windowxy(windowi,2)+1 and my<=windowxy(windowi,1)+8 and mclick&1{if lpeek(winmessageptr(0x112&0xFFFF,windowi),0)=0{if lpeek(windowendhandler(windowi),0)=0{appclose windowi}else{gosub windowendhandler(windowi)}}else{lpoke syscallptval(3),0,0xF060:lpoke syscallptval(4),0,0:gosub winmessageptr(0x112&0xFFFF,windowi)}:mclick&=0xFFFFFFFE}
@@ -55126,7 +55126,7 @@ case 63//libc
 	swbreak
 	swend
 swbreak
-case 64
+case 64//memnativealloc
 	switch syscallptval(1)
 	case 0
 		VirtualAlloc syscallptval(2),syscallptval(3),syscallptval(4),syscallptval(5)
@@ -55135,6 +55135,20 @@ case 64
 		VirtualFree syscallptval(2),syscallptval(3)
 	swbreak
 	swend
+swbreak
+case 65//getconsoleid
+statue=consoleidforproc(windowi)
+swbreak
+case 66//getconsoleidex
+statue=consoleidforproc(syscallptval(1))
+swbreak
+case 67//setconsoleid
+consoleidforproc(windowi)=syscallptval(1)
+statue=0
+swbreak
+case 68//setconsoleidex
+consoleidforproc(syscallptval(2))=syscallptval(1)
+statue=0
 swbreak
 swend
 lpoke cpmsyscallstack(windowi,5),0,drive
