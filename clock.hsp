@@ -16,6 +16,8 @@ timey(0)=0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,31,32,34,36,38,40,42,44,46,4
 }
 if pnotfirstrun=1{
 windowtaskenable=1
+	titlestr="Clock"
+	ret=syscall(4,pid,varptr(titlestr))
 color 255,255,255
 boxf windowx,windowy+8,windowx+windowmaxx,windowy+windowmaxy
 color 0x96,0x4b,0x00
