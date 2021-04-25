@@ -53803,7 +53803,10 @@ await:loop
 onkey 0*/
 hlekeygetenabled=1
 //if cpmsyscallstack(windowi,1)=0{}else{wparam2=0}
+kbhtcbak=0
+inputivetask(windowi)=1
 //repeat
+//kbhtcbak=_kbhitc()
 wparam2=0
 wparam2=_getchc()
 gosub *ctrlseax
@@ -53816,6 +53819,7 @@ mesc wparam2str,1
 wparam2=0
 if cpmsyscallstack(windowi,1)=0{hlekeygetenabled=0}else{istyped=1}
 hlekeygetenabled=0
+inputivetask(windowi)=0
 swbreak
 case 2//C_WRITE
 //hleplusysize=0
