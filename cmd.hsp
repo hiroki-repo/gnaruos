@@ -32,6 +32,7 @@ titlestr="":titlestr=progarg
 color 1,1,1
 boxf windowx,windowy+8,windowx+windowmaxx,windowy+windowmaxy
 ret=syscall(9)
+ret=syscall(73):if ret=-1{ret=syscall(7,0)}
 //sdim messages,64:messages="C:\\>\na":repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8,varptr("BGF1"),peek(messages,cnt),0,varptr(1.0)):loop
 }
 pnotfirstrun=1
