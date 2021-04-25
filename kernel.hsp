@@ -55153,6 +55153,12 @@ case 68//setconsoleidex
 consoleidforproc(syscallptval(2))=syscallptval(1)
 statue=0
 swbreak
+case 69//getsameconsidprocopen
+statue=-1:repeat windowmaxiumpx:if consoleidforproc(cnt)=windowi+1{statue+=1}:loop
+swbreak
+case 70//getsameconsidprocopenex
+statue=-1:repeat windowmaxiumpx:if consoleidforproc(cnt)=syscallptval(1)+1{statue+=1}:loop
+swbreak
 swend
 lpoke cpmsyscallstack(windowi,5),0,drive
 return statue
