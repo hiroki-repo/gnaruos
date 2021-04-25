@@ -53406,10 +53406,10 @@ gputchr 8*28,192-8,"BGA1",7,0,1
 gputchr 8*29,192-8,"BGA1",6,0,1
 gputchr 8*30,192-8,"BGA1",5,0,1
 gputchr 8*31,192-8,"BGA1",14,0,1
-if mx>=8*28 and my>=192-8 and mx<=8*29 and my<=192 and mclick&1{if windowenableedforpid=windowi{}else{if lpeek(winmessageptr(0x112&0xFFFF,windowenableedforpid),0)=0{windowminimlized(windowenableedforpid)=0}else{lpoke syscallptval(3),0,0xF020:lpoke syscallptval(4),0,0:gosub winmessageptr(0x112&0xFFFF,windowenableedforpid)}:mclick&=0xFFFFFFFE}}
+if mx>=8*28 and my>=192-8 and mx<=8*29 and my<=192 and mclick&1{if windowenableedforpid=windowi{}else{if windowiconhide(windowenableedforpid)=0{if lpeek(winmessageptr(0x112&0xFFFF,windowenableedforpid),0)=0{windowminimlized(windowenableedforpid)=0}else{lpoke syscallptval(3),0,0xF020:lpoke syscallptval(4),0,0:gosub winmessageptr(0x112&0xFFFF,windowenableedforpid)}}:mclick&=0xFFFFFFFE}}
 
-if mx>=8*30 and my>=192-8 and mx<=8*31 and my<=192 and mclick&1{if windowenableedforpid=windowi{}else{if lpeek(winmessageptr(0x112&0xFFFF,windowenableedforpid),0)=0{windowminimlized(windowenableedforpid)=1}else{lpoke syscallptval(3),0,0xF120:lpoke syscallptval(4),0,0:gosub winmessageptr(0x112&0xFFFF,windowenableedforpid)}:mclick&=0xFFFFFFFE}}
-if mx>=8*31 and my>=192-8 and mx<=8*32 and my<=192 and mclick&1{if windowenableedforpid=windowi{}else{if lpeek(winmessageptr(0x112&0xFFFF,windowenableedforpid),0)=0{if lpeek(windowendhandler(windowenableedforpid),0)=0{appclose windowenableedforpid}else{gosub windowendhandler(windowenableedforpid)}}else{lpoke syscallptval(3),0,0xF060:lpoke syscallptval(4),0,0:gosub winmessageptr(0x112&0xFFFF,windowenableedforpid)}:mclick&=0xFFFFFFFE}}
+if mx>=8*30 and my>=192-8 and mx<=8*31 and my<=192 and mclick&1{if windowenableedforpid=windowi{}else{if windowiconhide(windowenableedforpid)=0{if lpeek(winmessageptr(0x112&0xFFFF,windowenableedforpid),0)=0{windowminimlized(windowenableedforpid)=1}else{lpoke syscallptval(3),0,0xF120:lpoke syscallptval(4),0,0:gosub winmessageptr(0x112&0xFFFF,windowenableedforpid)}}:mclick&=0xFFFFFFFE}}
+if mx>=8*31 and my>=192-8 and mx<=8*32 and my<=192 and mclick&1{if windowenableedforpid=windowi{}else{if windowiconhide(windowenableedforpid)=0{if lpeek(winmessageptr(0x112&0xFFFF,windowenableedforpid),0)=0{if lpeek(windowendhandler(windowenableedforpid),0)=0{appclose windowenableedforpid}else{gosub windowendhandler(windowenableedforpid)}}else{lpoke syscallptval(3),0,0xF060:lpoke syscallptval(4),0,0:gosub winmessageptr(0x112&0xFFFF,windowenableedforpid)}}:mclick&=0xFFFFFFFE}}
 //deskiconrendmst=1
 }
 return
@@ -53520,8 +53520,8 @@ syscalldispatchptr=*syscalldispatch
 deskptr=*desk
 dim syscallen,1024
 dim publicvalptr,1024
-windowiconshowforfsaps=0
-publicvalptr(0)=varptr(windowi),varptr(consstock2),varptr(windowtaskenable),varptr(windowx),varptr(windowy),varptr(windowmaxx),varptr(windowmaxy),varptr(windowenabled2),varptr(windowisnotfirstrun),varptr(windowtitle),varptr(mclick),varptr(windowenableedforpid),varptr(mx),varptr(my),varptr(windowconsstrxy(windowi,0)),varptr(windowconsstrxy(windowi,1)),varptr(taskoptive(windowi)),varptr(inkey),varptr(mclick),varptr(deskiconrendmst),varptr(windowiconno(windowi,windowlabelstackexcid(windowi))),varptr(windowiconshowforfsaps)
+windowiconshowforfsaps=0:inkeyforenabled=0:if windowenableedforpid=windowi{inkeyforenabled=inkey}
+publicvalptr(0)=varptr(windowi),varptr(consstock2),varptr(windowtaskenable),varptr(windowx),varptr(windowy),varptr(windowmaxx),varptr(windowmaxy),varptr(windowenabled2),varptr(windowisnotfirstrun),varptr(windowtitle),varptr(mclick),varptr(windowenableedforpid),varptr(mx),varptr(my),varptr(windowconsstrxy(windowi,0)),varptr(windowconsstrxy(windowi,1)),varptr(taskoptive(windowi)),varptr(inkeyforenabled),varptr(mclick),varptr(deskiconrendmst),varptr(windowiconno(windowi,windowlabelstackexcid(windowi))),varptr(windowiconshowforfsaps)
 lpoke syscallen(0),0,lpeek(syscalldispatchptr,0)
 lpoke syscallen(1),0,varptr(syscallptval)
 lpoke syscallen(2),0,varptr(publicvalptr)
