@@ -1,0 +1,95 @@
+#runtime "hsp3cl"
+#packopt orgpath 1
+#packopt name "jscpm"
+#include "stdcall.as"
+#include "migs_stabilizer.as"
+if windowisnotfirstrun=0{
+windowisnotfirstrun=1
+}
+if mainlpjump=1{goto *mainlp}
+mainlpjump=1
+dim timeflamebit,8
+#module
+#deffunc z80memaccess int prm_0,int prm_1,int prm_2
+switch prm_2
+case 0
+poke memory@,prm_0,prm_1
+return
+swbreak
+case 1
+return peek(memory@,prm_0)
+swbreak
+case 2
+	switch prm_0&0xFF
+	case 1
+		ret=syscall(7,2,prm_1)//strforshow="":lpoke strforshow,0,prm_1://printf "%s",strforshow//mes strforshow,1
+	swbreak
+	case 10
+		driveid=prm_1
+	swbreak
+	case 11
+		trackid=prm_1
+	swbreak
+	case 12
+		sectorid=prm_1
+	swbreak
+	case 13
+        dskaddr = (trackid * 26 + sectorid - 1) * 128
+        dskdma = (dmaHigh << 8) | dmaLow
+        sdim dataforloadtodma,128
+			switch prm_1
+			case 0
+				bload diskfilename@,dataforloadtodma,128,dskaddr
+				memcpy memory@,dataforloadtodma,128,dskdma,0
+			swbreak
+			default
+				memcpy dataforloadtodma,memory@,128,0,dskdma
+				bsave diskfilename@,dataforloadtodma,128,dskaddr
+			swbreak
+			swend
+	swbreak
+	case 15
+		dmaLow=prm_1
+	swbreak
+	case 16
+		dmaHigh=prm_1
+	swbreak
+	swend
+swbreak
+case 3
+	switch prm_0&0xFF
+	case 0
+		if (syscall(7,11)){return 0xFF}else{return 0x00}
+	swbreak
+	case 1
+		//repeat:if (){break}:await:loop
+		return syscall(7,1)//if syscall(7,11){stopvm@=0:return _getch()}else{stopvm@=1:stopvmaddr@=address@}
+	swbreak
+	case 14
+		return 0x00
+	swbreak
+	default
+		return 0xFF
+	swbreak
+	swend
+swbreak
+swend
+return
+#global
+#include "z80.as"
+diskfilename="":diskfilename=oscmdline
+repeat:if strmid(diskfilename,0,1)=" "{diskfilename=strmid(diskfilename,1,strlen(diskfilename))}else{break}:loop
+sdim memory,65536
+exist diskfilename
+if strsize!-1{bload diskfilename,memory,128,0}
+/*sdim iplbin,13*512
+bload diskfilename,iplbin,13*512,0
+memcpy memory,iplbin,13*512,0xe380,0
+poke memory,0x0005,0xc3
+poke memory,0x0006,0x06
+poke memory,0x0007,0x3c+0xb0*/
+address=0
+*mainlp
+repeat 4200:if stopvm=0{z80run address,0}:loop
+return
+end
