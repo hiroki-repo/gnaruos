@@ -120,6 +120,9 @@ ret=syscall(7,32,userid)
 }
 mesc "\n",1
 swbreak
+case "EXIT"
+ret=syscall(7,0)
+swbreak
 case ""
 mesc "\n",1
 swbreak
