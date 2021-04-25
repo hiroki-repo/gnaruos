@@ -23,6 +23,8 @@ if strsize=-1{progarg=cmdname(0)+".COM":exist progarg:comexec=1}
 if comexec=0{cmdlineopx2=progarg:ret=syscall(12,varptr(cmdexex))}else{cmdlineopx2="GCVDM.OTW":ret=syscall(12,varptr(oscmdline))}
 }
 ret=syscall(11,varptr(cmdlineopx2))
+cmdclosurerptr=*cmdclosurer
+ret=syscall(13,0x112,lpeek(cmdclosurerptr,0))
 windowisnotfirstrun=1
 }
 if pnotfirstrun=1{
@@ -36,4 +38,9 @@ ret=syscall(73):if ret=-1{ret=syscall(7,0)}
 //sdim messages,64:messages="C:\\>\na":repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8,varptr("BGF1"),peek(messages,cnt),0,varptr(1.0)):loop
 }
 pnotfirstrun=1
+return
+
+*cmdclosurer
+repeat:retx=syscall(71):if retx=-1{break}:ret=syscall(18,retx):loop
+ret=syscall(19)
 return
