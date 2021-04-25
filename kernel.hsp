@@ -53387,13 +53387,14 @@ ____strsize@=strsize@hsp
 }
 return
 #deffunc ____dirlist array prm_0,str prm_1,int prm_2
+prm_1x=prm_1
 dirlist@hsp prm_0,prm_1x,prm_2
 statue=stat
 if prm_2<=4{
 notesel fslist@
 repeat notemax
 noteget fslistsliced,cnt
-if fslistsliced=prm_1{
+if fslistsliced=prm_1x{
 prm_0+=fslistsliced+"\n"
 }
 loop
