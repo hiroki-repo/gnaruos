@@ -1,4 +1,16 @@
 #pack "index.hsp"
+#undef bload
+#define global bload(%1,%2,%3=-1,%4=-1) ____bload %1,%2,%3,%4
+#undef bsave
+#define global bsave(%1,%2,%3=-1,%4=-1) ____bsave %1,%2,%3,%4
+#undef exist
+#define global exist(%1) ____exist %1
+#undef strsize
+#define global strsize ____strsize@
+#undef dirlist
+#define global dirlist(%1,%2,%3=0) ____dirlist %1,%2,%3
+#undef delete
+#define global delete(%1) ____delete %1
 #include "migs.as"
 #include "gdi32.as"
 #include "kernel32.as"
@@ -53328,6 +53340,81 @@ Locus_GetPoint
 ; http://www.tvg.ne.jp/menyukko/ ; Copyright(C) 2014 ˆß“ú˜a All rights reserved.
 #global
 #endif
+
+fsmaxium=128
+dim fsfilesize,fsmaxium
+sdim fsdata,128,fsmaxium,256
+sdim fslist,2048
+repeat fsmaxium:fsfilesize(cnt)=-1:loop
+dircmdlines=dir_cmdline:repeat:if strmid(dircmdlines,cnt,1)=" "{dircmdlines=strmid(dircmdlines,1,strlen(dircmdlines))}else{break}:loop
+exist@hsp dircmdlines:strsize2=strsize@hsp
+if strsize2!-1{
+sdim initrd,strsize2
+bload@hsp dircmdlines,initrd
+repeat lpeek(initrd,4*2):fileidnow=cnt:memcpy fnameforfs,initrd,0x10,0,0x10+(0x20*cnt):fslist+=fnameforfs+"\n":filecpyl=(lpeek(initrd,0x28+(0x20*cnt)+4)/128)+1:if filecpyl>=256{filecpyl=255}:fsfilesize(cnt)=filecpyl:repeat filecpyl:memcpy fsdata(fileidnow,cnt),initrd,128,0,lpeek(initrd,0x28+(0x20*cnt)):loop:loop
+}
+
+#module filesystemfucker
+#deffunc ____bload str prm_0,array prm_1,int prm_2,int prm_3
+prm_0x=prm_0
+exist@hsp prm_0
+____strsize@=strsize@hsp
+if ____strsize@=-1{
+____exist prm_0x
+if ____strsize@!-1{
+notesel fslist@:sdim filestock,____strsize@
+repeat fsmaxium@:noteget fslistsliced,cnt:if prm_0=fslistsliced{____strsize@=fsfilesize@(cnt)*128:cntx=cnt:repeat ____strsize@/128:memcpy filestock,fsdata@(cntx,cnt),128,cnt*128,0:loop:memfile filestock:break}:loop
+noteunsel
+prm_0x="MEM:ORY"
+}
+}
+bload@hsp prm_0x,prm_1,prm_2,prm_3
+____strsize@=strsize@hsp
+return
+#deffunc ____bsave str prm_0,array prm_1,int prm_2,int prm_3
+prm_0x=prm_0
+bsave@hsp prm_0x,prm_1,prm_2,prm_3
+____strsize@=strsize@hsp
+return
+#deffunc ____exist str prm_0
+____strsize@=-1
+notesel fslist@
+repeat fsmaxium@:noteget fslistsliced,cnt:if prm_0=fslistsliced{____strsize@=fsfilesize@(cnt)*128:break}:loop
+noteunsel
+if ____strsize@=-1{
+exist@hsp prm_0
+____strsize@=strsize@hsp
+}
+return
+#deffunc ____dirlist array prm_0,str prm_1,int prm_2
+dirlist@hsp prm_0,prm_1x,prm_2
+statue=stat
+if prm_2<=4{
+notesel fslist@
+repeat notemax
+noteget fslistsliced,cnt
+if fslistsliced=prm_1{
+prm_0+=fslistsliced+"\n"
+}
+loop
+noteunsel
+}
+return statue
+#deffunc ____delete str prm_0
+prm_0x=prm_0
+exist@hsp prm_0
+____strsize@=strsize@hsp
+if ____strsize@=-1{
+____exist prm_0x
+if ____strsize@!-1{
+notesel fslist@:sdim filestock,____strsize@
+repeat fsmaxium@:noteget fslistsliced,cnt:if prm_0=fslistsliced{____strsize@=fsfilesize@(cnt)*128:noteadd "",cnt,1:fsfilesize@(cnt)=-1:break}:loop
+noteunsel
+}
+}else{
+delete@hsp prm_0x,prm_1,prm_2,prm_3
+}
+#global
 
 dim syscallptval,1024
 dim consoleidforproc,windowmaxiumpx
