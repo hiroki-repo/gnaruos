@@ -51989,6 +51989,8 @@ loadedlibraryi@(pid)=0
 cpmsyscallstack@(pid,3)=0x80
 cpmsyscallstack@(pid,4)=0x24
 consoleidforproc@(pid)=pid+1
+lpoke windowendhandler@(pid),0,0
+repeat 65536:lpoke winmessageptr@(cnt&0xFFFF,pid),0,0:loop
 }
 windowdisabledtask@(windowprevid@(pid))=0
 return
@@ -52014,6 +52016,8 @@ loadedlibraryi@(pid)=0
 cpmsyscallstack@(pid,3)=0x80
 cpmsyscallstack@(pid,4)=0x24
 consoleidforproc@(pid)=pid+1
+lpoke windowendhandler@(pid),0,0
+repeat 65536:lpoke winmessageptr@(cnt&0xFFFF,pid),0,0:loop
 windowdisabledtask@(windowprevid@(pid))=0
 return
 #deffunc apptitleset int pid,str titlenameapp
