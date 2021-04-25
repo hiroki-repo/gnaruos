@@ -51988,6 +51988,7 @@ windowiconno@(pid,windowlabelstackexcid@(pid))=0
 loadedlibraryi@(pid)=0
 cpmsyscallstack@(pid,3)=0x80
 cpmsyscallstack@(pid,4)=0x24
+consoleidforproc@(pid)=pid+1
 }
 windowdisabledtask@(windowprevid@(pid))=0
 return
@@ -52012,6 +52013,7 @@ windowiconno@(pid,windowlabelstackexcid@(pid))=0
 loadedlibraryi@(pid)=0
 cpmsyscallstack@(pid,3)=0x80
 cpmsyscallstack@(pid,4)=0x24
+consoleidforproc@(pid)=pid+1
 windowdisabledtask@(windowprevid@(pid))=0
 return
 #deffunc apptitleset int pid,str titlenameapp
@@ -55158,6 +55160,12 @@ statue=-1:repeat windowmaxiumpx:if consoleidforproc(cnt)=windowi+1{statue+=1}:lo
 swbreak
 case 70//getsameconsidprocopenex
 statue=-1:repeat windowmaxiumpx:if consoleidforproc(cnt)=syscallptval(1)+1{statue+=1}:loop
+swbreak
+case 71//getsameconspidprocopen
+statue=-1:repeat windowmaxiumpx:if consoleidforproc(cnt)=windowi+1{if cnt!windowi{statue=cnt:break}}:loop
+swbreak
+case 72//getsameconspidprocopenex
+statue=-1:repeat windowmaxiumpx:if consoleidforproc(cnt)=syscallptval(1)+1{if cnt!syscallptval(1){statue=cnt:break}}:loop
 swbreak
 swend
 lpoke cpmsyscallstack(windowi,5),0,drive
