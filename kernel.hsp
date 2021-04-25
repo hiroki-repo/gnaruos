@@ -52452,6 +52452,7 @@ noteget conslinesexsl,latestlineforshowcons+cnt:conslinesexsl+="\n"
 repeat:if instr(conslinesexsl,0,"\n")>((windowxy@(windowi@,2)/6)){conslinesex+=strmid(conslinesexsl,0,((windowxy@(windowi@,2)/6)))+"\n":conslinesexsl=strmid(conslinesexsl,((windowxy@(windowi@,2)/6)),strlen(conslinesexsl))}else{break}:loop
 conslinesex+=conslinesexsl
 loop
+noteunsel
 notesel conslinesex
 latestlineforshowcons=0
 if ((notemax*8)+8)>=windowxy@(windowi@,3){latestlineforshowcons=notemax-((windowxy@(windowi@,3)/8)-1)}
@@ -52470,8 +52471,9 @@ mesfromminifont chrforconsforrend,0//gputchr (i*6)+windowxy@(windowi@,0),8+windo
 if ((yforconsole*8)+8)>=windowxy@(windowi@,3){_break}
 next
 loop
+noteunsel
 color nowrgbr,nowrgbg,nowrgbb
-if latestlineforshowcons!0{messageforconsoleapp@(consoleidforproc@(windowi@)-1)=conslinesabc}
+//if latestlineforshowcons!0{messageforconsoleapp@(consoleidforproc@(windowi@)-1)=conslinesabc}
 }
 }
 return
