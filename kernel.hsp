@@ -55167,6 +55167,12 @@ swbreak
 case 72//getsameconspidprocopenex
 statue=-1:repeat windowmaxiumpx:if consoleidforproc(cnt)=syscallptval(1)+1{if cnt!syscallptval(1){statue=cnt:break}}:loop
 swbreak
+case 73//getsameconspidprocopenback
+statue=-1:repeat windowmaxiumpx:if consoleidforproc(cnt)=windowi+1{if cnt!windowi{statue=cnt}}:loop
+swbreak
+case 74//getsameconspidprocopenbackex
+statue=-1:repeat windowmaxiumpx:if consoleidforproc(cnt)=syscallptval(1)+1{if cnt!syscallptval(1){statue=cnt}}:loop
+swbreak
 swend
 lpoke cpmsyscallstack(windowi,5),0,drive
 return statue
