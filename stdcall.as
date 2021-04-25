@@ -44,5 +44,8 @@ return
 prm_3x=prm_3
 prm_6x=prm_6
 return syscall(5,prm_1,prm_2,varptr(prm_3x),prm_4,prm_5,varptr(prm_6x))
+#undef end
+#deffunc end int prm_0
+return syscall(7,0)
 #global
 stdcallinit@stdcallinterface
