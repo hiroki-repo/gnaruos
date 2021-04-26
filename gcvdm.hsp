@@ -56,6 +56,10 @@ swbreak
 case 4
 return peek(dehlforchk@,3)
 swbreak
+case 5
+wpoke dehlforchk@,2,syscall(wpeek(memory,(wpeek(stack@z80moduleaccess(0),12)+(2*1))&0xFFFF),wpeek(memory,(wpeek(stack@z80moduleaccess(0),12)+(2*2))&0xFFFF),wpeek(memory,(wpeek(stack@z80moduleaccess(0),12)+(2*3))&0xFFFF),wpeek(memory,(wpeek(stack@z80moduleaccess(0),12)+(2*4))&0xFFFF),wpeek(memory,(wpeek(stack@z80moduleaccess(0),12)+(2*5))&0xFFFF),wpeek(memory,(wpeek(stack@z80moduleaccess(0),12)+(2*6))&0xFFFF),wpeek(memory,(wpeek(stack@z80moduleaccess(0),12)+(2*7))&0xFFFF),wpeek(memory,(wpeek(stack@z80moduleaccess(0),12)+(2*8))&0xFFFF))
+return peek(dehlforchk@,2)
+swbreak
 swend
 return 0xFF
 swbreak
@@ -85,6 +89,9 @@ poke memory,0x0000,0xC3
 wpoke memory,0x0001,0xFB00
 poke memory,0x0005,0xC3
 wpoke memory,0x0006,0xFE00
+poke memory,0x0008,0xC3
+wpoke memory,0x0009,0xFE40
+
 
 poke memory,0xFB00,0x0E
 poke memory,0xFB01,0x00
@@ -126,6 +133,20 @@ poke memory,0xFE19,0x67
 poke memory,0xFE1A,0x3A
 wpoke memory,0xFE1B,0xFE20
 poke memory,0xFE1D,0xC9
+
+poke memory,0xFE40,0x32
+wpoke memory,0xFE41,0xFE20
+poke memory,0xFE43,0xDB
+poke memory,0xFE44,0x05
+poke memory,0xFE45,0xDB
+poke memory,0xFE46,0x03
+poke memory,0xFE47,0x6F
+poke memory,0xFE48,0xDB
+poke memory,0xFE49,0x04
+poke memory,0xFE4A,0x67
+poke memory,0xFE4B,0x3A
+wpoke memory,0xFE4D,0xFE20
+poke memory,0xFE4E,0xC9
 address=0xFC00
 *mainlp
 ret=syscall(8,varptr(memory))
