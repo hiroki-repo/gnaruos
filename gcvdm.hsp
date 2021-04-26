@@ -33,6 +33,53 @@ swbreak
 case 4
 poke dehlforchk@,3,prm_1
 swbreak
+case 5
+swbreak
+case 6
+poke pid@,0,prm_1
+swbreak
+case 7
+poke windowtaskenable@,0,prm_1
+swbreak
+case 8
+poke windowx@,0,prm_1
+swbreak
+case 9
+poke windowy@,0,prm_1
+swbreak
+case 10
+poke windowmaxx@,0,prm_1
+swbreak
+case 11
+poke windowmaxy@,0,prm_1
+swbreak
+case 12
+poke windowenabled@,0,prm_1
+swbreak
+case 13
+poke windowisnotfirstrun@,0,prm_1
+swbreak
+case 14
+poke mclick@,0,prm_1
+swbreak
+case 15
+poke windowenableedforpid@,0,prm_1
+swbreak
+case 16
+poke mx@,0,prm_1
+swbreak
+case 17
+poke my@,0,prm_1
+swbreak
+case 18
+poke inkey@,0,prm_1
+swbreak
+case 19
+poke iconno@,0,prm_1
+swbreak
+case 20
+poke enableicon@,0,prm_1
+swbreak
 swend
 return
 swbreak
@@ -60,6 +107,51 @@ case 5
 wpoke dehlforchk@,2,syscall(wpeek(memory,(wpeek(stack@z80moduleaccess(0),12)+(2*1))&0xFFFF),wpeek(memory,(wpeek(stack@z80moduleaccess(0),12)+(2*2))&0xFFFF),wpeek(memory,(wpeek(stack@z80moduleaccess(0),12)+(2*3))&0xFFFF),wpeek(memory,(wpeek(stack@z80moduleaccess(0),12)+(2*4))&0xFFFF),wpeek(memory,(wpeek(stack@z80moduleaccess(0),12)+(2*5))&0xFFFF),wpeek(memory,(wpeek(stack@z80moduleaccess(0),12)+(2*6))&0xFFFF),wpeek(memory,(wpeek(stack@z80moduleaccess(0),12)+(2*7))&0xFFFF),wpeek(memory,(wpeek(stack@z80moduleaccess(0),12)+(2*8))&0xFFFF))
 wpoke memory,(wpeek(stack@z80moduleaccess(0),12)+(2*1))&0xFFFF,syscallopt(0):wpoke memory,(wpeek(stack@z80moduleaccess(0),12)+(2*2))&0xFFFF,syscallopt(1):wpoke memory,(wpeek(stack@z80moduleaccess(0),12)+(2*3))&0xFFFF,syscallopt(2):wpoke memory,(wpeek(stack@z80moduleaccess(0),12)+(2*4))&0xFFFF,syscallopt(3):wpoke memory,(wpeek(stack@z80moduleaccess(0),12)+(2*5))&0xFFFF,syscallopt(4):wpoke memory,(wpeek(stack@z80moduleaccess(0),12)+(2*6))&0xFFFF,syscallopt(5):wpoke memory,(wpeek(stack@z80moduleaccess(0),12)+(2*7))&0xFFFF,syscallopt(6):wpoke memory,(wpeek(stack@z80moduleaccess(0),12)+(2*8))&0xFFFF,syscallopt(7)
 return peek(dehlforchk@,2)
+swbreak
+case 6
+return pid@
+swbreak
+case 7
+return windowtaskenable@
+swbreak
+case 8
+return windowx@
+swbreak
+case 9
+return windowy@
+swbreak
+case 10
+return windowmaxx@
+swbreak
+case 11
+return windowmaxy@
+swbreak
+case 12
+return windowenabled@
+swbreak
+case 13
+return windowisnotfirstrun@
+swbreak
+case 14
+return mclick@
+swbreak
+case 15
+return windowenableedforpid@
+swbreak
+case 16
+return mx@
+swbreak
+case 17
+return my@
+swbreak
+case 18
+return inkey@
+swbreak
+case 19
+return iconno@
+swbreak
+case 20
+return enableicon@
 swbreak
 swend
 return 0xFF
