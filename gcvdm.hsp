@@ -186,6 +186,7 @@ poke memory,0x0008,0xC3
 wpoke memory,0x0009,0xFE40
 poke memory,0x0010,0xC3
 wpoke memory,0x0011,0xFE60
+wpoke memory,0x003B,0xFEB0
 
 
 poke memory,0xFB00,0x0E
@@ -267,7 +268,37 @@ poke memory,0xFE78,0xC9
 address=0xFC00
 *mainlp
 ret=syscall(8,varptr(memory))
+wpoke memory,0xFEB0+2*0,pid
+//wpoke memory,0xFEB0+2*1,windowtaskenable
+wpoke memory,0xFEB0+2*2,windowx
+wpoke memory,0xFEB0+2*3,windowy
+wpoke memory,0xFEB0+2*4,windowmaxx
+wpoke memory,0xFEB0+2*5,windowmaxy
+wpoke memory,0xFEB0+2*6,windowenabled
+wpoke memory,0xFEB0+2*7,windowisnotfirstrun
+wpoke memory,0xFEB0+2*8,mclick
+wpoke memory,0xFEB0+2*9,windowenableedforpid
+wpoke memory,0xFEB0+2*10,mx
+wpoke memory,0xFEB0+2*11,my
+wpoke memory,0xFEB0+2*12,inkey
+wpoke memory,0xFEB0+2*13,iconno
+//wpoke memory,0xFEB0+2*14,enableicon
 repeat 4200
 z80run address,0
 loop
+wpoke pid,0,wpeek(memory,0xFEB0+2*0)
+wpoke windowtaskenable,0,wpeek(memory,0xFEB0+2*1)
+wpoke windowx,0,wpeek(memory,0xFEB0+2*2)
+wpoke windowy,0,wpeek(memory,0xFEB0+2*3)
+wpoke windowmaxx,0,wpeek(memory,0xFEB0+2*4)
+wpoke windowmaxy,0,wpeek(memory,0xFEB0+2*5)
+wpoke windowenabled,0,wpeek(memory,0xFEB0+2*6)
+wpoke windowisnotfirstrun,0,wpeek(memory,0xFEB0+2*7)
+wpoke mclick,0,wpeek(memory,0xFEB0+2*8)
+wpoke windowenableedforpid,0,wpeek(memory,0xFEB0+2*9)
+wpoke mx,0,wpeek(memory,0xFEB0+2*10)
+wpoke my,0,wpeek(memory,0xFEB0+2*11)
+wpoke inkey,0,wpeek(memory,0xFEB0+2*12)
+wpoke iconno,0,wpeek(memory,0xFEB0+2*13)
+wpoke enableicon,0,wpeek(memory,0xFEB0+2*14)
 return
