@@ -55351,6 +55351,9 @@ case 75//grpfunc
 	if ginfo(3)=1{gputchr windowxy(windowi,0)+syscallptval(2), windowxy(windowi,1)+syscallptval(3),dataforsyscalldata3,syscallptval(5),syscallptval(6),double(syscallptval(7))}else{gputchr syscallptval(2), syscallptval(3),dataforsyscalldata3,syscallptval(5),syscallptval(6),double(syscallptval(7))}
 	statue=stat
 	swbreak
+	case 16
+	statue=windowtaskenable
+	swbreak
 	swend
 swbreak
 swend
