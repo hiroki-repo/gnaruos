@@ -55280,7 +55280,7 @@ swbreak
 case 75//grpfunc
 	switch syscallptval(1)
 	case 0
-	if ginfo(3)=3{boxf windowxy(windowi,0)+syscallptval(2),windowxy(windowi,1)+syscallptval(3),windowxy(windowi,0)+syscallptval(4),windowxy(windowi,1)+syscallptval(5)}else{boxf syscallptval(2),syscallptval(3),syscallptval(4),syscallptval(5)}
+	if ginfo(3)=1{boxf windowxy(windowi,0)+syscallptval(2),windowxy(windowi,1)+syscallptval(3),windowxy(windowi,0)+syscallptval(4),windowxy(windowi,1)+syscallptval(5)}else{boxf syscallptval(2),syscallptval(3),syscallptval(4),syscallptval(5)}
 	swbreak
 	case 1
 	color syscallptval(2),syscallptval(3),syscallptval(4)
@@ -55294,34 +55294,34 @@ case 75//grpfunc
 	statue=ginfo(syscallptval(2))
 	swbreak
 	case 4
-	if ginfo(3)=3{pget windowxy(windowi,0)+syscallptval(2),windowxy(windowi,1)+syscallptval(3)}else{pget syscallptval(2),syscallptval(3)}
+	if ginfo(3)=1{pget windowxy(windowi,0)+syscallptval(2),windowxy(windowi,1)+syscallptval(3)}else{pget syscallptval(2),syscallptval(3)}
 	swbreak
 	case 5
 	statue=ginfo(16+(syscallptval(2)&3))
 	swbreak
 	case 6
-	if ginfo(3)=3{pset windowxy(windowi,0)+syscallptval(2),windowxy(windowi,1)+syscallptval(3)}else{pset syscallptval(2),syscallptval(3)}
+	if ginfo(3)=1{pset windowxy(windowi,0)+syscallptval(2),windowxy(windowi,1)+syscallptval(3)}else{pset syscallptval(2),syscallptval(3)}
 	swbreak
 	case 7
-	if syscallptval(2)=3{gcopy syscallptval(2),windowxy(windowi,0)+syscallptval(3),windowxy(windowi,1)+syscallptval(4),syscallptval(5),syscallptval(6)}else{gcopy syscallptval(2),syscallptval(3),syscallptval(4),syscallptval(5),syscallptval(6)}
+	if syscallptval(2)=1{gcopy syscallptval(2),windowxy(windowi,0)+syscallptval(3),windowxy(windowi,1)+syscallptval(4),syscallptval(5),syscallptval(6)}else{gcopy syscallptval(2),syscallptval(3),syscallptval(4),syscallptval(5),syscallptval(6)}
 	swbreak
 	case 8
 	gmode syscallptval(2),syscallptval(3),syscallptval(4),syscallptval(5)
 	swbreak
 	case 9
-	if ginfo(3)=3{line windowxy(windowi,0)+syscallptval(2),windowxy(windowi,1)+syscallptval(3),windowxy(windowi,0)+syscallptval(4),windowxy(windowi,1)+syscallptval(5)}else{line syscallptval(2),syscallptval(3),syscallptval(4),syscallptval(5)}
+	if ginfo(3)=1{line windowxy(windowi,0)+syscallptval(2),windowxy(windowi,1)+syscallptval(3),windowxy(windowi,0)+syscallptval(4),windowxy(windowi,1)+syscallptval(5)}else{line syscallptval(2),syscallptval(3),syscallptval(4),syscallptval(5)}
 	swbreak
 	case 10
 	hsvcolor syscallptval(2),syscallptval(3),syscallptval(4)
 	swbreak
 	case 11
-	if ginfo(3)=3{circle windowxy(windowi,0)+syscallptval(2),windowxy(windowi,1)+syscallptval(3),windowxy(windowi,0)+syscallptval(4),windowxy(windowi,1)+syscallptval(5),syscallptval(6)}else{circle syscallptval(2),syscallptval(3),syscallptval(4),syscallptval(5),syscallptval(6)}
+	if ginfo(3)=1{circle windowxy(windowi,0)+syscallptval(2),windowxy(windowi,1)+syscallptval(3),windowxy(windowi,0)+syscallptval(4),windowxy(windowi,1)+syscallptval(5),syscallptval(6)}else{circle syscallptval(2),syscallptval(3),syscallptval(4),syscallptval(5),syscallptval(6)}
 	swbreak
 	case 12
-	if syscallptval(4)=3{gzoom syscallptval(2),syscallptval(3),syscallptval(4),windowxy(windowi,0)+syscallptval(5),windowxy(windowi,1)+syscallptval(6),syscallptval(7),syscallptval(8),syscallptval(9)}else{gzoom syscallptval(2),syscallptval(3),syscallptval(4),syscallptval(5),syscallptval(6),syscallptval(7),syscallptval(8),syscallptval(9)}
+	if syscallptval(4)=1{gzoom syscallptval(2),syscallptval(3),syscallptval(4),windowxy(windowi,0)+syscallptval(5),windowxy(windowi,1)+syscallptval(6),syscallptval(7),syscallptval(8),syscallptval(9)}else{gzoom syscallptval(2),syscallptval(3),syscallptval(4),syscallptval(5),syscallptval(6),syscallptval(7),syscallptval(8),syscallptval(9)}
 	swbreak
 	case 13
-	if ginfo(3)=3{pos windowxy(windowi,0)+syscallptval(2),windowxy(windowi,1)+syscallptval(3)}else{pos syscallptval(2),syscallptval(3)}
+	if ginfo(3)=1{pos windowxy(windowi,0)+syscallptval(2),windowxy(windowi,1)+syscallptval(3)}else{pos syscallptval(2),syscallptval(3)}
 	swbreak
 	swend
 swbreak
