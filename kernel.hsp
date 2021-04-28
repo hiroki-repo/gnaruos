@@ -53596,6 +53596,7 @@ mclick&=0xFFFFFFFB
 return
 
 *windowrendon
+if hspstat&16{}else{gselbackup=ginfo(3):gsel 1,0}
 //if windowinfofortab@m2(windowi,0)=""{}else{
 if windowminimlized(windowi)=0{
 if windowdisabledtask(windowi)=0{
@@ -53680,6 +53681,7 @@ logmes "a"*/
 }
 }
 //}
+if hspstat&16{}else{gsel gselbackup,0}
 return
 
 *keydown
