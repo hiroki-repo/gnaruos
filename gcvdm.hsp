@@ -104,8 +104,8 @@ case 4
 return peek(dehlforchk@,3)
 swbreak
 case 5
-wpoke dehlforchk@,2,syscall(wpeek(memory@,(wpeek(stack@z80moduleaccess(0),12)+(2*1))&0xFFFF),wpeek(memory@,(wpeek(stack@z80moduleaccess(0),12)+(2*2))&0xFFFF),wpeek(memory@,(wpeek(stack@z80moduleaccess(0),12)+(2*3))&0xFFFF),wpeek(memory@,(wpeek(stack@z80moduleaccess(0),12)+(2*4))&0xFFFF),wpeek(memory@,(wpeek(stack@z80moduleaccess(0),12)+(2*5))&0xFFFF),wpeek(memory@,(wpeek(stack@z80moduleaccess(0),12)+(2*6))&0xFFFF),wpeek(memory@,(wpeek(stack@z80moduleaccess(0),12)+(2*7))&0xFFFF),wpeek(memory@,(wpeek(stack@z80moduleaccess(0),12)+(2*8))&0xFFFF),wpeek(memory@,(wpeek(stack@z80moduleaccess(0),12)+(2*9))&0xFFFF),wpeek(memory@,(wpeek(stack@z80moduleaccess(0),12)+(2*10))&0xFFFF))
-wpoke memory@,(wpeek(stack@z80moduleaccess(0),12)+(2*1))&0xFFFF,syscallopt@stdcallinterface(0):wpoke memory@,(wpeek(stack@z80moduleaccess(0),12)+(2*2))&0xFFFF,syscallopt@stdcallinterface(1):wpoke memory@,(wpeek(stack@z80moduleaccess(0),12)+(2*3))&0xFFFF,syscallopt@stdcallinterface(2):wpoke memory@,(wpeek(stack@z80moduleaccess(0),12)+(2*4))&0xFFFF,syscallopt@stdcallinterface(3):wpoke memory@,(wpeek(stack@z80moduleaccess(0),12)+(2*5))&0xFFFF,syscallopt@stdcallinterface(4):wpoke memory@,(wpeek(stack@z80moduleaccess(0),12)+(2*6))&0xFFFF,syscallopt@stdcallinterface(5):wpoke memory@,(wpeek(stack@z80moduleaccess(0),12)+(2*7))&0xFFFF,syscallopt@stdcallinterface(6):wpoke memory@,(wpeek(stack@z80moduleaccess(0),12)+(2*8))&0xFFFF,syscallopt@stdcallinterface(7):wpoke memory@,(wpeek(stack@z80moduleaccess(0),12)+(2*9))&0xFFFF,syscallopt@stdcallinterface(8):wpoke memory@,(wpeek(stack@z80moduleaccess(0),12)+(2*10))&0xFFFF,syscallopt@stdcallinterface(9)
+wpoke dehlforchk@,2,syscall(wpeek(memory@,(wpeek(z80stack@(0),12)+(2*1))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*2))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*3))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*4))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*5))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*6))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*7))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*8))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*9))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*10))&0xFFFF))
+wpoke memory@,(wpeek(z80stack@(0),12)+(2*1))&0xFFFF,syscallopt@stdcallinterface(0):wpoke memory@,(wpeek(z80stack@(0),12)+(2*2))&0xFFFF,syscallopt@stdcallinterface(1):wpoke memory@,(wpeek(z80stack@(0),12)+(2*3))&0xFFFF,syscallopt@stdcallinterface(2):wpoke memory@,(wpeek(z80stack@(0),12)+(2*4))&0xFFFF,syscallopt@stdcallinterface(3):wpoke memory@,(wpeek(z80stack@(0),12)+(2*5))&0xFFFF,syscallopt@stdcallinterface(4):wpoke memory@,(wpeek(z80stack@(0),12)+(2*6))&0xFFFF,syscallopt@stdcallinterface(5):wpoke memory@,(wpeek(z80stack@(0),12)+(2*7))&0xFFFF,syscallopt@stdcallinterface(6):wpoke memory@,(wpeek(z80stack@(0),12)+(2*8))&0xFFFF,syscallopt@stdcallinterface(7):wpoke memory@,(wpeek(z80stack@(0),12)+(2*9))&0xFFFF,syscallopt@stdcallinterface(8):wpoke memory@,(wpeek(z80stack@(0),12)+(2*10))&0xFFFF,syscallopt@stdcallinterface(9)
 return peek(dehlforchk@,2)
 swbreak
 case 6
@@ -160,6 +160,7 @@ swend
 return 0
 #global
 #include "z80.as"
+dup z80stack,stack@z80moduleaccess(0)
 sdim memory,65536
 cmdline="":cmdline=oscmdline:repeat:if strmid(cmdline,cnt,1)=" "{cmdline=strmid(cmdline,1,strlen(cmdline))}else{break}:loop:sdim cmdname,128,512:i=0:for cntx,0,strlen(cmdline),1:if peek(cmdline,cntx)=' '{i=i+1}else{cmdlinesliced="":poke cmdlinesliced,0,peek(cmdline,cntx):cmdname(i)=cmdname(i)+cmdlinesliced}:next
 cmdlinearg=""
