@@ -104,7 +104,8 @@ case 4
 return peek(dehlforchk@,3)
 swbreak
 case 5
-wpoke dehlforchk@,2,syscall(wpeek(memory@,(wpeek(z80stack@(0),12)+(2*1))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*2))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*3))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*4))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*5))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*6))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*7))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*8))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*9))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*10))&0xFFFF))
+ret=syscall(wpeek(memory@,(wpeek(z80stack@(0),12)+(2*1))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*2))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*3))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*4))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*5))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*6))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*7))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*8))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*9))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*10))&0xFFFF))
+wpoke dehlforchk@,2,ret
 wpoke memory@,(wpeek(z80stack@(0),12)+(2*1))&0xFFFF,syscallopt@stdcallinterface(0):wpoke memory@,(wpeek(z80stack@(0),12)+(2*2))&0xFFFF,syscallopt@stdcallinterface(1):wpoke memory@,(wpeek(z80stack@(0),12)+(2*3))&0xFFFF,syscallopt@stdcallinterface(2):wpoke memory@,(wpeek(z80stack@(0),12)+(2*4))&0xFFFF,syscallopt@stdcallinterface(3):wpoke memory@,(wpeek(z80stack@(0),12)+(2*5))&0xFFFF,syscallopt@stdcallinterface(4):wpoke memory@,(wpeek(z80stack@(0),12)+(2*6))&0xFFFF,syscallopt@stdcallinterface(5):wpoke memory@,(wpeek(z80stack@(0),12)+(2*7))&0xFFFF,syscallopt@stdcallinterface(6):wpoke memory@,(wpeek(z80stack@(0),12)+(2*8))&0xFFFF,syscallopt@stdcallinterface(7):wpoke memory@,(wpeek(z80stack@(0),12)+(2*9))&0xFFFF,syscallopt@stdcallinterface(8):wpoke memory@,(wpeek(z80stack@(0),12)+(2*10))&0xFFFF,syscallopt@stdcallinterface(9)
 return peek(dehlforchk@,2)
 swbreak
@@ -242,8 +243,8 @@ poke memory,0xFE48,0xDB
 poke memory,0xFE49,0x04
 poke memory,0xFE4A,0x67
 poke memory,0xFE4B,0x3A
-wpoke memory,0xFE4D,0xFE20
-poke memory,0xFE4F,0xC9
+wpoke memory,0xFE4C,0xFE20
+poke memory,0xFE4E,0xC9
 
 poke memory,0xFE60,0x32
 wpoke memory,0xFE61,0xFE20
