@@ -55337,6 +55337,20 @@ case 75//grpfunc
 	if ginfo(3)=1{gputchr windowxy(windowi,0)+syscallptval(1), windowxy(windowi,0)+syscallptval(2),dataforsyscalldata3,syscallptval(4),syscallptval(5),dataforsyscalldata6}else{gputchr syscallptval(1), syscallptval(2),dataforsyscalldata3,syscallptval(4),syscallptval(5),dataforsyscalldata6}
 	statue=stat
 	swbreak
+	case 15//gputchr_int
+	if syscallptval(3)<65536{
+	dupptr dataforsyscalldata3,syscallptval(3)+winmemoryspace64kshift(windowi),4096,2
+	}else{
+	dupptr dataforsyscalldata3,syscallptval(3),4096,2
+	}
+	/*if syscallptval(6)<65536{
+	dupptr dataforsyscalldata6,syscallptval(6)+winmemoryspace64kshift(windowi),8,3
+	}else{
+	dupptr dataforsyscalldata6,syscallptval(6),8,3
+	}*/
+	if ginfo(3)=1{gputchr windowxy(windowi,0)+syscallptval(1), windowxy(windowi,0)+syscallptval(2),dataforsyscalldata3,syscallptval(4),syscallptval(5),dataforsyscalldata6}else{gputchr syscallptval(1), syscallptval(2),dataforsyscalldata3,syscallptval(4),syscallptval(5),double(syscallptval(6))}
+	statue=stat
+	swbreak
 	swend
 swbreak
 swend
