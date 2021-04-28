@@ -160,7 +160,7 @@ swend
 return 0
 #global
 #include "z80.as"
-dup z80stack,stack@z80moduleaccess(0)
+dup z80stack,stack@z80moduleaccess
 sdim memory,65536
 cmdline="":cmdline=oscmdline:repeat:if strmid(cmdline,cnt,1)=" "{cmdline=strmid(cmdline,1,strlen(cmdline))}else{break}:loop:sdim cmdname,128,512:i=0:for cntx,0,strlen(cmdline),1:if peek(cmdline,cntx)=' '{i=i+1}else{cmdlinesliced="":poke cmdlinesliced,0,peek(cmdline,cntx):cmdname(i)=cmdname(i)+cmdlinesliced}:next
 cmdlinearg=""
