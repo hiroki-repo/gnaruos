@@ -51894,7 +51894,7 @@ sdim windowinfofortabstack,256,windowmaxiumpx,4,10
 sdim taskoptivestack,256,windowmaxiumpx,10
 ldim winmessageptr,65536,windowmaxiumpx
 sdim taskoptive,256,windowmaxiumpx
-dim winmemoryspace64kshift,windowmaxiumpx
+dim wmemspc64kshift,windowmaxiumpx
 dim cpmsyscallstack,windowmaxiumpx,10
 dim windowisnotfirstrunstack,windowmaxiumpx,10
 dim windowdisabledtask,windowmaxiumpx
@@ -53624,7 +53624,7 @@ lpoke syscallen(1),0,varptr(syscallptval)
 lpoke syscallen(2),0,varptr(publicvalptr)
 lpoke syscallen(3),0,lpeek(deskptr,0)
 lpoke syscallen(4),0,varptr(syscallen)
-//mem16bitshiftaddr winmemoryspace64kshift(windowi)
+mem16bitshiftaddr wmemspc64kshift(windowi)
 memfile syscallen
 /*mstreglabel "desk", *desk
 mstbind "pid", windowi
@@ -53733,7 +53733,7 @@ statue=-1
 switch syscallptval(0)
 case 0//exec
 if syscallptval(1)<65536{
-dupptr dataforsyscalldata0,syscallptval(1)+winmemoryspace64kshift(windowi),4096,2
+dupptr dataforsyscalldata0,syscallptval(1)+wmemspc64kshift(windowi),4096,2
 }else{
 dupptr dataforsyscalldata0,syscallptval(1),4096,2
 }
@@ -53742,7 +53742,7 @@ statue=stat
 swbreak
 case 1//setwallpaper
 if syscallptval(1)<65536{
-dupptr dataforsyscalldata0,syscallptval(1)+winmemoryspace64kshift(windowi),4096,2
+dupptr dataforsyscalldata0,syscallptval(1)+wmemspc64kshift(windowi),4096,2
 }else{
 dupptr dataforsyscalldata0,syscallptval(1),4096,2
 }
@@ -53758,7 +53758,7 @@ statue=stat
 swbreak
 case 4//windowtitleset
 if syscallptval(2)<65536{
-dupptr dataforsyscalldata1,syscallptval(2)+winmemoryspace64kshift(windowi),4096,2
+dupptr dataforsyscalldata1,syscallptval(2)+wmemspc64kshift(windowi),4096,2
 }else{
 dupptr dataforsyscalldata1,syscallptval(2),4096,2
 }
@@ -53767,12 +53767,12 @@ statue=stat
 swbreak
 case 5//gputchr
 if syscallptval(3)<65536{
-dupptr dataforsyscalldata3,syscallptval(3)+winmemoryspace64kshift(windowi),4096,2
+dupptr dataforsyscalldata3,syscallptval(3)+wmemspc64kshift(windowi),4096,2
 }else{
 dupptr dataforsyscalldata3,syscallptval(3),4096,2
 }
 if syscallptval(6)<65536{
-dupptr dataforsyscalldata6,syscallptval(6)+winmemoryspace64kshift(windowi),8,3
+dupptr dataforsyscalldata6,syscallptval(6)+wmemspc64kshift(windowi),8,3
 }else{
 dupptr dataforsyscalldata6,syscallptval(6),8,3
 }
@@ -54534,7 +54534,7 @@ lpoke cpmsyscallstack(windowi,4),0,delimiterfortxt
 
 swbreak
 case 8//setv8bitaddrspace
-winmemoryspace64kshift(windowi)=lpeek(syscallptval(1),0)
+wmemspc64kshift(windowi)=lpeek(syscallptval(1),0)
 mem16bitshiftaddr lpeek(syscallptval(1),0)
 lpoke sm,5+4*22,lpeek(syscallptval(1),0)
 statue=0
@@ -54548,7 +54548,7 @@ statue=windowi
 swbreak
 case 11//appexecowncons
 if syscallptval(1)<65536{
-dupptr dataforsyscalldata0,syscallptval(1)+winmemoryspace64kshift(windowi),4096,2
+dupptr dataforsyscalldata0,syscallptval(1)+wmemspc64kshift(windowi),4096,2
 }else{
 dupptr dataforsyscalldata0,syscallptval(1),4096,2
 }
@@ -54557,7 +54557,7 @@ statue=stat
 swbreak
 case 12//appargset
 if syscallptval(1)<65536{
-dupptr dataforsyscalldata0,syscallptval(1)+winmemoryspace64kshift(windowi),4096,2
+dupptr dataforsyscalldata0,syscallptval(1)+wmemspc64kshift(windowi),4096,2
 }else{
 dupptr dataforsyscalldata0,syscallptval(1),4096,2
 }
@@ -54566,7 +54566,7 @@ statue=0
 swbreak
 case 13//winmessagetrapset
 if syscallptval(2)<65536{
-lpoke winmessageptr(syscallptval(1)&0xFFFF,windowi),0,syscallptval(2)+winmemoryspace64kshift(windowi)
+lpoke winmessageptr(syscallptval(1)&0xFFFF,windowi),0,syscallptval(2)+wmemspc64kshift(windowi)
 }else{
 lpoke winmessageptr(syscallptval(1)&0xFFFF,windowi),0,syscallptval(2)
 }
@@ -54581,7 +54581,7 @@ case 15//setobj
 switch syscallptval(1)
 case 0
 if syscallptval(4)<65536{
-dupptr chkchecked,syscallptval(4)+winmemoryspace64kshift(windowi),4,4
+dupptr chkchecked,syscallptval(4)+wmemspc64kshift(windowi),4,4
 }else{
 dupptr chkchecked,syscallptval(4),4,4
 }
@@ -54592,7 +54592,7 @@ gputchr windowxy(windowi,0)+syscallptval(2),windowxy(windowi,1)+8+syscallptval(3
 swbreak
 case 1
 if syscallptval(4)<65536{
-dupptr chkchecked,syscallptval(4)+winmemoryspace64kshift(windowi),4,4
+dupptr chkchecked,syscallptval(4)+wmemspc64kshift(windowi),4,4
 }else{
 dupptr chkchecked,syscallptval(4),4,4
 }
@@ -54603,7 +54603,7 @@ gputchr windowxy(windowi,0)+syscallptval(2),windowxy(windowi,1)+8+syscallptval(3
 swbreak
 case 2
 if syscallptval(6)<65536{
-dupptr buttontxt,syscallptval(6)+winmemoryspace64kshift(windowi),256,2
+dupptr buttontxt,syscallptval(6)+wmemspc64kshift(windowi),256,2
 }else{
 dupptr buttontxt,syscallptval(6),256,2
 }
@@ -54659,12 +54659,12 @@ if mx>=windowxy(windowi,0)+syscallptval(2) and my>=windowxy(windowi,1)+8+syscall
 swbreak
 case 6
 if syscallptval(6)<65536{
-dupptr buttontxt,syscallptval(6)+winmemoryspace64kshift(windowi),256,2
+dupptr buttontxt,syscallptval(6)+wmemspc64kshift(windowi),256,2
 }else{
 dupptr buttontxt,syscallptval(6),256,2
 }
 if syscallptval(7)<65536{
-dupptr systexboxiesenable,syscallptval(7)+winmemoryspace64kshift(windowi),4,4
+dupptr systexboxiesenable,syscallptval(7)+wmemspc64kshift(windowi),4,4
 }else{
 dupptr systexboxiesenable,syscallptval(7),4,4
 }
@@ -54695,7 +54695,7 @@ statue=0
 swbreak
 case 16//appexecsamecons
 if syscallptval(1)<65536{
-dupptr dataforsyscalldata0,syscallptval(1)+winmemoryspace64kshift(windowi),4096,2
+dupptr dataforsyscalldata0,syscallptval(1)+wmemspc64kshift(windowi),4096,2
 }else{
 dupptr dataforsyscalldata0,syscallptval(1),4096,2
 }
@@ -54704,7 +54704,7 @@ statue=stat
 swbreak
 case 17//appexecexcrav
 if syscallptval(1)<65536{
-dupptr dataforsyscalldata0,syscallptval(1)+winmemoryspace64kshift(windowi),4096,2
+dupptr dataforsyscalldata0,syscallptval(1)+wmemspc64kshift(windowi),4096,2
 }else{
 dupptr dataforsyscalldata0,syscallptval(1),4096,2
 }
@@ -54721,7 +54721,7 @@ statue=0
 swbreak
 case 20//rendconsfont
 if syscallptval(1)<65536{
-dupptr dataforsyscalldata0,syscallptval(1)+winmemoryspace64kshift(windowi),4096,2
+dupptr dataforsyscalldata0,syscallptval(1)+wmemspc64kshift(windowi),4096,2
 }else{
 dupptr dataforsyscalldata0,syscallptval(1),4096,2
 }
@@ -54730,7 +54730,7 @@ statue=0
 swbreak
 case 21//getconsfont
 if syscallptval(1)<65536{
-dupptr dataforsyscalldata0,syscallptval(1)+winmemoryspace64kshift(windowi),4096,2
+dupptr dataforsyscalldata0,syscallptval(1)+wmemspc64kshift(windowi),4096,2
 }else{
 dupptr dataforsyscalldata0,syscallptval(1),4096,2
 }
@@ -54740,7 +54740,7 @@ statue=0
 swbreak
 case 22//setconfont
 if syscallptval(1)<65536{
-dupptr dataforsyscalldata0,syscallptval(1)+winmemoryspace64kshift(windowi),4096,2
+dupptr dataforsyscalldata0,syscallptval(1)+wmemspc64kshift(windowi),4096,2
 }else{
 dupptr dataforsyscalldata0,syscallptval(1),4096,2
 }
@@ -54749,7 +54749,7 @@ statue=0
 swbreak
 case 23//getprocimgnameex
 if syscallptval(1)<65536{
-dupptr dataforsyscalldata0,syscallptval(1)+winmemoryspace64kshift(windowi),4096,2
+dupptr dataforsyscalldata0,syscallptval(1)+wmemspc64kshift(windowi),4096,2
 }else{
 dupptr dataforsyscalldata0,syscallptval(1),4096,2
 }
@@ -54759,7 +54759,7 @@ statue=0
 swbreak
 case 24//getprocimgname
 if syscallptval(1)<65536{
-dupptr dataforsyscalldata0,syscallptval(1)+winmemoryspace64kshift(windowi),4096,2
+dupptr dataforsyscalldata0,syscallptval(1)+wmemspc64kshift(windowi),4096,2
 }else{
 dupptr dataforsyscalldata0,syscallptval(1),4096,2
 }
@@ -54779,7 +54779,7 @@ statue=consoleidforproc(syscallptval(1))
 swbreak
 case 28//apploadsamecons
 if syscallptval(1)<65536{
-dupptr dataforsyscalldata0,syscallptval(1)+winmemoryspace64kshift(windowi),4096,2
+dupptr dataforsyscalldata0,syscallptval(1)+wmemspc64kshift(windowi),4096,2
 }else{
 dupptr dataforsyscalldata0,syscallptval(1),4096,2
 }
@@ -54861,7 +54861,7 @@ statue=0
 swbreak
 case 45//execownprocessexc
 if syscallptval(1)<65536{
-dupptr dataforsyscalldata0,syscallptval(1)+winmemoryspace64kshift(windowi),4096,2
+dupptr dataforsyscalldata0,syscallptval(1)+wmemspc64kshift(windowi),4096,2
 }else{
 dupptr dataforsyscalldata0,syscallptval(1),4096,2
 }
@@ -54912,7 +54912,7 @@ statue=windowenableedforpid
 swbreak
 case 58//dynamicalpl
 if syscallptval(1)<65536{
-dupptr dataforsyscalldata0,syscallptval(1)+winmemoryspace64kshift(windowi),4096,2
+dupptr dataforsyscalldata0,syscallptval(1)+wmemspc64kshift(windowi),4096,2
 }else{
 dupptr dataforsyscalldata0,syscallptval(1),4096,2
 }
@@ -54920,7 +54920,7 @@ statue=_faddproc(dataforsyscalldata0)
 swbreak
 case 59//loadlib
 if syscallptval(1)<65536{
-dupptr dataforsyscalldata0,syscallptval(1)+winmemoryspace64kshift(windowi),4096,2
+dupptr dataforsyscalldata0,syscallptval(1)+wmemspc64kshift(windowi),4096,2
 }else{
 dupptr dataforsyscalldata0,syscallptval(1),4096,2
 }
@@ -54949,7 +54949,7 @@ if driverreg=0{loadedlibraryi(windowi)=loadedlibraryi(windowi)+1}else{lpoke load
 swbreak
 case 60//libcall
 if syscallptval(1)<65536{
-dupptr dataforsyscalldata0,syscallptval(1)+winmemoryspace64kshift(windowi),4096,2
+dupptr dataforsyscalldata0,syscallptval(1)+wmemspc64kshift(windowi),4096,2
 }else{
 dupptr dataforsyscalldata0,syscallptval(1),4096,2
 }
@@ -55325,30 +55325,30 @@ case 75//grpfunc
 	swbreak
 	case 14//gputchr
 	if syscallptval(3)<65536{
-	dupptr dataforsyscalldata3,syscallptval(4)+winmemoryspace64kshift(windowi),4096,2
+	dupptr dataforsyscalldata3,syscallptval(4)+wmemspc64kshift(windowi),4096,2
 	}else{
 	dupptr dataforsyscalldata3,syscallptval(4),4096,2
 	}
 	if syscallptval(6)<65536{
-	dupptr dataforsyscalldata6,syscallptval(7)+winmemoryspace64kshift(windowi),8,3
+	dupptr dataforsyscalldata6,syscallptval(7)+wmemspc64kshift(windowi),8,3
 	}else{
 	dupptr dataforsyscalldata6,syscallptval(7),8,3
 	}
-	if ginfo(3)=1{gputchr windowxy(windowi,0)+syscallptval(2), windowxy(windowi,0)+syscallptval(3),dataforsyscalldata3,syscallptval(5),syscallptval(6),dataforsyscalldata6}else{gputchr syscallptval(2), syscallptval(3),dataforsyscalldata3,syscallptval(5),syscallptval(6),dataforsyscalldata6}
+	if ginfo(3)=1{gputchr windowxy(windowi,0)+syscallptval(2), windowxy(windowi,1)+syscallptval(3),dataforsyscalldata3,syscallptval(5),syscallptval(6),dataforsyscalldata6}else{gputchr syscallptval(2), syscallptval(3),dataforsyscalldata3,syscallptval(5),syscallptval(6),dataforsyscalldata6}
 	statue=stat
 	swbreak
 	case 15//gputchr_int
 	if syscallptval(3)<65536{
-	dupptr dataforsyscalldata3,syscallptval(4)+winmemoryspace64kshift(windowi),4096,2
+	dupptr dataforsyscalldata3,syscallptval(4)+wmemspc64kshift(windowi),4096,2
 	}else{
 	dupptr dataforsyscalldata3,syscallptval(4),4096,2
 	}
 	/*if syscallptval(6)<65536{
-	dupptr dataforsyscalldata6,syscallptval(7)+winmemoryspace64kshift(windowi),8,3
+	dupptr dataforsyscalldata6,syscallptval(7)+wmemspc64kshift(windowi),8,3
 	}else{
 	dupptr dataforsyscalldata6,syscallptval(7),8,3
 	}*/
-	if ginfo(3)=1{gputchr windowxy(windowi,0)+syscallptval(2), windowxy(windowi,0)+syscallptval(3),dataforsyscalldata3,syscallptval(5),syscallptval(6),double(syscallptval(7))}else{gputchr syscallptval(2), syscallptval(3),dataforsyscalldata3,syscallptval(5),syscallptval(6),double(syscallptval(7))}
+	if ginfo(3)=1{gputchr windowxy(windowi,0)+syscallptval(2), windowxy(windowi,1)+syscallptval(3),dataforsyscalldata3,syscallptval(5),syscallptval(6),double(syscallptval(7))}else{gputchr syscallptval(2), syscallptval(3),dataforsyscalldata3,syscallptval(5),syscallptval(6),double(syscallptval(7))}
 	statue=stat
 	swbreak
 	swend
