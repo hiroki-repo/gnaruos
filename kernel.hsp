@@ -55352,7 +55352,7 @@ case 75//grpfunc
 	statue=stat
 	swbreak
 	case 16
-	statue=windowtaskenable
+	statue=lpeek(windowtaskenable,0):if statue=0{lpoke windowtaskenable,0,1}
 	swbreak
 	swend
 swbreak
