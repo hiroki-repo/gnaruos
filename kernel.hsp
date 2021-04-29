@@ -53433,7 +53433,7 @@ appload "init.otw"
 //appload "test.otw"
 wallpaperset "wallpaper.jpg"
 if hspstat&16{}else{
-bgscr 0,ginfo(20),ginfo(21),0,0,0:chgdisp 0,ginfo(20),ginfo(21)
+bgscr 0,ginfo(20),ginfo(21),0,0,0:chgdisp 0,ginfo(20),ginfo(21):gsel 0,0
 //onclick gosub *clicked
 oncmd gosub *clicked, 0x0201
 oncmd gosub *clickup, 0x0202
@@ -55439,7 +55439,10 @@ case 76//getwinpos
 swbreak
 case 77//mksock
 hlistener=socket( AF_INET, SOCK_STREAM, syscallptval(1) )
+if hspstat&16{}else{gselbackup=ginfo(3):gsel 0,0
 WSAAsyncSelect hlistener, hwnd, SOCK_NOTIFY_MESSAGE, -1
+gsel gselbackup,0
+}
     wpoke sockaddr(0,windowi,windowlabelstackexcid(windowi)), 0, AF_INET
     wpoke sockaddr(0,windowi,windowlabelstackexcid(windowi)), 2, htons(syscallptval(2))
     lpoke sockaddr(0,windowi,windowlabelstackexcid(windowi)), 4, syscallptval(3)|(syscallptval(4)<<16)
