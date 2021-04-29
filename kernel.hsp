@@ -51916,6 +51916,7 @@ dim fileobjdata2,windowmaxiumpx,fdescriptermax
 ldim windowendhandler,windowmaxiumpx
 ldim cpmdrivercallbkptr,30
 dim windowminimlized,windowmaxiumpx
+dim sockaddr, 4, windowmaxiumpx, 10
 	oncmd gosub *keydown, $100
 	oncmd gosub *keyup, $101
 sdim consstock,4096,windowmaxiumpx
@@ -53423,6 +53424,7 @@ dim syscallptval,1024
 dim consoleidforproc,windowmaxiumpx
 dim windowconsstrxy,windowmaxiumpx,3
 sdim messageforconsoleapp,2048,windowmaxiumpx+1
+dim windowsocketmes,windowmaxiumpx
 repeat windowmaxiumpx:cpmsyscallstack(cnt,3)=0x80:loop
 repeat windowmaxiumpx:cpmsyscallstack(cnt,4)=0x24:loop
 repeat windowmaxiumpx:consoleidforproc(cnt)=cnt+1:loop
@@ -53440,6 +53442,39 @@ oncmd gosub *clickup2, 0x0208
 oncmd gosub *clicked3, 0x0204
 oncmd gosub *clickup3, 0x0205
 }
+#define SOCK_NOTIFY_MESSAGE     0x1000
+#uselib "ws2_32.dll"
+#func WSAStartup "WSAStartup" int,int
+#func WSACleanup "WSACleanup"
+#cfunc htons "htons" int
+#cfunc socket "socket" int,int,int
+#func WSAAsyncSelect "WSAAsyncSelect" int,int,int,int
+#func connect "connect" int,int,int
+#func bind "bind" int,int,int
+#func listen "listen" int,int
+#func closesocket "closesocket" int
+#func send "send" int,int,int,int
+#cfunc recv "recv" int,int,int,int
+#func shutdown "shutdown" int,int
+#cfunc inet_addr "inet_addr" sptr
+#cfunc WSAGetLastError "WSAGetLastError"
+
+#define AF_INET         $00000002
+#define SOCK_STREAM     $00000001
+#define IPPROTO_TCP     $00000006
+#define INVALID_SOCKET  $FFFFFFFF
+#define FD_READ         $00000001
+#define FD_CONNECT      $00000010
+#define SD_BOTH         $00000002
+#define WSAEWOULDBLOCK  $00002733
+#define FD_ACCEPT       $00000008
+#define ADDR_ANY        $00000000
+
+    winsockver = 0x0002
+    dim wsadata, 100
+    WSAStartup winsockver, varptr(wsadata)
+    oncmd gosub *on_sock_notify, SOCK_NOTIFY_MESSAGE
+
 repeat:if hspstat&16{}else{mx=(mousex*256)/ginfo(26):my=(mousey*192)/ginfo(27):gsel 11:wallpaperx=ginfo(12):wallpapery=ginfo(13)
 redraw 0
 gsel 1
@@ -53573,26 +53608,32 @@ return
 
 *clicked
 mclick|=1
+if lpeek(winmessageptr(0x201&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,1:lpoke syscallptval(4),0,0:gosub winmessageptr(0x201&0xFFFF,windowenableedforpid)}
 return
 
 *clickup
 mclick&=0xFFFFFFFE
+if lpeek(winmessageptr(0x202&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,0:lpoke syscallptval(4),0,0:gosub winmessageptr(0x202&0xFFFF,windowenableedforpid)}
 return
 
 *clicked2
 mclick|=2
+if lpeek(winmessageptr(0x207&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,1:lpoke syscallptval(4),0,0:gosub winmessageptr(0x207&0xFFFF,windowenableedforpid)}
 return
 
 *clickup2
 mclick&=0xFFFFFFFD
+if lpeek(winmessageptr(0x208&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,0:lpoke syscallptval(4),0,0:gosub winmessageptr(0x208&0xFFFF,windowenableedforpid)}
 return
 
 *clicked3
 mclick|=4
+if lpeek(winmessageptr(0x204&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,1:lpoke syscallptval(4),0,0:gosub winmessageptr(0x204&0xFFFF,windowenableedforpid)}
 return
 
 *clickup3
 mclick&=0xFFFFFFFB
+if lpeek(winmessageptr(0x205&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,0:lpoke syscallptval(4),0,0:gosub winmessageptr(0x205&0xFFFF,windowenableedforpid)}
 return
 
 *windowrendon
@@ -53686,6 +53727,7 @@ return
 
 *keydown
 inkey=wparam
+if lpeek(winmessageptr(0x100&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,inkey:lpoke syscallptval(4),0,0:gosub winmessageptr(0x100&0xFFFF,windowenableedforpid)}
 if inkey=16{shiftselected=1:inkey=0}
 if inkey=17{wparam2gkflg=1:inkey=0}
 if wparam2gkflg=1{if inkey>='A' and inkey<='Z'{wparam2gkflg=0}:poke inkey,0,inkey-64}
@@ -53723,8 +53765,16 @@ return
 *keyup
 inkey=0
 wparamx=wparam
+if lpeek(winmessageptr(0x101&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,wparamx:lpoke syscallptval(4),0,0:gosub winmessageptr(0x101&0xFFFF,windowenableedforpid)}
 if wparamx=16{shiftselected=0}
 if wparamx=17{wparam2gkflg=0}
+return
+
+*on_sock_notify
+wparam2=wparam:lparam2=lparam
+repeat windowmaxiumpx
+if windowsocketmes(cnt)=wparam2{sockidforwindowi=cnt:if lpeek(winmessageptr(0x1000&0xFFFF,windowi),0)!0{lpoke syscallptval(3),0,wparam2:lpoke syscallptval(4),0,lparam2:gosub winmessageptr(0x1000&0xFFFF,windowi)}:break}
+loop
 return
 
 *syscalldispatch
@@ -54607,7 +54657,7 @@ dupptr buttontxt,syscallptval(6)+wmemspc64kshift(windowi),256,2
 }else{
 dupptr buttontxt,syscallptval(6),256,2
 }
-ldim btnjmpaddr,1:lpoke btnjmpaddr,0,syscallptval(7)
+ldim btnjmpaddr,1:if syscallptval(7)<65536{lpoke btnjmpaddr,0,syscallptval(7)+wmemspc64kshift(windowi)}else{lpoke btnjmpaddr,0,syscallptval(7)}
 colorbak_r=ginfo_r
 colorbak_g=ginfo_g
 colorbak_b=ginfo_b
@@ -54687,6 +54737,34 @@ gputchr windowxy(windowi,0)+syscallptval(2)+(i*6)+buttontextstart,windowxy(windo
 next
 if windowenableedforpid=windowi and dragging=0{
 if mx>=windowxy(windowi,0)+syscallptval(2) and my>=windowxy(windowi,1)+8+syscallptval(3) and mx<=windowxy(windowi,0)+syscallptval(4) and my<=windowxy(windowi,1)+8+syscallptval(5) and mclick&1{gosub btnjmpaddr:mclick&=0xFFFFFFFE}
+}
+swbreak
+case 7
+if syscallptval(6)<65536{
+dupptr buttontxt,syscallptval(6)+wmemspc64kshift(windowi),256,2
+}else{
+dupptr buttontxt,syscallptval(6),256,2
+}
+if syscallptval(7)<65536{
+dupptr btnclkedlb,syscallptval(7)+wmemspc64kshift(windowi),4,4
+}else{
+dupptr btnclkedlb,syscallptval(7),4,4
+}
+//ldim btnjmpaddr,1:if syscallptval(7)<65536{lpoke btnjmpaddr,0,syscallptval(7)+wmemspc64kshift(windowi)}else{lpoke btnjmpaddr,0,syscallptval(7)}
+colorbak_r=ginfo_r
+colorbak_g=ginfo_g
+colorbak_b=ginfo_b
+if windowenableedforpid=windowi and dragging=0{
+if mx>=windowxy(windowi,0)+syscallptval(2) and my>=windowxy(windowi,1)+8+syscallptval(3) and mx<=windowxy(windowi,0)+syscallptval(4) and my<=windowxy(windowi,1)+8+syscallptval(5) and mclick&1{color 90,90,90}else{color 150,150,150}
+}else{color 150,150,150}
+boxf windowxy(windowi,0)+syscallptval(2),windowxy(windowi,1)+8+syscallptval(3),windowxy(windowi,0)+syscallptval(4),windowxy(windowi,1)+8+syscallptval(5)
+color colorbak_r,colorbak_g,colorbak_b
+if syscallptval(8)=1{buttontextstart=((syscallptval(4)-syscallptval(2))/2)-((strlen(buttontxt)*6)/2)}else{buttontextstart=0}
+for i,0,strlen(buttontxt),1
+gputchr windowxy(windowi,0)+syscallptval(2)+(i*6)+buttontextstart,windowxy(windowi,1)+8+syscallptval(3),"BGF1",peek(buttontxt,i),1,1
+next
+if windowenableedforpid=windowi and dragging=0{
+if mx>=windowxy(windowi,0)+syscallptval(2) and my>=windowxy(windowi,1)+8+syscallptval(3) and mx<=windowxy(windowi,0)+syscallptval(4) and my<=windowxy(windowi,1)+8+syscallptval(5) and mclick&1{lpoke btnclkedlb,0,1:mclick&=0xFFFFFFFE}
 }
 swbreak
 swend
@@ -55356,6 +55434,57 @@ case 75//grpfunc
 	swbreak
 	swend
 swbreak
+case 76//getwinpos
+	statue=lpeek(windowxy(syscallptval(1),syscallptval(2)),0)
+swbreak
+case 77//mksock
+hlistener=socket( AF_INET, SOCK_STREAM, syscallptval(1) )
+WSAAsyncSelect hlistener, hwnd, SOCK_NOTIFY_MESSAGE, -1
+    wpoke sockaddr(0,windowi,windowlabelstackexcid(windowi)), 0, AF_INET
+    wpoke sockaddr(0,windowi,windowlabelstackexcid(windowi)), 2, htons(syscallptval(2))
+    lpoke sockaddr(0,windowi,windowlabelstackexcid(windowi)), 4, syscallptval(3)|(syscallptval(4)<<16)
+statue=lpeek(hlistener,0)
+windowsocketmes(windowi)=lpeek(statue,0)
+swbreak
+case 78//sockset
+	hlistener=syscallptval(1)
+    bind hlistener, varptr(sockaddr(0,windowi,windowlabelstackexcid(windowi))), 16
+    statue=stat
+    listen hlistener, syscallptval(2)
+swbreak
+case 79//sockget
+	hlistener=syscallptval(1)
+    connect hlistener, varptr(sockaddr(0,windowi,windowlabelstackexcid(windowi))), 16
+    statue=stat
+swbreak
+case 80//sockclose
+closesocket syscallptval(1)
+swbreak
+case 81//sockshutdown
+shutdown syscallptval(1), SD_BOTH
+swbreak
+case 82//socksend
+if syscallptval(2)<65536{
+send syscallptval(1), syscallptval(2)+wmemspc64kshift(windowi), syscallptval(3), syscallptval(4)
+statue=stat
+}else{
+send syscallptval(1), syscallptval(2), syscallptval(3), syscallptval(4)
+statue=stat
+}
+swbreak
+case 83//sockrecv
+if syscallptval(2)<65536{
+statue=recv(syscallptval(1), syscallptval(2)+wmemspc64kshift(windowi), syscallptval(3), syscallptval(4))
+}else{
+statue=recv(syscallptval(1), syscallptval(2), syscallptval(3), syscallptval(4))
+}
+swbreak
+case 84//getsockerr
+statue=WSAGetLastError()
+swbreak
+case 85//sockaccept
+statue=accept( syscallptval(1), syscallptval(2), syscallptval(3) )
+swbreak
 swend
 lpoke cpmsyscallstack(windowi,5),0,drive
 return statue
@@ -55444,6 +55573,7 @@ RemoveFontMemResourceEx hFont
 lpoke sm2,40960-4097-8,lpeek(sm2,40960-4097-8)-calllabix
 CloseHandle hMap
 CloseHandle hMap2
+WSACleanup
 end
 
 *bdos
