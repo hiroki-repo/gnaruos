@@ -55492,6 +55492,18 @@ case 86//setwinpos
 windowxy(syscallptval(1),syscallptval(2))=lpeek(syscallptval(3),0)
 statue=0
 swbreak
+case 87//mksockex
+hlistener=socket( syscallptval(5), syscallptval(6), syscallptval(1) )
+if hspstat&16{}else{gselbackup=ginfo(3):gsel 0,0
+WSAAsyncSelect hlistener, hwnd, SOCK_NOTIFY_MESSAGE, -1
+gsel gselbackup,0
+}
+    wpoke sockaddr(0,windowi,windowlabelstackexcid(windowi)), 0, syscallptval(5)
+    wpoke sockaddr(0,windowi,windowlabelstackexcid(windowi)), 2, htons(syscallptval(2))
+    lpoke sockaddr(0,windowi,windowlabelstackexcid(windowi)), 4, syscallptval(3)|(syscallptval(4)<<16)
+statue=lpeek(hlistener,0)
+windowsocketmes(windowi)=lpeek(statue,0)
+swbreak
 swend
 lpoke cpmsyscallstack(windowi,5),0,drive
 return statue
