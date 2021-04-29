@@ -55504,6 +55504,33 @@ gsel gselbackup,0
 statue=lpeek(hlistener,0)
 windowsocketmes(windowi)=lpeek(statue,0)
 swbreak
+case 88//getch
+istyped=0
+/*onkey gosub *hlekeyget
+repeat
+if cpmsyscallstack(windowi,1)=0{}else{break}
+await:loop
+onkey 0*/
+hlekeygetenabled=1
+//if cpmsyscallstack(windowi,1)=0{}else{wparam2=0}
+kbhtcbak=0
+inputivetask(windowi)=1
+//repeat
+//kbhtcbak=_kbhitc()
+wparam2=0
+wparam2=_getchc()
+gosub *ctrlseax
+wparam2str=""
+statue=wparam2
+lpoke wparam2str,0,wparam2
+//mesc wparam2str,1
+//if cpmsyscallstack(windowi,1)=0{}else{break}
+//loop
+wparam2=0
+if cpmsyscallstack(windowi,1)=0{hlekeygetenabled=0}else{istyped=1}
+hlekeygetenabled=0
+inputivetask(windowi)=0
+swbreak
 swend
 lpoke cpmsyscallstack(windowi,5),0,drive
 return statue
