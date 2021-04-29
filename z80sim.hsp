@@ -63,7 +63,7 @@ case 3
 	swbreak
 	case 1
 		//repeat:if (){break}:await:loop
-		return syscall(7,1)//if syscall(7,11){stopvm@=0:return _getch()}else{stopvm@=1:stopvmaddr@=address@}
+		return syscall(88)//if syscall(7,11){stopvm@=0:return _getch()}else{stopvm@=1:stopvmaddr@=address@}
 	swbreak
 	case 14
 		return 0x00
@@ -91,6 +91,6 @@ poke memory,0x0007,0x3c+0xb0*/
 address=0
 z80hltendset 0,2
 *mainlp
-repeat 4200:if z80getwhatishalt(0)=1{break}:z80run address,0:loop
+repeat 4200:if z80getwhatishalt(0)=1{ret=syscall(7,0):break}:z80run address,0:loop
 return
 end
