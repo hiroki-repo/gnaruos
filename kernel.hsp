@@ -55488,6 +55488,10 @@ swbreak
 case 85//sockaccept
 statue=accept( syscallptval(1), syscallptval(2), syscallptval(3) )
 swbreak
+case 86//setwinpos
+windowxy(syscallptval(1),syscallptval(2))=lpeek(syscallptval(3),0)
+statue=0
+swbreak
 swend
 lpoke cpmsyscallstack(windowi,5),0,drive
 return statue
