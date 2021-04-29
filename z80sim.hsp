@@ -89,7 +89,8 @@ poke memory,0x0005,0xc3
 poke memory,0x0006,0x06
 poke memory,0x0007,0x3c+0xb0*/
 address=0
+z80hltendset 0,2
 *mainlp
-repeat 4200:if stopvm=0{z80run address,0}:loop
+repeat 4200:if z80getwhatishalt(0)=1{break}:z80run address,0:loop
 return
 end
