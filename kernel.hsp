@@ -55569,6 +55569,58 @@ case 91//mouseclk
 	swbreak
 	swend
 swbreak
+case 92//inputkey
+	switch syscallptval(1)
+	case 0
+	inkey=syscallptval(2)
+	if lpeek(winmessageptr(0x100&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,inkey:lpoke syscallptval(4),0,0:gosub winmessageptr(0x100&0xFFFF,windowenableedforpid)}
+	if inkey=16{shiftselected=1:inkey=0}
+	if inkey=17{wparam2gkflg=1:inkey=0}
+	if wparam2gkflg=1{if inkey>='A' and inkey<='Z'{wparam2gkflg=0}:poke inkey,0,inkey-64}
+			if shiftselected=0{
+			if inkey>=65 and inkey<=90{inkey=inkey+32}
+			if inkey=191{poke inkey,0,"/"}
+			if inkey=189{poke inkey,0,"-"}
+			if inkey=190{poke inkey,0,"."}
+			if inkey=186{poke inkey,0,":"}
+			if inkey=187{poke inkey,0,";"}
+			if inkey=188{poke inkey,0,","}
+			if inkey=220{poke inkey,0,"\\"}
+			if inkey=222{poke inkey,0,"^"}
+			if inkey=192{poke inkey,0,"@"}
+			if inkey=219{poke inkey,0,"["}
+			if inkey=221{poke inkey,0,"]"}
+			if inkey=226{poke inkey,0,"\\"}
+				}
+			if shiftselected=1{
+			if inkey>=48 and inkey<=57{inkey=inkey-16}
+			if inkey=191{poke inkey,0,"?"}
+			if inkey=189{poke inkey,0,"="}
+			if inkey=190{poke inkey,0,">"}
+			if inkey=186{poke inkey,0,"*"}
+			if inkey=187{poke inkey,0,"+"}
+			if inkey=188{poke inkey,0,"<"}
+			if inkey=220{poke inkey,0,"|"}
+			if inkey=222{poke inkey,0,"~"}
+			if inkey=192{poke inkey,0,"`"}
+			if inkey=219{poke inkey,0,"{"}
+			if inkey=221{poke inkey,0,"}"}
+			if inkey=226{poke inkey,0,"_"}
+			}
+	swbreak
+	case 1
+	inkey=0
+	wparamx=syscallptval(2)
+	if lpeek(winmessageptr(0x101&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,wparamx:lpoke syscallptval(4),0,0:gosub winmessageptr(0x101&0xFFFF,windowenableedforpid)}
+	if wparamx=16{shiftselected=0}
+	if wparamx=17{wparam2gkflg=0}
+	swbreak
+	case 2
+	inkey=syscallptval(2)
+	if lpeek(winmessageptr(0x100&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,inkey:lpoke syscallptval(4),0,0:gosub winmessageptr(0x100&0xFFFF,windowenableedforpid)}
+	swbreak
+	swend
+swbreak
 swend
 lpoke cpmsyscallstack(windowi,5),0,drive
 return statue
