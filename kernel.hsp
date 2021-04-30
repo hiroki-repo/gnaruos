@@ -53416,7 +53416,7 @@ repeat fsmaxium@:noteget fslistsliced,cnt:if prm_0=fslistsliced{____strsize@=fsf
 noteunsel
 }
 }else{
-delete@hsp prm_0x,prm_1,prm_2,prm_3
+delete@hsp prm_0x
 }
 #global
 
