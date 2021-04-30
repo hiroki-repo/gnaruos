@@ -4,7 +4,7 @@ comexec=0
 windowx=pid*8
 windowy=pid*8
 windowmaxx=128
-windowmaxy=192-11
+windowmaxy=192-15
 dupptr iconno,sysvalptr@stdcallinterface(20),4,4
 iconno=1
 /*cmdlineopx="ccp.com"
