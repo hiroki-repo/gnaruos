@@ -55402,7 +55402,7 @@ case 75//grpfunc
 	if ginfo(3)=1{pos windowxy(windowi,0)+syscallptval(2),windowxy(windowi,1)+syscallptval(3)}else{pos syscallptval(2),syscallptval(3)}
 	swbreak
 	case 14//gputchr
-	if syscallptval(3)<65536{
+	if syscallptval(4)<65536{
 	dupptr dataforsyscalldata3,syscallptval(4)+wmemspc64kshift(windowi),4096,2
 	}else{
 	dupptr dataforsyscalldata3,syscallptval(4),4096,2
@@ -55416,7 +55416,7 @@ case 75//grpfunc
 	statue=stat
 	swbreak
 	case 15//gputchr_int
-	if syscallptval(3)<65536{
+	if syscallptval(4)<65536{
 	dupptr dataforsyscalldata3,syscallptval(4)+wmemspc64kshift(windowi),4096,2
 	}else{
 	dupptr dataforsyscalldata3,syscallptval(4),4096,2
@@ -55530,6 +55530,28 @@ wparam2=0
 if cpmsyscallstack(windowi,1)=0{hlekeygetenabled=0}else{istyped=1}
 hlekeygetenabled=0
 inputivetask(windowi)=0
+swbreak
+case 89//audioctrl
+	switch syscallptval(1)
+	case 0//audioload
+	if syscallptval(2)<65536{
+	dupptr dataforsyscalldata2,syscallptval(2)+wmemspc64kshift(windowi),4096,2
+	}else{
+	dupptr dataforsyscalldata2,syscallptval(2),4096,2
+	}
+	mmload dataforsyscalldata2,(windowi*16)+(syscallptval(4)&0xF),syscallptval(3):statue=0
+	swbreak
+	case 1//audioplay
+	mmplay (windowi*16)+(syscallptval(2)&0xF):statue=0
+	swbreak
+	case 2//audiostop
+	if wpeek(syscallptval(2),0)=0xFFFF{repeat 16:mmstop (windowi*16)+cnt:loop}else{
+	mmstop (windowi*16)+(syscallptval(2)&0xF)}:statue=0
+	swbreak
+	case 3//audiostat
+	mmstat statue,(windowi*16)+(syscallptval(2)&0xF),syscallptval(3)
+	swbreak
+	swend
 swbreak
 swend
 lpoke cpmsyscallstack(windowi,5),0,drive
