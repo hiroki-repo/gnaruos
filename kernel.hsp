@@ -53835,6 +53835,7 @@ statue=stat
 swbreak
 case 7//DRI CP/M compatible syscall
 
+dupptr var_29,wmemspc64kshift(windowi),65536,2
 cpmsyscallstack(windowi,0)=lpeek(syscallptval(1),0)
 cpmsyscallstack(windowi,1)=lpeek(syscallptval(2),0)
 cpmsyscallstack(windowi,2)=lpeek(syscallptval(3),0)
@@ -54476,7 +54477,7 @@ fcbcrx=fcbcrx-1
 gosub *hlefcbcrxex
 fcbcrx=fcbcrx+1
 //if strsize2>fcbcr*128{statue=0x00}else{
-if (strsize2-fcbcrx)<128{memset var_29,0x1a,128-(strsize2-fcbcrx*128),iofileaddrforcpm+(strsize2-fcbcrx)}
+//if (strsize2-fcbcrx)<128{memset var_29,0x1a,128-(strsize2-fcbcrx*128),iofileaddrforcpm+(strsize2-fcbcrx)}
 statue=0
 /*if strsize2>fcbcrx*128{statue=0}else{
 statue=1}*/}
