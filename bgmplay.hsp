@@ -9,6 +9,8 @@ windowmaxy=40
 windowisnotfirstrun=1
 bgmfname="":messages=""
 bgmid=0
+cmdclosurerptr=*bgm_quit
+ret=syscall(13,0x112,lpeek(cmdclosurerptr,0))
 notesel bgmlist
 bgmlistx="":dirlist bgmlistx,"*.mp3",1:bgmlist+=bgmlistx
 bgmlistx="":dirlist bgmlistx,"*.aac",1:bgmlist+=bgmlistx
@@ -46,4 +48,9 @@ return
 bgmid+=1
 if bgmid>=bgmmax{bgmid=0}
 noteget bgmfname,bgmid
+return
+
+*bgm_quit
+if playing=1{ret=syscall(89,2,0):playing=0}
+ret=syscall(7,0)
 return
