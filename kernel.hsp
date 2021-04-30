@@ -52466,7 +52466,7 @@ for i,0,strlen(conslines),1
 chrforcons=peek(conslines,i)
 //if chrforcons=0x0A or chrforcons=0x0D{yforconsole+=8}else{
 chrforconsforrend="":poke chrforconsforrend,0,chrforcons
-pos (i*6)+windowxy@(windowi@,0),8+windowxy@(windowi@,1)+(yforconsole*8)
+pos (i*6)+windowxy@(windowi@,0),9+windowxy@(windowi@,1)+(yforconsole*8)
 mesfromminifont chrforconsforrend,0//gputchr (i*6)+windowxy@(windowi@,0),8+windowxy@(windowi@,1)+(yforconsole*8),"BGF1",chrforcons,0,1
 //}
 if ((yforconsole*8)+8)>=windowxy@(windowi@,3){_break}
