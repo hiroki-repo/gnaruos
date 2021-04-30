@@ -55407,7 +55407,7 @@ case 75//grpfunc
 	}else{
 	dupptr dataforsyscalldata3,syscallptval(4),4096,2
 	}
-	if syscallptval(6)<65536{
+	if syscallptval(7)<65536{
 	dupptr dataforsyscalldata6,syscallptval(7)+wmemspc64kshift(windowi),8,3
 	}else{
 	dupptr dataforsyscalldata6,syscallptval(7),8,3
@@ -55421,7 +55421,7 @@ case 75//grpfunc
 	}else{
 	dupptr dataforsyscalldata3,syscallptval(4),4096,2
 	}
-	/*if syscallptval(6)<65536{
+	/*if syscallptval(7)<65536{
 	dupptr dataforsyscalldata6,syscallptval(7)+wmemspc64kshift(windowi),8,3
 	}else{
 	dupptr dataforsyscalldata6,syscallptval(7),8,3
