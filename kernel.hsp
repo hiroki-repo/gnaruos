@@ -53475,7 +53475,7 @@ oncmd gosub *clickup3, 0x0205
     WSAStartup winsockver, varptr(wsadata)
     oncmd gosub *on_sock_notify, SOCK_NOTIFY_MESSAGE
 
-repeat:if hspstat&16{}else{mx=(mousex*256)/ginfo(26):my=(mousey*192)/ginfo(27):gsel 11:wallpaperx=ginfo(12):wallpapery=ginfo(13)
+repeat:if hspstat&16{}else{if mousectrlforos=0{mx=(mousex*256)/ginfo(26):my=(mousey*192)/ginfo(27)}else{mx=mxctl:my=myctl:mousectrlforos=0}:gsel 11:wallpaperx=ginfo(12):wallpapery=ginfo(13)
 redraw 0
 gsel 1
 cls 3:gzoom 256,192,11,0,0,wallpaperx,wallpapery,0:if deskiconrendmst=1{gosub *deskiconrend}}:gosub *windowrend:if hspstat&16{}else{color 250,250,250:gmode 4,,,256:pos mx-6,my-2:gcopy 10,0,0,24,24
@@ -53576,7 +53576,7 @@ windowi=taskbarprocsid:gosub *windowrendon
 return
 
 *windowrend2
-if hspstat&16{}else{mx=(mousex*256)/ginfo(26):my=(mousey*192)/ginfo(27):gsel 11:wallpaperx=ginfo(12):wallpapery=ginfo(13)
+if hspstat&16{}else{if mousectrlforos=0{mx=(mousex*256)/ginfo(26):my=(mousey*192)/ginfo(27)}else{mx=mxctl:my=myctl:mousectrlforos=0}:gsel 11:wallpaperx=ginfo(12):wallpapery=ginfo(13)
 redraw 0
 gsel 1
 cls 3:gzoom 256,192,11,0,0,wallpaperx,wallpapery,0:if deskiconrendmst=1{gosub *deskiconrend}}
@@ -53608,32 +53608,32 @@ return
 
 *clicked
 mclick|=1
-if lpeek(winmessageptr(0x201&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,1:lpoke syscallptval(4),0,0:gosub winmessageptr(0x201&0xFFFF,windowenableedforpid)}
+if lpeek(winmessageptr(0x201&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,1:lpoke syscallptval(4),0,(mx&0xFFFF)|((my&0xFFFF)<<16):gosub winmessageptr(0x201&0xFFFF,windowenableedforpid)}
 return
 
 *clickup
 mclick&=0xFFFFFFFE
-if lpeek(winmessageptr(0x202&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,0:lpoke syscallptval(4),0,0:gosub winmessageptr(0x202&0xFFFF,windowenableedforpid)}
+if lpeek(winmessageptr(0x202&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,0:lpoke syscallptval(4),0,(mx&0xFFFF)|((my&0xFFFF)<<16):gosub winmessageptr(0x202&0xFFFF,windowenableedforpid)}
 return
 
 *clicked2
 mclick|=2
-if lpeek(winmessageptr(0x207&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,1:lpoke syscallptval(4),0,0:gosub winmessageptr(0x207&0xFFFF,windowenableedforpid)}
+if lpeek(winmessageptr(0x207&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,1:lpoke syscallptval(4),0,(mx&0xFFFF)|((my&0xFFFF)<<16):gosub winmessageptr(0x207&0xFFFF,windowenableedforpid)}
 return
 
 *clickup2
 mclick&=0xFFFFFFFD
-if lpeek(winmessageptr(0x208&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,0:lpoke syscallptval(4),0,0:gosub winmessageptr(0x208&0xFFFF,windowenableedforpid)}
+if lpeek(winmessageptr(0x208&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,0:lpoke syscallptval(4),0,(mx&0xFFFF)|((my&0xFFFF)<<16):gosub winmessageptr(0x208&0xFFFF,windowenableedforpid)}
 return
 
 *clicked3
 mclick|=4
-if lpeek(winmessageptr(0x204&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,1:lpoke syscallptval(4),0,0:gosub winmessageptr(0x204&0xFFFF,windowenableedforpid)}
+if lpeek(winmessageptr(0x204&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,1:lpoke syscallptval(4),0,(mx&0xFFFF)|((my&0xFFFF)<<16):gosub winmessageptr(0x204&0xFFFF,windowenableedforpid)}
 return
 
 *clickup3
 mclick&=0xFFFFFFFB
-if lpeek(winmessageptr(0x205&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,0:lpoke syscallptval(4),0,0:gosub winmessageptr(0x205&0xFFFF,windowenableedforpid)}
+if lpeek(winmessageptr(0x205&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,0:lpoke syscallptval(4),0,(mx&0xFFFF)|((my&0xFFFF)<<16):gosub winmessageptr(0x205&0xFFFF,windowenableedforpid)}
 return
 
 *windowrendon
@@ -55429,7 +55429,7 @@ case 75//grpfunc
 	if ginfo(3)=1{gputchr windowxy(windowi,0)+syscallptval(2), windowxy(windowi,1)+syscallptval(3),dataforsyscalldata3,syscallptval(5),syscallptval(6),double(syscallptval(7))}else{gputchr syscallptval(2), syscallptval(3),dataforsyscalldata3,syscallptval(5),syscallptval(6),double(syscallptval(7))}
 	statue=stat
 	swbreak
-	case 16
+	case 16//windowenableonce
 	statue=lpeek(windowtaskenable,0):if statue=0{lpoke windowtaskenable,0,1}
 	swbreak
 	swend
@@ -55550,6 +55550,22 @@ case 89//audioctrl
 	swbreak
 	case 3//audiostat
 	mmstat statue,(windowi*16)+(syscallptval(2)&0xF),syscallptval(3)
+	swbreak
+	swend
+swbreak
+case 90//movemouse
+mousectrlforos=1:mxctl=syscallptval(1):myctl=syscallptval(2)
+swbreak
+case 91//mouseclk
+	switch syscallptval(1)
+	case 0
+	if syscallptval(2)=0{gosub *clicked}else{gosub *clickup}
+	swbreak
+	case 1
+	if syscallptval(2)=0{gosub *clicked2}else{gosub *clickup2}
+	swbreak
+	case 2
+	if syscallptval(2)=0{gosub *clicked3}else{gosub *clickup3}
 	swbreak
 	swend
 swbreak
