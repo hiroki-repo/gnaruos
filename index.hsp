@@ -1,4 +1,5 @@
 #packopt hide 1
+#packopt name "bootmocksys"
 exist "KERNEL.SYS"
 if strsize!-1{
 run "KERNEL.SYS",dir_cmdline
