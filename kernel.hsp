@@ -52078,11 +52078,11 @@ cls 4:if palno=0{color 255,255,255}:if palno=1{color 1,1,1}
 poke chrformes,0,chrid
 pos 0,0
 //font "スマイルベーシック",12,1
-font "SMILEBASIC", 12
+font "SMILEBASIC", 10
 mes chrformes
 color nowrgbr,nowrgbg,nowrgbb
 gsel 7:cls 4:pos 0,0
-gzoom scale*12,scale*12,9,0,0,12,12,0
+gzoom scale*10,scale*10,9,0,0,10,10,0
 gsel 1
 gmode 2:pos x,y
 gcopy 7,0,0,scale*12,scale*12

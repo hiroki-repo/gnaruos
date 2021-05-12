@@ -11,9 +11,10 @@ inket="":inkeys=""
 }
 if pnotfirstrun=1{
 windowtaskenable=1
+	ret=syscall(4,pid,varptr("RUN"))
 color 255,255,255
 boxf windowx,windowy+8,windowx+windowmaxx,windowy+windowmaxy
-if inkey!inkeyold{if inkey=0x0D or inkey=0x0A {inkey=0:inkeyold=0:inketx="":inketx=inket+".otw":ret=syscall(45,varptr(inketx)):return:ret=syscall(7,0)}else{poke inkeys,0,inkey:inket+=inkeys}}:inkeyold=inkey
+if inkey!inkeyold{if inkey=0x0D or inkey=0x0A {inkey=0:inkeyold=0:inketx="":cmdline="":cmdline=inket:repeat:if strmid(cmdline,cnt,1)=" "{cmdline=strmid(cmdline,1,strlen(cmdline))}else{break}:loop:sdim cmdname,128,512:i=0:for cntx,0,strlen(cmdline),1:if peek(cmdline,cntx)=' '{i=i+1}else{cmdlinesliced="":poke cmdlinesliced,0,peek(cmdline,cntx):cmdname(i)=cmdname(i)+cmdlinesliced}:next:inketx=cmdname(0)+".otw":inketxopt="":inketxopt=strmid(cmdline,strlen(cmdname(0))+1,strlen(cmdline)):ret=syscall(12,varptr(inketxopt)):ret=syscall(45,varptr(inketx)):return:ret=syscall(7,0)}else{poke inkeys,0,inkey:inket+=inkeys}}:inkeyold=inkey
 sdim messages,64:messages=inket:repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8,varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop
 }
 pnotfirstrun=1
