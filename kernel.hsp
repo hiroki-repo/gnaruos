@@ -15,6 +15,14 @@
 #include "gdi32.as"
 #include "kernel32.as"
 #include "user32.as"
+ldim memorygo4z80,1
+#module canvisive
+#deffunc z80memaccess int prm_0,int prm_1,int prm_2
+dim paramx,3:paramx(0)=prm_0,prm_1,prm_2
+if lpeek(memorygo4z80@,0)!0{memfile paramx
+goto memorygo4z80@}else{return 0}
+#global
+#include "z80.as"
 onexit *onexits
 
 nowdir="":nowdir=dir_cur
@@ -51936,6 +51944,7 @@ programi=0:repeat 100:programi=programi+1:if lpeek(windowlabelval(programi-1),0)
 windowsuserid@(programi-1)=windowsuserid@(windowi@):windowuserid@(programi-1)=windowuserid@(windowi@):lpoke windowlabelval(programi-1),0,_faddproc(fname)
 if lpeek(windowlabelval(programi-1),0)!0{windowiconno@(programi-1,windowlabelstackexcid@(programi-1))=48}else{windowiconno@(programi-1,windowlabelstackexcid@(programi-1))=0}:windowiconhide@(programi-1)=1
 windowenableedforpid@=programi-1
+z80hltendset (programi-1),2
 return programi-1
 #deffunc apploadowncons str fname
 /*notesel program:noteload fname*/
@@ -51943,6 +51952,7 @@ programi=0:repeat 100:programi=programi+1:if lpeek(windowlabelval(programi-1),0)
 windowsuserid@(programi-1)=windowsuserid@(windowi@):windowuserid@(programi-1)=windowuserid@(windowi@):lpoke windowlabelval(programi-1),0,_faddproc(fname)
 if lpeek(windowlabelval(programi-1),0)!0{windowiconno@(programi-1,windowlabelstackexcid@(programi-1))=48}else{windowiconno@(programi-1,windowlabelstackexcid@(programi-1))=0}:windowiconhide@(programi-1)=1
 //windowenableedforpid@=programi-1
+z80hltendset (programi-1),2
 return programi-1
 #deffunc apploadsamecons str fname
 /*notesel program:noteload fname*/
@@ -51950,6 +51960,7 @@ programi=0:repeat 100:programi=programi+1:if lpeek(windowlabelval(programi-1),0)
 windowsuserid@(programi-1)=windowsuserid@(windowi@):windowuserid@(programi-1)=windowuserid@(windowi@):lpoke windowlabelval(programi-1),0,_faddproc(fname)
 if lpeek(windowlabelval(programi-1),0)!0{windowiconno@(programi-1,windowlabelstackexcid@(programi-1))=48}else{windowiconno@(programi-1,windowlabelstackexcid@(programi-1))=0}:windowiconhide@(programi-1)=1
 //windowenableedforpid@=programi-1
+z80hltendset (programi-1),2
 return programi-1
 #deffunc apploadexcproc str fname
 /*notesel program:noteload fname*/
@@ -51958,6 +51969,7 @@ loadedlibraryibak@(programi-1,windowlabelstackexcid@(programi-1))=loadedlibraryi
 windowisnotfirstrun@=0
 if lpeek(windowlabelval(programi-1),0)!0{windowiconno@(programi-1,windowlabelstackexcid@(programi-1))=48}else{windowiconno@(programi-1,windowlabelstackexcid@(programi-1))=0}:windowiconhide@(programi-1)=1
 //windowenableedforpid@=programi-1
+z80hltendset (programi-1),2
 return programi-1
 #deffunc apploadexcproc2 str fname
 /*notesel program:noteload fname*/
@@ -51966,6 +51978,7 @@ loadedlibraryibak@(programi-1,windowlabelstackexcid@(programi-1))=loadedlibraryi
 windowisnotfirstrun@=0
 if lpeek(windowlabelval(programi-1),0)!0{windowiconno@(programi-1,windowlabelstackexcid@(programi-1))=48}else{windowiconno@(programi-1,windowlabelstackexcid@(programi-1))=0}:windowiconhide@(programi-1)=1
 //windowenableedforpid@=programi-1
+z80hltendset (programi-1),2
 return programi-1
 #deffunc appclose int pid
 if windowlabelstackexcid@(pid)>0{
@@ -52004,6 +52017,7 @@ cpmsyscallstack@(pid,4)=0x24
 consoleidforproc@(pid)=pid+1
 lpoke windowendhandler@(pid),0,0
 repeat 65536:lpoke winmessageptr@(cnt&0xFFFF,pid),0,0:loop
+z80stackreset pid
 }
 windowdisabledtask@(windowprevid@(pid))=0
 return
@@ -52031,6 +52045,7 @@ cpmsyscallstack@(pid,4)=0x24
 consoleidforproc@(pid)=pid+1
 lpoke windowendhandler@(pid),0,0
 repeat 65536:lpoke winmessageptr@(cnt&0xFFFF,pid),0,0:loop
+z80stackreset pid
 windowdisabledtask@(windowprevid@(pid))=0
 return
 #deffunc apptitleset int pid,str titlenameapp
@@ -55620,6 +55635,56 @@ case 92//inputkey
 	case 2
 	inkey=syscallptval(2)
 	if lpeek(winmessageptr(0x100&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,inkey:lpoke syscallptval(4),0,0:gosub winmessageptr(0x100&0xFFFF,windowenableedforpid)}
+	swbreak
+	swend
+swbreak
+case 93//vm80
+if syscallptval(1)<65536{
+lpoke memorygo4z80,0,syscallptval(1)+wmemspc64kshift(windowi)
+}else{
+lpoke memorygo4z80,0,syscallptval(1)
+}
+	switch syscallptval(2)
+	case 0
+	if syscallptval(3)<65536{
+	dupptr dataforsyscalldata2,syscallptval(3)+wmemspc64kshift(windowi),4,4
+	}else{
+	dupptr dataforsyscalldata2,syscallptval(3),4,4
+	}
+	z80run dataforsyscalldata2,windowi
+	statue=stat
+	swbreak
+	case 1
+	if syscallptval(3)<65536{
+	dupptr dataforsyscalldata2,syscallptval(3)+wmemspc64kshift(windowi),4,4
+	}else{
+	dupptr dataforsyscalldata2,syscallptval(3),4,4
+	}
+	z80interrupt dataforsyscalldata2,windowi,syscallptval(4)&0xFF
+	statue=0
+	swbreak
+	case 2
+	if syscallptval(3)<65536{
+	dupptr dataforsyscalldata2,syscallptval(3)+wmemspc64kshift(windowi),4,4
+	}else{
+	dupptr dataforsyscalldata2,syscallptval(3),4,4
+	}
+	z80nminterrupt dataforsyscalldata2,windowi
+	statue=0
+	swbreak
+	case 3
+	statue=z80getwhatishalt(windowi)
+	swbreak
+	case 4
+	z80stackreset windowi
+	statue=0
+	swbreak
+	case 5
+	statue=stackpeek(windowi,syscallptval(3),syscallptval(4))
+	swbreak
+	case 6
+	stackpoke windowi,syscallptval(3),syscallptval(4),syscallptval(5)
+	statue=0
 	swbreak
 	swend
 swbreak

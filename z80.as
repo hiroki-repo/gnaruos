@@ -102,37 +102,37 @@ next*/
 	loop*/
 
 irep_tmp(0,0)= 0
-irep_tmp(1,0)= 0
-irep_tmp(2,0)= 1
-irep_tmp(3,0)= 0
 irep_tmp(0,1)= 0
-irep_tmp(1,1)= 1
-irep_tmp(2,1)= 0
-irep_tmp(3,1)= 1
 irep_tmp(0,2)= 1
-irep_tmp(1,2)= 0
-irep_tmp(2,2)= 1
-irep_tmp(3,2)= 1
 irep_tmp(0,3)= 0
+irep_tmp(1,0)= 0
+irep_tmp(1,1)= 1
+irep_tmp(1,2)= 0
 irep_tmp(1,3)= 1
+irep_tmp(2,0)= 1
+irep_tmp(2,1)= 0
+irep_tmp(2,2)= 1
 irep_tmp(2,3)= 1
+irep_tmp(3,0)= 0
+irep_tmp(3,1)= 1
+irep_tmp(3,2)= 1
 irep_tmp(3,3)= 0
 
 drep_tmp(0,0)= 0
-drep_tmp(1,0)= 1
-drep_tmp(2,0)= 0
-drep_tmp(3,0)= 0
 drep_tmp(0,1)= 1
-drep_tmp(1,1)= 0
-drep_tmp(2,1)= 0
-drep_tmp(3,1)= 1
 drep_tmp(0,2)= 0
-drep_tmp(1,2)= 0
-drep_tmp(2,2)= 1
-drep_tmp(3,2)= 0
 drep_tmp(0,3)= 0
+drep_tmp(1,0)= 1
+drep_tmp(1,1)= 0
+drep_tmp(1,2)= 0
 drep_tmp(1,3)= 1
+drep_tmp(2,0)= 0
+drep_tmp(2,1)= 0
+drep_tmp(2,2)= 1
 drep_tmp(2,3)= 0
+drep_tmp(3,0)= 0
+drep_tmp(3,1)= 1
+drep_tmp(3,2)= 0
 drep_tmp(3,3)= 1
 
 breg_tmp(0)= 0,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1
@@ -8420,9 +8420,17 @@ return
 *opcode_ed_71
 #ifdef z80memaccess
 addressforz80rwmads=wpeek(stack(0),2)
+#ifdef __GCNZ80ISCMOS__
+z80memaccess (addressforz80rwmads & 0xFFFF),0xFF,2
+#else
 z80memaccess (addressforz80rwmads & 0xFFFF),0,2
+#endif
+#else
+#ifdef __GCNZ80ISCMOS__
+poke iomemory,peek(stack(0),2),0xFF
 #else
 poke iomemory,peek(stack(0),2),0
+#endif
 iomemorycalled=1
 iomemorycalledid=peek(stack(0),2)
 iomemorycalledid16=wpeek(stack(0),2)
@@ -8487,7 +8495,9 @@ return
 *opcode_ed_76
 z80runmode(threadidforrunthez80)=1
 return
-
+*opcode_ed_77
+goto *opcode_00
+return
 *opcode_ed_78
 #ifdef z80memaccess
 addressforz80rwmads=wpeek(stack(0),2)
@@ -8577,6 +8587,9 @@ poke stack(1),14,peek(stack(1),15)
 return
 *opcode_ed_7E
 z80runmode(threadidforrunthez80)=2
+return
+*opcode_ed_7F
+poke stack(0),14,peek(stack(0),14)
 return
 
 *opcode_ed_A0
@@ -8989,8 +9002,6 @@ return
 *opcode_ed_3D
 *opcode_ed_3E
 *opcode_ed_3F
-*opcode_ed_77
-*opcode_ed_7F
 *opcode_ed_80
 *opcode_ed_81
 *opcode_ed_82
