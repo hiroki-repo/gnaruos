@@ -6,6 +6,7 @@ windowisnotfirstrun=1
 if mainlpjump=1{goto *mainlp}
 dehlforchk=0
 mainlpjump=1
+syscallprtptr=*syscallprt
 #module
 #deffunc z80memaccess int prm_0,int prm_1,int prm_2
 switch prm_2
@@ -104,9 +105,9 @@ case 4
 return peek(dehlforchk@,3)
 swbreak
 case 5
-ret=syscall(wpeek(memory@,(wpeek(z80stack@(0),12)+(2*1))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*2))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*3))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*4))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*5))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*6))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*7))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*8))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*9))&0xFFFF),wpeek(memory@,(wpeek(z80stack@(0),12)+(2*10))&0xFFFF))
+ret=syscall(wpeek(memory@,(((syscall(93,lpeek(syscallprtptr@,0),5,12))|(syscall(93,lpeek(syscallprtptr@,0),5,13)<<8))+(2*1))&0xFFFF),wpeek(memory@,(((syscall(93,lpeek(syscallprtptr@,0),5,12))|(syscall(93,lpeek(syscallprtptr@,0),5,13)<<8))+(2*2))&0xFFFF),wpeek(memory@,(((syscall(93,lpeek(syscallprtptr@,0),5,12))|(syscall(93,lpeek(syscallprtptr@,0),5,13)<<8))+(2*3))&0xFFFF),wpeek(memory@,(((syscall(93,lpeek(syscallprtptr@,0),5,12))|(syscall(93,lpeek(syscallprtptr@,0),5,13)<<8))+(2*4))&0xFFFF),wpeek(memory@,(((syscall(93,lpeek(syscallprtptr@,0),5,12))|(syscall(93,lpeek(syscallprtptr@,0),5,13)<<8))+(2*5))&0xFFFF),wpeek(memory@,(((syscall(93,lpeek(syscallprtptr@,0),5,12))|(syscall(93,lpeek(syscallprtptr@,0),5,13)<<8))+(2*6))&0xFFFF),wpeek(memory@,(((syscall(93,lpeek(syscallprtptr@,0),5,12))|(syscall(93,lpeek(syscallprtptr@,0),5,13)<<8))+(2*7))&0xFFFF),wpeek(memory@,(((syscall(93,lpeek(syscallprtptr@,0),5,12))|(syscall(93,lpeek(syscallprtptr@,0),5,13)<<8))+(2*8))&0xFFFF),wpeek(memory@,(((syscall(93,lpeek(syscallprtptr@,0),5,12))|(syscall(93,lpeek(syscallprtptr@,0),5,13)<<8))+(2*9))&0xFFFF),wpeek(memory@,(((syscall(93,lpeek(syscallprtptr@,0),5,12))|(syscall(93,lpeek(syscallprtptr@,0),5,13)<<8))+(2*10))&0xFFFF))
 wpoke dehlforchk@,2,ret
-wpoke memory@,(wpeek(z80stack@(0),12)+(2*1))&0xFFFF,syscallopt@stdcallinterface(0):wpoke memory@,(wpeek(z80stack@(0),12)+(2*2))&0xFFFF,syscallopt@stdcallinterface(1):wpoke memory@,(wpeek(z80stack@(0),12)+(2*3))&0xFFFF,syscallopt@stdcallinterface(2):wpoke memory@,(wpeek(z80stack@(0),12)+(2*4))&0xFFFF,syscallopt@stdcallinterface(3):wpoke memory@,(wpeek(z80stack@(0),12)+(2*5))&0xFFFF,syscallopt@stdcallinterface(4):wpoke memory@,(wpeek(z80stack@(0),12)+(2*6))&0xFFFF,syscallopt@stdcallinterface(5):wpoke memory@,(wpeek(z80stack@(0),12)+(2*7))&0xFFFF,syscallopt@stdcallinterface(6):wpoke memory@,(wpeek(z80stack@(0),12)+(2*8))&0xFFFF,syscallopt@stdcallinterface(7):wpoke memory@,(wpeek(z80stack@(0),12)+(2*9))&0xFFFF,syscallopt@stdcallinterface(8):wpoke memory@,(wpeek(z80stack@(0),12)+(2*10))&0xFFFF,syscallopt@stdcallinterface(9)
+wpoke memory@,(((syscall(93,lpeek(syscallprtptr@,0),5,12))|(syscall(93,lpeek(syscallprtptr@,0),5,13)<<8))+(2*1))&0xFFFF,syscallopt@stdcallinterface(0):wpoke memory@,(((syscall(93,lpeek(syscallprtptr@,0),5,12))|(syscall(93,lpeek(syscallprtptr@,0),5,13)<<8))+(2*2))&0xFFFF,syscallopt@stdcallinterface(1):wpoke memory@,(((syscall(93,lpeek(syscallprtptr@,0),5,12))|(syscall(93,lpeek(syscallprtptr@,0),5,13)<<8))+(2*3))&0xFFFF,syscallopt@stdcallinterface(2):wpoke memory@,(((syscall(93,lpeek(syscallprtptr@,0),5,12))|(syscall(93,lpeek(syscallprtptr@,0),5,13)<<8))+(2*4))&0xFFFF,syscallopt@stdcallinterface(3):wpoke memory@,(((syscall(93,lpeek(syscallprtptr@,0),5,12))|(syscall(93,lpeek(syscallprtptr@,0),5,13)<<8))+(2*5))&0xFFFF,syscallopt@stdcallinterface(4):wpoke memory@,(((syscall(93,lpeek(syscallprtptr@,0),5,12))|(syscall(93,lpeek(syscallprtptr@,0),5,13)<<8))+(2*6))&0xFFFF,syscallopt@stdcallinterface(5):wpoke memory@,(((syscall(93,lpeek(syscallprtptr@,0),5,12))|(syscall(93,lpeek(syscallprtptr@,0),5,13)<<8))+(2*7))&0xFFFF,syscallopt@stdcallinterface(6):wpoke memory@,(((syscall(93,lpeek(syscallprtptr@,0),5,12))|(syscall(93,lpeek(syscallprtptr@,0),5,13)<<8))+(2*8))&0xFFFF,syscallopt@stdcallinterface(7):wpoke memory@,(((syscall(93,lpeek(syscallprtptr@,0),5,12))|(syscall(93,lpeek(syscallprtptr@,0),5,13)<<8))+(2*9))&0xFFFF,syscallopt@stdcallinterface(8):wpoke memory@,(((syscall(93,lpeek(syscallprtptr@,0),5,12))|(syscall(93,lpeek(syscallprtptr@,0),5,13)<<8))+(2*10))&0xFFFF,syscallopt@stdcallinterface(9)
 return peek(dehlforchk@,2)
 swbreak
 case 6
@@ -160,8 +161,8 @@ swbreak
 swend
 return 0
 #global
-#include "z80.as"
-dup z80stack,stack@z80moduleaccess
+;#include "z80.as"
+;dup z80stack,stack@z80moduleaccess
 sdim memory,65536
 cmdline="":cmdline=oscmdline:repeat:if strmid(cmdline,cnt,1)=" "{cmdline=strmid(cmdline,1,strlen(cmdline))}else{break}:loop:sdim cmdname,128,512:i=0:for cntx,0,strlen(cmdline),1:if peek(cmdline,cntx)=' '{i=i+1}else{cmdlinesliced="":poke cmdlinesliced,0,peek(cmdline,cntx):cmdname(i)=cmdname(i)+cmdlinesliced}:next
 cmdlinearg=""
@@ -286,7 +287,7 @@ wpoke memory,0xFEB0+2*12,inkey
 wpoke memory,0xFEB0+2*13,iconno
 //wpoke memory,0xFEB0+2*14,enableicon
 repeat 4200
-z80run address,0
+ret=syscall(93,lpeek(syscallprtptr@,0),0,varptr(address));z80run address,0
 loop
 wpoke pid,0,wpeek(memory,0xFEB0+2*0)
 wpoke windowtaskenable,0,wpeek(memory,0xFEB0+2*1)
@@ -304,3 +305,10 @@ wpoke inkey,0,wpeek(memory,0xFEB0+2*12)
 wpoke iconno,0,wpeek(memory,0xFEB0+2*13)
 wpoke enableicon,0,wpeek(memory,0xFEB0+2*14)
 return
+
+*syscallprt
+dim paramate,3
+bload "MEM:ORY",paramate
+z80memaccess paramate(0),paramate(1),paramate(2)
+statue=stat
+return statue
