@@ -53380,7 +53380,7 @@ ____strsize@=strsize@hsp
 if ____strsize@=-1{
 ____exist prm_0x
 if ____strsize@!-1{
-notesel fslist@:sdim filestock,____strsize@
+notesel fslist@:sdim filestock,(____strsize@)+128
 repeat fsmaxium@:noteget fslistsliced,cnt:if prm_0=fslistsliced{____strsize@=fsfilesize@(cnt)*128:cntx=cnt:repeat ____strsize@/128:memcpy filestock,fsdata@(cntx,cnt),128,cnt*128,0:loop:memfile filestock:break}:loop
 noteunsel
 prm_0x="MEM:ORY"
