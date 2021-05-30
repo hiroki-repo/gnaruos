@@ -53399,6 +53399,7 @@ ____strsize@=-1
 notesel fslist@
 repeat fsmaxium@:noteget fslistsliced,cnt:if prm_0=fslistsliced{____strsize@=fsfilesize@(cnt)*128:break}:loop
 noteunsel
+if prm_0=""{____strsize@=-1}
 if ____strsize@=-1{
 exist@hsp prm_0
 ____strsize@=strsize@hsp
