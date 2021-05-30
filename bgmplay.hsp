@@ -23,9 +23,9 @@ color 255,255,255
 boxf windowx,windowy+8,windowx+windowmaxx,windowy+windowmaxy
 notesel bgmlist:bgmmax=notemax
 noteget bgmfname,bgmid
-ret=syscall(15,2,8*0,8*2,8*4,8*3,varptr("Play"),lpeek(*bgm_play,0))
-ret=syscall(15,2,8*0,8*3,8*4,8*4,varptr("Prev"),lpeek(*bgm_prev,0))
-ret=syscall(15,2,8*4,8*3,8*8,8*4,varptr("Next"),lpeek(*bgm_next,0))
+ret=syscall(15,2,8*0,8*2-3,8*4,8*3,varptr("Play"),lpeek(*bgm_play,0))
+ret=syscall(15,2,8*0,8*3-0,8*4,8*4,varptr("Prev"),lpeek(*bgm_prev,0))
+ret=syscall(15,2,8*4,8*3-0,8*8,8*4,varptr("Next"),lpeek(*bgm_next,0))
 sdim messages,64:messages=bgmfname:repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8,varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop
 }
 pnotfirstrun=1
