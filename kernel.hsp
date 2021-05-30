@@ -54229,6 +54229,7 @@ dataaddrforcpmcall=cpmsyscallstack(windowi,1)
 if dataaddrforcpmcall=0{dataaddrforcpmcall=iofileaddrforcpm}
 sdim messagedatadump,1024
 inputc messagedatadump,(mempeek(dataaddrforcpmcall)),2
+mem16bitshiftaddr wmemspc64kshift(windowi)
 if strlen(messagedatadump)>mempeek(dataaddrforcpmcall){mempoke dataaddrforcpmcall+1,mempeek(dataaddrforcpmcall)}else{
 mempoke dataaddrforcpmcall+1,strlen(messagedatadump)}
 memmemcpy (dataaddrforcpmcall)+2,varptr(messagedatadump),strlen(messagedatadump)
