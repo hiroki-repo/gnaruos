@@ -55823,6 +55823,9 @@ lpoke memorygo4z80,0,syscallptval(1)
 	swbreak
 	swend
 swbreak
+case 94//pauseproc
+gosub *windowrend2
+swbreak
 swend
 lpoke cpmsyscallstack(windowi,5),0,drive
 return statue
