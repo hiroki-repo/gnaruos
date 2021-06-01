@@ -53859,7 +53859,7 @@ if mx>=windowxy(windowi,0)+windowxy(windowi,2)-8 and my>=windowxy(windowi,1) and
 if mx>=windowxy(windowi,0) and my>=windowxy(windowi,1) and mx<=windowxy(windowi,0)+windowxy(windowi,2)-8 and my<=windowxy(windowi,1)+8 and mclick&1{if draggingx=0{wxb=mx-windowxy(windowi,0):wyb=my-windowxy(windowi,1)}:windowxy(windowi,0)=mx-wxb:windowxy(windowi,1)=my-wyb:dragging=1}
 draggingx=dragging
 }
-if dragging=0{
+if inputpidforctl1=0 and dragging=0{
 if mx>=windowxy(windowi,0) and my>=windowxy(windowi,1) and mx<=windowxy(windowi,0)+windowxy(windowi,2) and my<=windowxy(windowi,1)+windowxy(windowi,3) and mclick&1{if mx>=windowxy(windowenableedforpid,0) and my>=windowxy(windowenableedforpid,1) and mx<=windowxy(windowenableedforpid,0)+windowxy(windowenableedforpid,2) and my<=windowxy(windowenableedforpid,1)+windowxy(windowenableedforpid,3) and mclick&1{}else{windowenableedforpid=windowi}}
 }
 }}:windowtaskenable=0
@@ -55774,6 +55774,52 @@ case 92//inputkey
 	swbreak
 	case 3
 	inputpidforctl=syscallptval(2):inputpidforctl1=1
+	swbreak
+	case 4
+	windowenableedforpid=syscallptval(3)
+	inkey=syscallptval(2)
+	if lpeek(winmessageptr(0x100&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,inkey:lpoke syscallptval(4),0,0:gosub winmessageptr(0x100&0xFFFF,windowenableedforpid)}
+	if inkey=16{shiftselected=1:inkey=0}
+	if inkey=17{wparam2gkflg=1:inkey=0}
+	if wparam2gkflg=1{if inkey>='A' and inkey<='Z'{wparam2gkflg=0}:poke inkey,0,inkey-64}
+			if shiftselected=0{
+			if inkey>=65 and inkey<=90{inkey=inkey+32}
+			if inkey=191{poke inkey,0,"/"}
+			if inkey=189{poke inkey,0,"-"}
+			if inkey=190{poke inkey,0,"."}
+			if inkey=186{poke inkey,0,":"}
+			if inkey=187{poke inkey,0,";"}
+			if inkey=188{poke inkey,0,","}
+			if inkey=220{poke inkey,0,"\\"}
+			if inkey=222{poke inkey,0,"^"}
+			if inkey=192{poke inkey,0,"@"}
+			if inkey=219{poke inkey,0,"["}
+			if inkey=221{poke inkey,0,"]"}
+			if inkey=226{poke inkey,0,"\\"}
+				}
+			if shiftselected=1{
+			if inkey>=48 and inkey<=57{inkey=inkey-16}
+			if inkey=191{poke inkey,0,"?"}
+			if inkey=189{poke inkey,0,"="}
+			if inkey=190{poke inkey,0,">"}
+			if inkey=186{poke inkey,0,"*"}
+			if inkey=187{poke inkey,0,"+"}
+			if inkey=188{poke inkey,0,"<"}
+			if inkey=220{poke inkey,0,"|"}
+			if inkey=222{poke inkey,0,"~"}
+			if inkey=192{poke inkey,0,"`"}
+			if inkey=219{poke inkey,0,"{"}
+			if inkey=221{poke inkey,0,"}"}
+			if inkey=226{poke inkey,0,"_"}
+			}
+	swbreak
+	case 5
+	windowenableedforpid=syscallptval(3)
+	inkey=0
+	wparamx=syscallptval(2)
+	if lpeek(winmessageptr(0x101&0xFFFF,windowenableedforpid),0)!0{lpoke syscallptval(3),0,wparamx:lpoke syscallptval(4),0,0:gosub winmessageptr(0x101&0xFFFF,windowenableedforpid)}
+	if wparamx=16{shiftselected=0}
+	if wparamx=17{wparam2gkflg=0}
 	swbreak
 	swend
 swbreak
