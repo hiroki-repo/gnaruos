@@ -3,8 +3,8 @@
 dupptr inkey,sysvalptr@stdcallinterface(17),4,4
 dupptr mclick,sysvalptr@stdcallinterface(18),4,4
 if windowisnotfirstrun=0{
-windowx=pid*8
-windowy=pid*8
+windowx=256-112//pid*8
+windowy=192-60//pid*8
 windowmaxx=8*14
 windowmaxy=8*6+4
 windowisnotfirstrun=1
