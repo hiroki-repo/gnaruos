@@ -52593,18 +52593,21 @@ if consoleidforproc@(windowi@)!0{
 yforconsole=0:latestlineforshowcons=0
 notesel messageforconsoleapp@(consoleidforproc@(windowi@)-1)
 if ((notemax*8)+8)>=windowxy@(windowi@,3){latestlineforshowcons=notemax-((windowxy@(windowi@,3)/8)-1)}
+if latestlineforshowcons<0{latestlineforshowcons=0}
 nowrgbr=ginfo(16):nowrgbg=ginfo(17):nowrgbb=ginfo(18)
 color 255,255,255
-conslinesex=""
+conslinesex="":entresx=0
 repeat ((windowxy@(windowi@,3)/8)-1)
-noteget conslinesexsl,latestlineforshowcons+cnt:conslinesexsl+="\n"
-repeat:if instr(conslinesexsl,0,"\n")>((windowxy@(windowi@,2)/6)){conslinesex+=strmid(conslinesexsl,0,((windowxy@(windowi@,2)/6)))+"\n":conslinesexsl=strmid(conslinesexsl,((windowxy@(windowi@,2)/6)),strlen(conslinesexsl))}else{break}:loop
+noteget conslinesexsl,latestlineforshowcons+cnt:conslinesexsl+="\n":entresx+=1
+repeat:if instr(conslinesexsl,0,"\n")>((windowxy@(windowi@,2)/6)){conslinesex+=strmid(conslinesexsl,0,((windowxy@(windowi@,2)/6)))+"\n":conslinesexsl=strmid(conslinesexsl,((windowxy@(windowi@,2)/6)),strlen(conslinesexsl)):entresx+=1}else{break}:loop
 conslinesex+=conslinesexsl
+if entresx>=((windowxy@(windowi@,3)/8)-1) and ((windowxy@(windowi@,3)/8)-1)>=notemax{break}
 loop
 noteunsel
 notesel conslinesex
 latestlineforshowcons=0
 if ((notemax*8)+8)>=windowxy@(windowi@,3){latestlineforshowcons=notemax-((windowxy@(windowi@,3)/8)-1)}
+if latestlineforshowcons<0{latestlineforshowcons=0}
 conslinesabc=""
 repeat ((windowxy@(windowi@,3)/8)-1)
 noteget conslines,latestlineforshowcons+cnt
@@ -52619,6 +52622,7 @@ mesfromminifont chrforconsforrend,0//gputchr (i*6)+windowxy@(windowi@,0),8+windo
 //}
 if ((yforconsole*8)+8)>=windowxy@(windowi@,3){_break}
 next
+//if ((yforconsole*8)+8)>=windowxy@(windowi@,3){break}
 loop
 noteunsel
 color nowrgbr,nowrgbg,nowrgbb
@@ -53695,6 +53699,8 @@ gputchr i*6,(192-9)-8-(((cnt)*8)+8),"BGF1",peek(putchardata,i),0,1
 next
 if mx>=6*0 and my>=((192-9)-8)-(((cnt)*8)+8) and mx<=6*gstmldtxlb and my<=((192-9))-(((cnt)*8)+8) and mclick&1{noteget executionsn,(cnt*2)+1:executionsnx=executionsn:executionsnxinstr=instr(executionsn,0," "):if executionsnxinstr!-1{appoptionset strmid(executionsn,executionsnxinstr+1,strlen(executionsn)):executionsnx=strmid(executionsn,0,executionsnxinstr)}:appload executionsnx:mclick=0:gstartmenu=0}
 loop
+noteunsel
+if mclick&1 and my<=(192-9){gstartmenu=0}
 }
 /*if mx>=8*27 and my>=192-8 and mx<=8*28 and my<=192 and mclick&1{if imemenu=1{imemenu=0:mclick&=0xFFFFFFFE}}
 if mx>=8*27 and my>=192-8 and mx<=8*28 and my<=192 and mclick&1{if imemenu=0{imemenu=1:mclick&=0xFFFFFFFE}}
