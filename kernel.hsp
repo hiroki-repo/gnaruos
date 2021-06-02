@@ -53644,7 +53644,7 @@ line 8*0,192-9,8*0,192
 line 8*1-1,192-8,8*1-1,192
 line 8*0,191,8*1-1,191
 line 8*0,192-6,8*1-1,192-6
-if mx>=8*0 and my>=192-8 and mx<=8*1 and my<=192 and mclick&1{appload "run.otw":mclick=0}
+if mx>=8*0 and my>=192-8 and mx<=8*1 and my<=192 and mclick&1{/*appload "run.otw"*/if gstartmenu=0{exist "startmenu_list.txt":sdim gstmldt,strsize+64:if strsize!-1{bload "startmenu_list.txt",gstmldt}:gstartmenu=1}else{gstartmenu=0}:mclick=0}
 /*gputchr 8*1,192-8,"BGA1",1,0,1
 if mx>=8*1 and my>=192-8 and mx<=8*2 and my<=192 and mclick&1{appload "cmd.otw":mclick=0}
 gputchr 8*2,192-8,"BGA1",2,0,1
@@ -53676,6 +53676,26 @@ gputchr 8*26,192-8,"BGA1",13,0,1
 gputchr 8*25,192-8,"BGA1",12,0,1
 gputchr 8*27,192-8,"BGA1",8,0,1
 if mx>=8*27 and my>=192-8 and mx<=8*28 and my<=192 and mclick&1{appload "osk.otw":mclick&=0xFFFFFFFE}
+if gstartmenu=1{
+gstmldtxlb=3
+notesel gstmldt
+repeat notemax/2:noteget gstmldtx,cnt*2:if strlen(gstmldtx)>gstmldtxlb{gstmldtxlb=strlen(gstmldtx)}:loop
+gstmldtxlb+=1
+color 0,0,0
+boxf 0,(192-9)-(((notemax/2)*8)+8),6*gstmldtxlb,192-9
+putchardata="RUN"
+for i,0,strlen(putchardata),1
+gputchr i*6,(192-9)-8,"BGF1",peek(putchardata,i),0,1
+next
+if mx>=6*0 and my>=(192-9)-8 and mx<=6*gstmldtxlb and my<=(192-9) and mclick&1{appload "run.otw":mclick=0:gstartmenu=0}
+repeat notemax/2
+noteget putchardata,cnt*2
+for i,0,strlen(putchardata),1
+gputchr i*6,(192-9)-(((cnt)*8)+8),"BGF1",peek(putchardata,i),0,1
+next
+if mx>=6*0 and my>=((192-9)-8)-((cnt)*8) and mx<=6*gstmldtxlb and my<=((192-9))-((cnt)*8) and mclick&1{noteget executionsn,(cnt*2)+1:appload executionsn:mclick=0:gstartmenu=0}
+loop
+}
 /*if mx>=8*27 and my>=192-8 and mx<=8*28 and my<=192 and mclick&1{if imemenu=1{imemenu=0:mclick&=0xFFFFFFFE}}
 if mx>=8*27 and my>=192-8 and mx<=8*28 and my<=192 and mclick&1{if imemenu=0{imemenu=1:mclick&=0xFFFFFFFE}}
 if imemenu=1{
