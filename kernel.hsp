@@ -53691,9 +53691,9 @@ if mx>=6*0 and my>=(192-9)-8 and mx<=6*gstmldtxlb and my<=(192-9) and mclick&1{a
 repeat notemax/2
 noteget putchardata,cnt*2
 for i,0,strlen(putchardata),1
-gputchr i*6,(192-9)-(((cnt)*8)+8),"BGF1",peek(putchardata,i),0,1
+gputchr i*6,(192-9)-8-(((cnt)*8)+8),"BGF1",peek(putchardata,i),0,1
 next
-if mx>=6*0 and my>=((192-9)-8)-((cnt)*8) and mx<=6*gstmldtxlb and my<=((192-9))-((cnt)*8) and mclick&1{noteget executionsn,(cnt*2)+1:appload executionsn:mclick=0:gstartmenu=0}
+if mx>=6*0 and my>=((192-9)-8)-(((cnt)*8)+8) and mx<=6*gstmldtxlb and my<=((192-9))-(((cnt)*8)+8) and mclick&1{noteget executionsn,(cnt*2)+1:appload executionsn:mclick=0:gstartmenu=0}
 loop
 }
 /*if mx>=8*27 and my>=192-8 and mx<=8*28 and my<=192 and mclick&1{if imemenu=1{imemenu=0:mclick&=0xFFFFFFFE}}
