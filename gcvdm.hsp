@@ -290,9 +290,10 @@ wpoke memory,0xFEB0+2*11,my
 wpoke memory,0xFEB0+2*12,inkey
 wpoke memory,0xFEB0+2*13,iconno
 //wpoke memory,0xFEB0+2*14,enableicon
-repeat 4200
+/*repeat 4200
 ret=syscall(93,lpeek(syscallprtptr@,0),0,varptr(address));z80run address,0
-loop
+loop*/
+ret=syscall(93,lpeek(syscallprtptr@,0),7,varptr(address),4200,0)
 wpoke pid,0,wpeek(memory,0xFEB0+2*0)
 wpoke windowtaskenable,0,wpeek(memory,0xFEB0+2*1)
 wpoke windowx,0,wpeek(memory,0xFEB0+2*2)

@@ -53693,7 +53693,7 @@ noteget putchardata,cnt*2
 for i,0,strlen(putchardata),1
 gputchr i*6,(192-9)-8-(((cnt)*8)+8),"BGF1",peek(putchardata,i),0,1
 next
-if mx>=6*0 and my>=((192-9)-8)-(((cnt)*8)+8) and mx<=6*gstmldtxlb and my<=((192-9))-(((cnt)*8)+8) and mclick&1{noteget executionsn,(cnt*2)+1:appload executionsn:mclick=0:gstartmenu=0}
+if mx>=6*0 and my>=((192-9)-8)-(((cnt)*8)+8) and mx<=6*gstmldtxlb and my<=((192-9))-(((cnt)*8)+8) and mclick&1{noteget executionsn,(cnt*2)+1:executionsnx=executionsn:executionsnxinstr=instr(executionsn,0," "):if executionsnxinstr!-1{appoptionset strmid(executionsn,executionsnxinstr+1,strlen(executionsn)):executionsnx=strmid(executionsn,0,executionsnxinstr)}:appload executionsnx:mclick=0:gstartmenu=0}
 loop
 }
 /*if mx>=8*27 and my>=192-8 and mx<=8*28 and my<=192 and mclick&1{if imemenu=1{imemenu=0:mclick&=0xFFFFFFFE}}
@@ -55891,10 +55891,30 @@ lpoke memorygo4z80,0,syscallptval(1)
 	stackpoke windowi,syscallptval(3),syscallptval(4),syscallptval(5)
 	statue=0
 	swbreak
+	case 7
+	if syscallptval(3)<65536{
+	dupptr dataforsyscalldata2,syscallptval(3)+wmemspc64kshift(windowi),4,4
+	}else{
+	dupptr dataforsyscalldata2,syscallptval(3),4,4
+	}:ldim vm80inlooprt,1:lpoke vm80inlooprt,0,syscallptval(5)
+	repeat syscallptval(4):if lpeek(vm80inlooprt,0)!0{gosub vm80inlooprt}:z80run dataforsyscalldata2,windowi:loop
+	statue=0
+	swbreak
 	swend
 swbreak
 case 94//pauseproc
 gosub *windowrend2
+swbreak
+case 95//procprgptr
+	switch syscallptval(1)
+	case 0
+	if windowuserid(windowi)=0{lpoke windowlabelval@m2(syscallptval(2)),0,syscallptval(3)
+	statue=0}else{statue=-1}
+	swbreak
+	case 1
+	statue=lpeek(windowlabelval@m2(syscallptval(2)),0)
+	swbreak
+	swend
 swbreak
 swend
 lpoke cpmsyscallstack(windowi,5),0,drive
