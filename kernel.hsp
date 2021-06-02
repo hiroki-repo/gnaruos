@@ -52596,12 +52596,12 @@ if ((notemax*8)+8)>=windowxy@(windowi@,3){latestlineforshowcons=notemax-((window
 if latestlineforshowcons<0{latestlineforshowcons=0}
 nowrgbr=ginfo(16):nowrgbg=ginfo(17):nowrgbb=ginfo(18)
 color 255,255,255
-conslinesex="":entresx=0
+conslinesex="":entresx=0:entresxx=0
 repeat ((windowxy@(windowi@,3)/8)-1)
 noteget conslinesexsl,latestlineforshowcons+cnt:conslinesexsl+="\n":entresx+=1
-repeat:if instr(conslinesexsl,0,"\n")>((windowxy@(windowi@,2)/6)){conslinesex+=strmid(conslinesexsl,0,((windowxy@(windowi@,2)/6)))+"\n":conslinesexsl=strmid(conslinesexsl,((windowxy@(windowi@,2)/6)),strlen(conslinesexsl)):entresx+=1}else{break}:loop
+repeat:if instr(conslinesexsl,0,"\n")>((windowxy@(windowi@,2)/6)){conslinesex+=strmid(conslinesexsl,0,((windowxy@(windowi@,2)/6)))+"\n":conslinesexsl=strmid(conslinesexsl,((windowxy@(windowi@,2)/6)),strlen(conslinesexsl)):entresx+=1:entresxx+=1}else{break}:loop
 conslinesex+=conslinesexsl
-if entresx>=((windowxy@(windowi@,3)/8)-1) and ((windowxy@(windowi@,3)/8)-1)>=notemax{break}
+if entresx>=((windowxy@(windowi@,3)/8)-1) and ((windowxy@(windowi@,3)/8)-1)>=(notemax+entresxx){break}
 loop
 noteunsel
 notesel conslinesex
