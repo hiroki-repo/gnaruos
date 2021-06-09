@@ -4,7 +4,7 @@ dupptr mclick,sysvalptr@stdcallinterface(18),4,4
 if windowisnotfirstrun=0{
 windowx=pid*8
 windowy=pid*8
-windowmaxx=200
+windowmaxx=200+(5*6)
 windowmaxy=160
 windowisnotfirstrun=1
 inket="":inkeys=""
@@ -234,20 +234,24 @@ swbreak
 case 5
 color 30,100,255
 boxf windowx,windowy+8+16,windowx+windowmaxx,windowy+windowmaxy
-sdim messages,64:messages="PC : "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,0,11))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,0,10)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*00),varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop
-sdim messages,64:messages="SP : "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,0,13))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,0,12)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*01),varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop
-sdim messages,64:messages="IX : "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,11))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,10)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*02),varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop
-sdim messages,64:messages="IY : "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,13))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,12)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*03),varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop
-sdim messages,64:messages="BC : "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,0,03))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,0,02)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*04),varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop
-sdim messages,64:messages="DE : "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,0,05))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,0,04)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*05),varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop
-sdim messages,64:messages="HL : "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,0,07))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,0,06)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*06),varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop
-sdim messages,64:messages="AF : "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,0,00))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,0,01)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*07),varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop
-sdim messages,64:messages="BC': "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,03))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,02)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*08),varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop
-sdim messages,64:messages="DE': "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,05))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,04)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*09),varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop
-sdim messages,64:messages="HL': "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,07))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,06)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*10),varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop
-sdim messages,64:messages="AF': "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,00))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,01)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*11),varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop
+sdim messages,64:messages="PC : "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,0,11))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,0,10)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*00),varptr("BGF1"),peek(messages,cnt),0,varptr(1.0)):loop
+sdim messages,64:messages="SP : "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,0,13))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,0,12)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*01),varptr("BGF1"),peek(messages,cnt),0,varptr(1.0)):loop
+sdim messages,64:messages="IX : "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,11))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,10)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*02),varptr("BGF1"),peek(messages,cnt),0,varptr(1.0)):loop
+sdim messages,64:messages="IY : "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,13))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,12)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*03),varptr("BGF1"),peek(messages,cnt),0,varptr(1.0)):loop
+sdim messages,64:messages="BC : "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,0,03))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,0,02)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*04),varptr("BGF1"),peek(messages,cnt),0,varptr(1.0)):loop
+sdim messages,64:messages="DE : "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,0,05))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,0,04)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*05),varptr("BGF1"),peek(messages,cnt),0,varptr(1.0)):loop
+sdim messages,64:messages="HL : "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,0,07))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,0,06)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*06),varptr("BGF1"),peek(messages,cnt),0,varptr(1.0)):loop
+sdim messages,64:messages="AF : "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,0,00))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,0,01)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*07),varptr("BGF1"),peek(messages,cnt),0,varptr(1.0)):loop
+sdim messages,64:messages="BC': "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,03))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,02)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*08),varptr("BGF1"),peek(messages,cnt),0,varptr(1.0)):loop
+sdim messages,64:messages="DE': "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,05))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,04)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*09),varptr("BGF1"),peek(messages,cnt),0,varptr(1.0)):loop
+sdim messages,64:messages="HL': "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,07))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,06)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*10),varptr("BGF1"),peek(messages,cnt),0,varptr(1.0)):loop
+sdim messages,64:messages="AF': "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,00))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,01)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*11),varptr("BGF1"),peek(messages,cnt),0,varptr(1.0)):loop
 color 255,255,255
 boxf windowx+(6*10),windowy+8+16,windowx+windowmaxx,windowy+windowmaxy
+for cntxxxx,0,8*16,1
+sdim messages,64:messages=strf("%04X",(startptr*8)+(8*(cntxxxx/8))):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+((cnt+10+0)*6),int(windowy)+8+16+(8*(cntxxxx/8)),varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop
+sdim messages,64:messages=strf("%02X",peek(memory,cntxxxx+(startptr*8))):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+((cnt+10+(3*(cntxxxx\8))+5)*6),int(windowy)+8+16+(8*(cntxxxx/8)),varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop
+next
 swbreak
 swend
 color 10,10,10
