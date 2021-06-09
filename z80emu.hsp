@@ -1,0 +1,261 @@
+#include "stdcall.as"
+dupptr inkey,sysvalptr@stdcallinterface(17),4,4
+dupptr mclick,sysvalptr@stdcallinterface(18),4,4
+if windowisnotfirstrun=0{
+windowx=pid*8
+windowy=pid*8
+windowmaxx=200
+windowmaxy=140
+windowisnotfirstrun=1
+inket="":inkeys=""
+buttoni1=0
+buttoni2=0
+buttoni3=""
+crtconsm=""
+ttyconsm=""
+sdim memory,65536
+sdim diskfname,2048,256
+dmaptr=0:track=0:sector=0:diskid=0:diskstat=0
+#module
+#deffunc z80memaccess int prm_0,int prm_1,int prm_2
+switch prm_2
+case 0
+poke memory@,prm_0,prm_1
+return
+swbreak
+case 1
+return peek(memory@,prm_0)
+swbreak
+case 2
+	switch (prm_0&0xFF)
+	case 0x11
+		strforshow="":lpoke strforshow,0,prm_1:ttyconsm@+=strforshow/*printf "%s",strforshow*/:return
+	swbreak
+	case 0x13
+		strforshow="":lpoke strforshow,0,prm_1:crtconsm@+=strforshow/*printf "%s",strforshow*/:return
+	swbreak
+	case 0x15
+	return
+	swbreak
+	case 0x17
+	return
+	swbreak
+	case 0x19
+	return
+	swbreak
+	case 0x1D
+	return
+	swbreak
+	case 0x30
+	return
+	swbreak
+	case 0x31
+	return
+	swbreak
+	case 0x70
+		diskptr=((track@*32)+sector@)*128:sdim dmadata,128
+		exist diskfname@(diskid@)
+		if strsize=-1{
+		diskstat@=0xFF
+		}else{
+		switch prm_1
+		case 0
+		dmaptr=0:track=0:sector=0
+		swbreak
+		case 1
+		track=0
+		swbreak
+		case 2
+		bload diskfname@(diskid@),dmadata,128,diskptr
+		memcpy memory@,dmadata,128,dmaptr@,0
+		diskstat@=0
+		swbreak
+		case 3
+		memcpy dmadata,memory@,128,0,dmaptr@
+		bsave diskfname@(diskid@),dmadata,128,diskptr
+		diskstat@=0
+		swbreak
+		swend
+		}
+		return
+	swbreak
+	case 0x71
+	diskid@=prm_1
+	return
+	swbreak
+	case 0x72
+	poke sector@,0,prm_1
+	return
+	swbreak
+	case 0x73
+	poke sector@,1,prm_1
+	return
+	swbreak
+	case 0x74
+	poke track@,0,prm_1
+	return 
+	swbreak
+	case 0x75
+	poke track@,1,prm_1
+	return 
+	swbreak
+	case 0x76
+	poke dmaptr@,0,prm_1
+	return
+	swbreak
+	case 0x77
+	poke dmaptr@,1,prm_1
+	return
+	swbreak
+	swend
+	return
+swbreak
+case 3
+	switch (prm_0&0xFF)
+	case 0x10
+	return 0x4|(((keydownedx@!0) and (uiswc@=1))*2)|0x1
+	swbreak
+	case 0x11
+	if (keydownedx@!0) and (uiswc@=1){keydownedx@=0:return inkey@}else{return 0x00}
+	swbreak
+	case 0x12
+	return 0x4|(((keydownedx@!0) and (uiswc@=0))*2)|0x1
+	swbreak
+	case 0x13
+	if (keydownedx@!0) and (uiswc@=0){keydownedx@=0:return inkey@}else{return 0x00}
+	swbreak
+	case 0x14
+	return 0
+	swbreak
+	case 0x15
+	return 0xFF
+	swbreak
+	case 0x16
+	return 0
+	swbreak
+	case 0x17
+	return 0xFF
+	swbreak
+	case 0x18
+	return 0
+	swbreak
+	case 0x1A
+	return 0
+	swbreak
+	case 0x1B
+	return 0xFF
+	swbreak
+	case 0x1C
+	return 0
+	swbreak
+	case 0x30
+	return 0x7F
+	swbreak
+	case 0x31
+	return 0x7F
+	swbreak
+	case 0x40
+	return 0
+	swbreak
+	case 0x41
+	return 0xFF
+	swbreak
+	case 0x48
+	return 0x01
+	swbreak
+	case 0x70
+	return diskstat@
+	swbreak
+	case 0x71
+	return diskid@
+	swbreak
+	case 0x72
+	return peek(sector@,0)
+	swbreak
+	case 0x73
+	return peek(sector@,1)
+	swbreak
+	case 0x74
+	return peek(track@,0)
+	swbreak
+	case 0x75
+	return peek(track@,1)
+	swbreak
+	case 0x76
+	return peek(dmaptr@,0)
+	swbreak
+	case 0x77
+	return peek(dmaptr@,1)
+	swbreak
+	swend
+	return 0xFF
+swbreak
+swend
+return 0
+#global
+address=0xFA00
+ret=syscall(13,0x100,lpeek(*keydownhandler,0))
+ret=syscall(13,0x101,lpeek(*keyuphandler,0))
+oscmdlines=""+oscmdline:repeat:if strmid(oscmdlines,0,1)=" "{oscmdlines=strmid(oscmdlines,1,strlen(oscmdlines))}else{break}:loop
+diskfname@(0)=oscmdlines
+if diskfname@(0)=""{diskfname@(0)="DiskA.cpmdsk"}
+sdim cpmdata,0x1980
+bload diskfname@(0),cpmdata
+memcpy memory,cpmdata,0x1980,0xE400,0
+poke memory,0,0xC3
+lpoke memory,1,0xFA03
+poke memory,5,0xC3
+lpoke memory,6,0xFC06
+maspx=0
+}
+if pnotfirstrun=1{
+windowtaskenable=1
+ret=syscall(4,pid,varptr("Z80Emu"))
+color 255,255,255
+boxf windowx,windowy+8,windowx+windowmaxx,windowy+windowmaxy
+ret=syscall(15,2,8*0,8*1,8*4,8*2,varptr("CRT"),lpeek(*changecrt,0))
+ret=syscall(15,2,8*4,8*1,8*8,8*2,varptr("TTY"),lpeek(*changetty,0))
+switch uiswc
+case 0
+color 1,1,1
+boxf windowx,windowy+8+16,windowx+windowmaxx,windowy+windowmaxy
+ret=syscall(93,lpeek(*syscallprt,0),7,varptr(address),4200,0)
+color 255,255,255
+minusin=0:plusin=0:sdim messages,64:crtconsms="":notesel crtconsm:notesel crtconsm:notemaxs=(windowmaxy-24)/8:notemaxsx=notemax-notemaxs:if notemaxsx<0{notemaxsx=0}:repeat:if cnt=notemaxs{break}:plusin=cnt:noteget messages,cnt+notemaxsx:repeat:if cnt=strlen(messages){break}:if cnt=(windowmaxx/6){break}:ret=syscall(5,int(windowx)+((cnt)*6),int(windowy)+8+16+(plusin*8),varptr("BGF1"),peek(messages,cnt+maspx),0,varptr(1.0)):loop:loop
+swbreak
+case 1
+color 1,1,1
+boxf windowx,windowy+8+16,windowx+windowmaxx,windowy+windowmaxy
+ret=syscall(93,lpeek(*syscallprt,0),7,varptr(address),4200,0)
+color 255,255,255
+minusin=0:plusin=0:sdim messages,64:ttyconsms="":notesel ttyconsm:notesel ttyconsm:notemaxs=(windowmaxy-24)/8:notemaxsx=notemax-notemaxs:if notemaxsx<0{notemaxsx=0}:repeat:if cnt=notemaxs{break}:plusin=cnt:noteget messages,cnt+notemaxsx:repeat:if cnt=strlen(messages){break}:if cnt=(windowmaxx/6){break}:ret=syscall(5,int(windowx)+((cnt)*6),int(windowy)+8+16+(plusin*8),varptr("BGF1"),peek(messages,cnt+maspx),0,varptr(1.0)):loop:loop
+swbreak
+swend
+/*if inkey!inkeyold{if inkey=0x0D or inkey=0x0A {inkey=0:inkeyold=0:inketx="":inketx=inket+".otw":ret=syscall(11,varptr(inketx)):ret=syscall(7,0)}else{poke inkeys,0,inkey:inket+=inkeys}}
+sdim messages,64:messages=inket:repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8,varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop*/
+}
+pnotfirstrun=1
+return
+
+*changecrt
+uiswc=0
+return
+*changetty
+uiswc=1
+return
+
+*syscallprt
+dim paramate,3
+bload "MEM:ORY",paramate
+z80memaccess paramate(0),paramate(1),paramate(2)
+statue=stat
+return statue
+
+*keydownhandler
+keydowned=1
+if syscallopt@stdcallinterface(3)!0 and syscallopt@stdcallinterface(3)!16 and syscallopt@stdcallinterface(3)!17{keydownedx=1}
+return
+
+*keyuphandler
+keydowned=0
+return
