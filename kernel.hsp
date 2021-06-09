@@ -52071,27 +52071,27 @@ return
 return windowinfofortab(windowinfotab,windowinfotab2)
 #deffunc appload str fname
 /*notesel program:noteload fname*/
-programi=0:repeat 100:programi=programi+1:if lpeek(windowlabelval(programi-1),0)=0{break}:loop:windowprogramdirstack@(programi-1)=dir_cur:windowprevid@(programi-1)=windowi@:/*:windowinfofortab(programi-1,0)=program*/:taskoptive@(programi-1)=windowopttmp:windowopttmp="":consoleidforproc@(programi-1)=programi:windowinfofortab(programi-1,1)=fname:windowinfofortab(programi-1,2)="1"
+programi=0:repeat windowmaxiumpx@:programi=programi+1:if lpeek(windowlabelval(programi-1),0)=0{break}:loop:windowprogramdirstack@(programi-1)=dir_cur:windowprevid@(programi-1)=windowi@:/*:windowinfofortab(programi-1,0)=program*/:taskoptive@(programi-1)=windowopttmp:windowopttmp="":consoleidforproc@(programi-1)=programi:windowinfofortab(programi-1,1)=fname:windowinfofortab(programi-1,2)="1"
 windowsuserid@(programi-1)=windowsuserid@(windowi@):windowuserid@(programi-1)=windowuserid@(windowi@):lpoke windowlabelval(programi-1),0,_faddproc(fname)
 if lpeek(windowlabelval(programi-1),0)!0{windowiconno@(programi-1,windowlabelstackexcid@(programi-1))=48}else{windowiconno@(programi-1,windowlabelstackexcid@(programi-1))=0}:windowiconhide@(programi-1)=1
 windowenableedforpid@=programi-1
-z80hltendset (programi-1),2
+z80stackreset (programi-1):z80hltendset (programi-1),2
 return programi-1
 #deffunc apploadowncons str fname
 /*notesel program:noteload fname*/
-programi=0:repeat 100:programi=programi+1:if lpeek(windowlabelval(programi-1),0)=0{break}:loop:windowprogramdirstack@(programi-1)=dir_cur:windowprevid@(programi-1)=windowi@:/*:windowinfofortab(programi-1,0)=program*/:taskoptive@(programi-1)=windowopttmp:windowopttmp="":consoleidforproc@(programi-1)=(windowi@)+1:windowinfofortab(programi-1,1)=fname:windowinfofortab(programi-1,2)="1"
+programi=0:repeat windowmaxiumpx@:programi=programi+1:if lpeek(windowlabelval(programi-1),0)=0{break}:loop:windowprogramdirstack@(programi-1)=dir_cur:windowprevid@(programi-1)=windowi@:/*:windowinfofortab(programi-1,0)=program*/:taskoptive@(programi-1)=windowopttmp:windowopttmp="":consoleidforproc@(programi-1)=(windowi@)+1:windowinfofortab(programi-1,1)=fname:windowinfofortab(programi-1,2)="1"
 windowsuserid@(programi-1)=windowsuserid@(windowi@):windowuserid@(programi-1)=windowuserid@(windowi@):lpoke windowlabelval(programi-1),0,_faddproc(fname)
 if lpeek(windowlabelval(programi-1),0)!0{windowiconno@(programi-1,windowlabelstackexcid@(programi-1))=48}else{windowiconno@(programi-1,windowlabelstackexcid@(programi-1))=0}:windowiconhide@(programi-1)=1
 //windowenableedforpid@=programi-1
-z80hltendset (programi-1),2
+z80stackreset (programi-1):z80hltendset (programi-1),2
 return programi-1
 #deffunc apploadsamecons str fname
 /*notesel program:noteload fname*/
-programi=0:repeat 100:programi=programi+1:if lpeek(windowlabelval(programi-1),0)=0{break}:loop:windowprogramdirstack@(programi-1)=dir_cur:windowprevid@(programi-1)=windowi@:/*:windowinfofortab(programi-1,0)=program*/:taskoptive@(programi-1)=windowopttmp:windowopttmp="":consoleidforproc@(programi-1)=consoleidforproc@(windowi@):windowinfofortab(programi-1,1)=fname:windowinfofortab(programi-1,2)="1"
+programi=0:repeat windowmaxiumpx@:programi=programi+1:if lpeek(windowlabelval(programi-1),0)=0{break}:loop:windowprogramdirstack@(programi-1)=dir_cur:windowprevid@(programi-1)=windowi@:/*:windowinfofortab(programi-1,0)=program*/:taskoptive@(programi-1)=windowopttmp:windowopttmp="":consoleidforproc@(programi-1)=consoleidforproc@(windowi@):windowinfofortab(programi-1,1)=fname:windowinfofortab(programi-1,2)="1"
 windowsuserid@(programi-1)=windowsuserid@(windowi@):windowuserid@(programi-1)=windowuserid@(windowi@):lpoke windowlabelval(programi-1),0,_faddproc(fname)
 if lpeek(windowlabelval(programi-1),0)!0{windowiconno@(programi-1,windowlabelstackexcid@(programi-1))=48}else{windowiconno@(programi-1,windowlabelstackexcid@(programi-1))=0}:windowiconhide@(programi-1)=1
 //windowenableedforpid@=programi-1
-z80hltendset (programi-1),2
+z80stackreset (programi-1):z80hltendset (programi-1),2
 return programi-1
 #deffunc apploadexcproc str fname
 /*notesel program:noteload fname*/
@@ -52100,7 +52100,7 @@ loadedlibraryibak@(programi-1,windowlabelstackexcid@(programi-1))=loadedlibraryi
 windowisnotfirstrun@=0
 if lpeek(windowlabelval(programi-1),0)!0{windowiconno@(programi-1,windowlabelstackexcid@(programi-1))=48}else{windowiconno@(programi-1,windowlabelstackexcid@(programi-1))=0}:windowiconhide@(programi-1)=1
 //windowenableedforpid@=programi-1
-z80hltendset (programi-1),2
+z80stackreset (programi-1):z80hltendset (programi-1),2
 return programi-1
 #deffunc apploadexcproc2 str fname
 /*notesel program:noteload fname*/
@@ -52109,7 +52109,7 @@ loadedlibraryibak@(programi-1,windowlabelstackexcid@(programi-1))=loadedlibraryi
 windowisnotfirstrun@=0
 if lpeek(windowlabelval(programi-1),0)!0{windowiconno@(programi-1,windowlabelstackexcid@(programi-1))=48}else{windowiconno@(programi-1,windowlabelstackexcid@(programi-1))=0}:windowiconhide@(programi-1)=1
 //windowenableedforpid@=programi-1
-z80hltendset (programi-1),2
+z80stackreset (programi-1):z80hltendset (programi-1),2
 return programi-1
 #deffunc appclose int pid
 if windowlabelstackexcid@(pid)>0{
