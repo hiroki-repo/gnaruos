@@ -223,13 +223,21 @@ case 0
 color 1,1,1
 boxf windowx,windowy+8+16,windowx+windowmaxx,windowy+windowmaxy
 color 255,255,255
-minusin=0:plusin=0:sdim messages,64:crtconsms="":notesel crtconsm:notesel crtconsm:notemaxs=(windowmaxy-24)/8:notemaxsx=notemax-notemaxs:if notemaxsx<0{notemaxsx=0}:repeat:if cnt=notemaxs{break}:plusin=cnt:noteget messages,cnt+notemaxsx:repeat:if cnt=strlen(messages){break}:if cnt=(windowmaxx/6){break}:ret=syscall(5,int(windowx)+((cnt)*6),int(windowy)+8+16+(plusin*8),varptr("BGF1"),peek(messages,cnt+maspx),0,varptr(1.0)):loop:loop
+minusin=0:plusin=0:sdim messages,64:crtconsms="":notesel crtconsm:notesel crtconsm:notemaxs=(windowmaxy-32)/8:notemaxsx=notemax-notemaxs:if notemaxsx<0{notemaxsx=0}:repeat:if cnt=notemaxs{break}:plusin=cnt:noteget messages,cnt+notemaxsx:repeat:if cnt=strlen(messages){break}:if cnt=(windowmaxx/6){break}:ret=syscall(5,int(windowx)+((cnt)*6),int(windowy)+8+16+(plusin*8),varptr("BGF1"),peek(messages,cnt+maspx),0,varptr(1.0)):loop:loop
+color 80,80,80
+boxf windowx,windowy+145+8,windowx+windowmaxx,windowy+windowmaxy
+ret=syscall(15,3,000,145,0,lpeek(*prevcrtcons,0))
+ret=syscall(15,3,223,145,1,lpeek(*nextcrtcons,0))
 swbreak
 case 1
 color 1,1,1
 boxf windowx,windowy+8+16,windowx+windowmaxx,windowy+windowmaxy
 color 255,255,255
-minusin=0:plusin=0:sdim messages,64:ttyconsms="":notesel ttyconsm:notesel ttyconsm:notemaxs=(windowmaxy-24)/8:notemaxsx=notemax-notemaxs:if notemaxsx<0{notemaxsx=0}:repeat:if cnt=notemaxs{break}:plusin=cnt:noteget messages,cnt+notemaxsx:repeat:if cnt=strlen(messages){break}:if cnt=(windowmaxx/6){break}:ret=syscall(5,int(windowx)+((cnt)*6),int(windowy)+8+16+(plusin*8),varptr("BGF1"),peek(messages,cnt+maspx),0,varptr(1.0)):loop:loop
+minusin=0:plusin=0:sdim messages,64:ttyconsms="":notesel ttyconsm:notesel ttyconsm:notemaxs=(windowmaxy-32)/8:notemaxsx=notemax-notemaxs:if notemaxsx<0{notemaxsx=0}:repeat:if cnt=notemaxs{break}:plusin=cnt:noteget messages,cnt+notemaxsx:repeat:if cnt=strlen(messages){break}:if cnt=(windowmaxx/6){break}:ret=syscall(5,int(windowx)+((cnt)*6),int(windowy)+8+16+(plusin*8),varptr("BGF1"),peek(messages,cnt+maspx2),0,varptr(1.0)):loop:loop
+color 80,80,80
+boxf windowx,windowy+145+8,windowx+windowmaxx,windowy+windowmaxy
+ret=syscall(15,3,000,145,0,lpeek(*prevttycons,0))
+ret=syscall(15,3,223,145,1,lpeek(*nextttycons,0))
 swbreak
 case 5
 color 30,100,255
@@ -255,8 +263,8 @@ for cntxxxx,0,8*15,1
 sdim messages,64:messages=strf("%04X",(startptr*8)+(8*(cntxxxx/8))):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+((cnt+10+0)*6),int(windowy)+8+16+8+(8*(cntxxxx/8)),varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop
 sdim messages,64:messages=strf("%02X",peek(memory,cntxxxx+(startptr*8))):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+((cnt+10+(3*(cntxxxx\8))+5)*6),int(windowy)+8+16+8+(8*(cntxxxx/8)),varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop
 next
-ret=syscall(15,3,230-(8*2),144,2,lpeek(*prevmemdata,0))
-ret=syscall(15,3,230-(8*1),144,3,lpeek(*nextmemdata,0))
+ret=syscall(15,3,231-(8*2),145,2,lpeek(*prevmemdata,0))
+ret=syscall(15,3,231-(8*1),145,3,lpeek(*nextmemdata,0))
 swbreak
 swend
 color 10,10,10
@@ -265,6 +273,21 @@ line windowx-1,windowy+8+16,windowx+windowmaxx,windowy+8+16
 sdim messages,64:messages=inket:repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8,varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop*/
 }
 pnotfirstrun=1
+return
+
+*prevcrtcons
+maspx-=1
+if maspx<=-1{maspx=0}
+return
+*nextcrtcons
+maspx+=1
+return
+*prevttycons
+maspx2-=1
+if maspx2<=-1{maspx2=0}
+return
+*nextttycons
+maspx2+=1
 return
 
 *prevmemdata
