@@ -52023,6 +52023,7 @@ fullmemoryaccessmoduleinit
 //mes "a"
 //stop
 iconmaxium=100
+dim syscalledid,windowmaxiumpx
 dim windowxy,windowmaxiumpx,8
 dim windowxystack,windowmaxiumpx,8,10
 dim windowenabled,windowmaxiumpx
@@ -52061,6 +52062,7 @@ dim sockaddr, 4, windowmaxiumpx, 10
 sdim consstock,4096,windowmaxiumpx
 windowenableedforpid=0
 if hspstat&16{}else{buffer 11:cls 3}
+buffer 20,640,480
 #module
 #deffunc windowinfoinit
 programi=0:windowopttmp=""
@@ -53816,6 +53818,7 @@ return
 *windowrendon
 if hspstat&16{}else{gselbackup=ginfo(3):gsel 1,0}
 //if windowinfofortab@m2(windowi,0)=""{}else{
+if syscalledid(windowi)=0{
 if windowminimlized(windowi)=0{
 if windowdisabledtask(windowi)=0{
 if windowinfofortab@m2(windowi,2)=""{}else{
@@ -53895,6 +53898,7 @@ logmes windowxy(windowi,2)
 logmes windowxy(windowi,3)
 logmes "a"*/
 
+}
 }
 }
 }
@@ -55200,6 +55204,7 @@ lpoke syscallen(4),0,varptr(syscallen)
 lpoke syscallen(5),0,varptr(stringforfuncinit)
 lpoke syscallen(6),0,lpeek(driverregcallptr,0)
 lpoke syscallen(7),0,varptr(driverregstac)
+memfile syscallen
 if lpeek(loadedlibrary(windowi,loadedlibraryi(windowi)),0)!0{gosub loadedlibrary(windowi,loadedlibraryi(windowi))}
 
 if driverreg=0{loadedlibraryi(windowi)=loadedlibraryi(windowi)+1}else{lpoke loadedlibrary(windowi,loadedlibraryi(windowi)),0,0}:driverreg=0
@@ -55227,6 +55232,7 @@ lpoke syscallen(4),0,varptr(syscallen)
 lpoke syscallen(5),0,varptr(dataforsyscalldata0)
 lpoke syscallen(6),0,lpeek(driverregcallptr,0)
 lpoke syscallen(7),0,varptr(driverregstac)
+memfile syscallen
 if lpeek(loadedlibrary(windowi,cnt),0)!0{gosub loadedlibrary(windowi,cnt)}
 driverreg=0
 loop
@@ -55921,6 +55927,55 @@ case 95//procprgptr
 	statue=lpeek(windowlabelval@m2(syscallptval(2)),0)
 	swbreak
 	swend
+swbreak
+case 96//pidtosc
+syscalledid(syscallptval(1))=syscallptval(2)
+statue=0
+swbreak
+case 97//ownpidtosc
+syscalledid(windowi)=syscallptval(1)
+statue=0
+swbreak
+case 98//imgload
+if syscallptval(1)<65536{
+dupptr dataforsyscalldata0,syscallptval(1)+wmemspc64kshift(windowi),4096,2
+}else{
+dupptr dataforsyscalldata0,syscallptval(1),4096,2
+}
+oldgselforimg=ginfo(3)
+gsel 20,0
+pos 0,0
+picload dataforsyscalldata0,syscallptval(2)
+pixelxyforimg(0)=ginfo(26),ginfo(27)
+gsel oldgselforimg,0
+gzoom syscallptval(3),syscallptval(4),20,0,0,pixelxyforimg(0),pixelxyforimg(1),syscallptval(5)
+statue=0
+swbreak
+default
+repeat windowmaxiumpx
+if syscalledid(cnt)=syscallptval(0){
+syscalldispatchptr=*syscalldispatch
+deskptr=*desk
+driverregcallptr=*driverregcall
+stringforfuncinit="Init"
+dim syscallen,1024
+dim publicvalptr,1024
+dim driverregstac,1024
+windowiconshowforfsaps=0
+publicvalptr(0)=varptr(windowi),varptr(consstock2),varptr(windowtaskenable),varptr(windowx),varptr(windowy),varptr(windowmaxx),varptr(windowmaxy),varptr(windowenabled2),varptr(windowisnotfirstrun),varptr(windowtitle),varptr(mclick),varptr(windowenableedforpid),varptr(mx),varptr(my),varptr(windowconsstrxy(windowi,0)),varptr(windowconsstrxy(windowi,1)),varptr(taskoptive(windowi)),varptr(inkey),varptr(mclick),varptr(deskiconrendmst),varptr(windowiconno(windowi,windowlabelstackexcid(windowi))),varptr(windowiconshowforfsaps)
+lpoke syscallen(0),0,lpeek(syscalldispatchptr,0)
+lpoke syscallen(1),0,varptr(syscallptval)
+lpoke syscallen(2),0,varptr(publicvalptr)
+lpoke syscallen(3),0,lpeek(deskptr,0)
+lpoke syscallen(4),0,varptr(syscallen)
+lpoke syscallen(5),0,varptr(stringforfuncinit)
+lpoke syscallen(6),0,lpeek(driverregcallptr,0)
+lpoke syscallen(7),0,varptr(driverregstac)
+memfile syscallen
+if lpeek(windowlabelval@m2(cnt),0)!0{chdir windowprogramdirstack(cnt):gosub windowlabelval@m2(cnt):statue=stat:windowprogramdirstack(cnt)=dir_cur}
+break
+}
+loop
 swbreak
 swend
 lpoke cpmsyscallstack(windowi,5),0,drive
