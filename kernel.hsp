@@ -53585,6 +53585,8 @@ repeat windowmaxiumpx:cpmsyscallstack(cnt,3)=0x80:loop
 repeat windowmaxiumpx:cpmsyscallstack(cnt,4)=0x24:loop
 repeat windowmaxiumpx:consoleidforproc(cnt)=cnt+1:loop
 taskbarprocsid=0
+dim resoluation,3
+resoluation(0)=256,192,0
 appload "init.otw"
 //appload "test.otw"
 wallpaperset "wallpaper.jpg"
@@ -53631,26 +53633,26 @@ oncmd gosub *clickup3, 0x0205
     WSAStartup winsockver, varptr(wsadata)
     oncmd gosub *on_sock_notify, SOCK_NOTIFY_MESSAGE
 
-repeat:if hspstat&16{}else{if mousectrlforos=0{mx=(mousex*256)/ginfo(26):my=(mousey*192)/ginfo(27)}else{mx=mxctl:my=myctl:mousectrlforos=0}:gsel 11:wallpaperx=ginfo(12):wallpapery=ginfo(13)
+repeat:if hspstat&16{}else{if mousectrlforos=0{mx=(mousex*resoluation(0))/ginfo(26):my=(mousey*resoluation(1))/ginfo(27)}else{mx=mxctl:my=myctl:mousectrlforos=0}:gsel 11:wallpaperx=ginfo(12):wallpapery=ginfo(13)
 redraw 0
 gsel 1
-cls 3:gzoom 256,192,11,0,0,wallpaperx,wallpapery,0:if deskiconrendmst=1{gosub *deskiconrend}}:gosub *windowrend:if hspstat&16{}else{color 250,250,250:gmode 4,,,256:pos mx-6,my-2:gcopy 10,0,0,24,24
+cls 3:gzoom resoluation(0),resoluation(1),11,0,0,wallpaperx,wallpapery,0:if deskiconrendmst=1{gosub *deskiconrend}}:gosub *windowrend:if hspstat&16{}else{color 250,250,250:gmode 4,,,256:pos mx-6,my-2:gcopy 10,0,0,24,24
 //gosub *desk
 gsel 0
-pos 0,0:gzoom ginfo(26),ginfo(27),1,0,0,256,192,0
+pos 0,0:gzoom ginfo(26),ginfo(27),1,0,0,resoluation(0),resoluation(1),0
 redraw 1}
 await 1:loop
 *desk
 if hspstat&16{}else{
 color 0,0,0
-boxf 0,192-8,255,192
+boxf 0,resoluation(1)-8,resoluation(0),resoluation(1)
 color 0,0,255
-line 8*0,192-8,8*1-1,192-8
-line 8*0,192-9,8*0,192
-line 8*1-1,192-8,8*1-1,192
-line 8*0,191,8*1-1,191
-line 8*0,192-6,8*1-1,192-6
-if mx>=8*0 and my>=192-8 and mx<=8*1 and my<=192 and mclick&1{/*appload "run.otw"*/if gstartmenu=0{exist "startmenu_list.txt":sdim gstmldt,strsize+64:if strsize!-1{bload "startmenu_list.txt",gstmldt}:gstartmenu=1}else{gstartmenu=0}:mclick=0}
+line 8*0,resoluation(1)-8,8*1-1,resoluation(1)-8
+line 8*0,resoluation(1)-9,8*0,resoluation(1)
+line 8*1-1,resoluation(1)-8,8*1-1,resoluation(1)
+line 8*0,resoluation(1)-1,8*1-1,resoluation(1)-1
+line 8*0,resoluation(1)-6,8*1-1,resoluation(1)-6
+if mx>=8*0 and my>=resoluation(1)-8 and mx<=8*1 and my<=resoluation(1) and mclick&1{/*appload "run.otw"*/if gstartmenu=0{exist "startmenu_list.txt":sdim gstmldt,strsize+64:if strsize!-1{bload "startmenu_list.txt",gstmldt}:gstartmenu=1}else{gstartmenu=0}:mclick=0}
 /*gputchr 8*1,192-8,"BGA1",1,0,1
 if mx>=8*1 and my>=192-8 and mx<=8*2 and my<=192 and mclick&1{appload "cmd.otw":mclick=0}
 gputchr 8*2,192-8,"BGA1",2,0,1
@@ -53659,7 +53661,7 @@ gputchr 8*3,192-8,"BGA1",3,0,1
 if mx>=8*3 and my>=192-8 and mx<=8*4 and my<=192 and mclick&1{appload "calc.otw":mclick=0}
 gputchr 8*4,192-8,"BGA1",9,0,1
 if mx>=8*4 and my>=192-8 and mx<=8*5 and my<=192 and mclick&1{appload "ctrl.otw":mclick=0}*/
-cntxyz=0:repeat iconmaxium:windowiconnocnx=taskiconlinked(cnt):if windowiconnocnx!0{gputchr 8*(1+cntxyz),192-8,"BGA1",windowiconnocnx,0,1:if mx>=8*(1+cntxyz) and my>=192-8 and mx<=8*(2+cntxyz) and my<=192 and mclick&1{
+cntxyz=0:repeat iconmaxium:windowiconnocnx=taskiconlinked(cnt):if windowiconnocnx!0{gputchr 8*(1+cntxyz),resoluation(1)-8,"BGA1",windowiconnocnx,0,1:if mx>=8*(1+cntxyz) and my>=resoluation(1)-8 and mx<=8*(2+cntxyz) and my<=resoluation(1) and mclick&1{
 switch windowiconnocnx
 case 1
 appload "cmd.otw"
@@ -53677,32 +53679,32 @@ case 9
 appload "ctrl.otw"
 swbreak
 swend
-mclick&=0xFFFFFFFE}:cntxyz+=1}:loop:repeat windowmaxiumpx:windowiconnocnx=windowiconno(cnt,windowlabelstackexcid(cnt)):if windowiconnocnx!0 and windowiconhide(cnt)=0{gputchr 8*(1+cntxyz),192-8,"BGA1",windowiconnocnx,0,1:if mx>=8*(1+cntxyz) and my>=192-8 and mx<=8*(2+cntxyz) and my<=192 and mclick&1{if windowminimlized(cnt)=1{windowminimlized(cnt)=0}else{if windowenableedforpid=cnt{windowminimlized(cnt)=1}else{windowenableedforpid=cnt}}:mclick&=0xFFFFFFFE}:cntxyz+=1}:loop
-gputchr 8*26,192-8,"BGA1",13,0,1
-gputchr 8*25,192-8,"BGA1",12,0,1
-gputchr 8*27,192-8,"BGA1",8,0,1
-if mx>=8*27 and my>=192-8 and mx<=8*28 and my<=192 and mclick&1{appload "osk.otw":mclick&=0xFFFFFFFE}
+mclick&=0xFFFFFFFE}:cntxyz+=1}:loop:repeat windowmaxiumpx:windowiconnocnx=windowiconno(cnt,windowlabelstackexcid(cnt)):if windowiconnocnx!0 and windowiconhide(cnt)=0{gputchr 8*(1+cntxyz),resoluation(1)-8,"BGA1",windowiconnocnx,0,1:if mx>=8*(1+cntxyz) and my>=resoluation(1)-8 and mx<=8*(2+cntxyz) and my<=resoluation(1) and mclick&1{if windowminimlized(cnt)=1{windowminimlized(cnt)=0}else{if windowenableedforpid=cnt{windowminimlized(cnt)=1}else{windowenableedforpid=cnt}}:mclick&=0xFFFFFFFE}:cntxyz+=1}:loop
+gputchr resoluation(0)-(256-8*26),resoluation(1)-8,"BGA1",13,0,1
+gputchr resoluation(0)-(256-8*25),resoluation(1)-8,"BGA1",12,0,1
+gputchr resoluation(0)-(256-8*27),resoluation(1)-8,"BGA1",8,0,1
+if mx>=resoluation(0)-(256-8*27) and my>=resoluation(1)-8 and mx<=resoluation(0)-(256-8*28) and my<=resoluation(1) and mclick&1{appload "osk.otw":mclick&=0xFFFFFFFE}
 if gstartmenu=1{
 gstmldtxlb=3
 notesel gstmldt
 repeat notemax/2:noteget gstmldtx,cnt*2:if strlen(gstmldtx)>gstmldtxlb{gstmldtxlb=strlen(gstmldtx)}:loop
 gstmldtxlb+=1
 color 0,0,0
-boxf 0,(192-9)-(((notemax/2)*8)+8),6*gstmldtxlb,192-9
+boxf 0,(resoluation(1)-9)-(((notemax/2)*8)+8),6*gstmldtxlb,resoluation(1)-9
 putchardata="RUN"
 for i,0,strlen(putchardata),1
-gputchr i*6,(192-9)-8,"BGF1",peek(putchardata,i),0,1
+gputchr i*6,(resoluation(1)-9)-8,"BGF1",peek(putchardata,i),0,1
 next
-if mx>=6*0 and my>=(192-9)-8 and mx<=6*gstmldtxlb and my<=(192-9) and mclick&1{appload "run.otw":mclick=0:gstartmenu=0}
+if mx>=6*0 and my>=(resoluation(1)-9)-8 and mx<=6*gstmldtxlb and my<=(resoluation(1)-9) and mclick&1{appload "run.otw":mclick=0:gstartmenu=0}
 repeat notemax/2
 noteget putchardata,cnt*2
 for i,0,strlen(putchardata),1
-gputchr i*6,(192-9)-8-(((cnt)*8)+8),"BGF1",peek(putchardata,i),0,1
+gputchr i*6,(resoluation(1)-9)-8-(((cnt)*8)+8),"BGF1",peek(putchardata,i),0,1
 next
-if mx>=6*0 and my>=((192-9)-8)-(((cnt)*8)+8) and mx<=6*gstmldtxlb and my<=((192-9))-(((cnt)*8)+8) and mclick&1{noteget executionsn,(cnt*2)+1:executionsnx=executionsn:executionsnxinstr=instr(executionsn,0," "):if executionsnxinstr!-1{appoptionset strmid(executionsn,executionsnxinstr+1,strlen(executionsn)):executionsnx=strmid(executionsn,0,executionsnxinstr)}:appload executionsnx:mclick=0:gstartmenu=0}
+if mx>=6*0 and my>=((resoluation(1)-9)-8)-(((cnt)*8)+8) and mx<=6*gstmldtxlb and my<=((resoluation(1)-9))-(((cnt)*8)+8) and mclick&1{noteget executionsn,(cnt*2)+1:executionsnx=executionsn:executionsnxinstr=instr(executionsn,0," "):if executionsnxinstr!-1{appoptionset strmid(executionsn,executionsnxinstr+1,strlen(executionsn)):executionsnx=strmid(executionsn,0,executionsnxinstr)}:appload executionsnx:mclick=0:gstartmenu=0}
 loop
 noteunsel
-if mclick&1 and my<=(192-9){gstartmenu=0}
+if mclick&1 and my<=(resoluation(1)-9){gstartmenu=0}
 }
 /*if mx>=8*27 and my>=192-8 and mx<=8*28 and my<=192 and mclick&1{if imemenu=1{imemenu=0:mclick&=0xFFFFFFFE}}
 if mx>=8*27 and my>=192-8 and mx<=8*28 and my<=192 and mclick&1{if imemenu=0{imemenu=1:mclick&=0xFFFFFFFE}}
@@ -53712,14 +53714,14 @@ boxf 8*27,192-24,256,192-9
 
 
 }*/
-gputchr 8*28,192-8,"BGA1",7,0,1
-gputchr 8*29,192-8,"BGA1",6,0,1
-gputchr 8*30,192-8,"BGA1",5,0,1
-gputchr 8*31,192-8,"BGA1",14,0,1
-if mx>=8*28 and my>=192-8 and mx<=8*29 and my<=192 and mclick&1{if windowenableedforpid=windowi{}else{if windowiconhide(windowenableedforpid)=0{if lpeek(winmessageptr(0x112&0xFFFF,windowenableedforpid),0)=0{windowminimlized(windowenableedforpid)=0}else{lpoke syscallptval(3),0,0xF020:lpoke syscallptval(4),0,0:gosub winmessageptr(0x112&0xFFFF,windowenableedforpid)}}:mclick&=0xFFFFFFFE}}
+gputchr resoluation(0)-(256-8*28),resoluation(1)-8,"BGA1",7,0,1
+gputchr resoluation(0)-(256-8*29),resoluation(1)-8,"BGA1",6,0,1
+gputchr resoluation(0)-(256-8*30),resoluation(1)-8,"BGA1",5,0,1
+gputchr resoluation(0)-(256-8*31),resoluation(1)-8,"BGA1",14,0,1
+if mx>=resoluation(0)-(256-8*28) and my>=resoluation(1)-8 and mx<=resoluation(0)-(256-8*29) and my<=resoluation(1) and mclick&1{if windowenableedforpid=windowi{}else{if windowiconhide(windowenableedforpid)=0{if lpeek(winmessageptr(0x112&0xFFFF,windowenableedforpid),0)=0{windowminimlized(windowenableedforpid)=0}else{lpoke syscallptval(3),0,0xF020:lpoke syscallptval(4),0,0:gosub winmessageptr(0x112&0xFFFF,windowenableedforpid)}}:mclick&=0xFFFFFFFE}}
 
-if mx>=8*30 and my>=192-8 and mx<=8*31 and my<=192 and mclick&1{if windowenableedforpid=windowi{}else{if windowiconhide(windowenableedforpid)=0{if lpeek(winmessageptr(0x112&0xFFFF,windowenableedforpid),0)=0{windowminimlized(windowenableedforpid)=1}else{lpoke syscallptval(3),0,0xF120:lpoke syscallptval(4),0,0:gosub winmessageptr(0x112&0xFFFF,windowenableedforpid)}}:mclick&=0xFFFFFFFE}}
-if mx>=8*31 and my>=192-8 and mx<=8*32 and my<=192 and mclick&1{if windowenableedforpid=windowi{}else{if windowiconhide(windowenableedforpid)=0{if lpeek(winmessageptr(0x112&0xFFFF,windowenableedforpid),0)=0{if lpeek(windowendhandler(windowenableedforpid),0)=0{appclose windowenableedforpid}else{gosub windowendhandler(windowenableedforpid)}}else{lpoke syscallptval(3),0,0xF060:lpoke syscallptval(4),0,0:gosub winmessageptr(0x112&0xFFFF,windowenableedforpid)}}:mclick&=0xFFFFFFFE}}
+if mx>=resoluation(0)-(256-8*30) and my>=resoluation(1)-8 and mx<=resoluation(0)-(256-8*31) and my<=resoluation(1) and mclick&1{if windowenableedforpid=windowi{}else{if windowiconhide(windowenableedforpid)=0{if lpeek(winmessageptr(0x112&0xFFFF,windowenableedforpid),0)=0{windowminimlized(windowenableedforpid)=1}else{lpoke syscallptval(3),0,0xF120:lpoke syscallptval(4),0,0:gosub winmessageptr(0x112&0xFFFF,windowenableedforpid)}}:mclick&=0xFFFFFFFE}}
+if mx>=resoluation(0)-(256-8*31) and my>=resoluation(1)-8 and mx<=resoluation(0)-(256-8*32) and my<=resoluation(1) and mclick&1{if windowenableedforpid=windowi{}else{if windowiconhide(windowenableedforpid)=0{if lpeek(winmessageptr(0x112&0xFFFF,windowenableedforpid),0)=0{if lpeek(windowendhandler(windowenableedforpid),0)=0{appclose windowenableedforpid}else{gosub windowendhandler(windowenableedforpid)}}else{lpoke syscallptval(3),0,0xF060:lpoke syscallptval(4),0,0:gosub winmessageptr(0x112&0xFFFF,windowenableedforpid)}}:mclick&=0xFFFFFFFE}}
 //deskiconrendmst=1
 }
 return
@@ -53755,10 +53757,10 @@ windowi=taskbarprocsid:gosub *windowrendon
 return
 
 *windowrend2
-if hspstat&16{}else{if mousectrlforos=0{mx=(mousex*256)/ginfo(26):my=(mousey*192)/ginfo(27)}else{mx=mxctl:my=myctl:mousectrlforos=0}:gsel 11:wallpaperx=ginfo(12):wallpapery=ginfo(13)
+if hspstat&16{}else{if mousectrlforos=0{mx=(mousex*resoluation(0))/ginfo(26):my=(mousey*resoluation(1))/ginfo(27)}else{mx=mxctl:my=myctl:mousectrlforos=0}:gsel 11:wallpaperx=ginfo(12):wallpapery=ginfo(13)
 redraw 0
 gsel 1
-cls 3:gzoom 256,192,11,0,0,wallpaperx,wallpapery,0:if deskiconrendmst=1{gosub *deskiconrend}}
+cls 3:gzoom resoluation(0),resoluation(1),11,0,0,wallpaperx,wallpapery,0:if deskiconrendmst=1{gosub *deskiconrend}}
 dragging=0:repeat windowmaxiumpx//for windowi,1,100,1
 if taskbarprocsid=cnt{continue cnt+1}
 windowi2=cnt
@@ -53781,7 +53783,7 @@ windowibackupformtx=windowi:windowi=taskbarprocsid:gosub *windowrendon:windowi=w
 if hspstat&16{}else{color 250,250,250:gmode 4,,,256:pos mx-6,my-2:gcopy 10,0,0,24,24
 //gosub *desk
 gsel 0
-pos 0,0:gzoom ginfo(26),ginfo(27),1,0,0,256,192,0
+pos 0,0:gzoom ginfo(26),ginfo(27),1,0,0,resoluation(0),resoluation(1),0
 redraw 1}
 return
 
@@ -55950,6 +55952,14 @@ pixelxyforimg(0)=ginfo(26),ginfo(27)
 gsel oldgselforimg,0
 gzoom syscallptval(3),syscallptval(4),20,0,0,pixelxyforimg(0),pixelxyforimg(1),syscallptval(5)
 statue=0
+swbreak
+case 99//chgdisp
+resoluation(0)=syscallptval(1),syscallptval(2)
+buffer 1,resoluation(0),resoluation(1)
+statue=0
+swbreak
+case 100//getresolution
+statue=resoluation(syscallptval(1))
 swbreak
 default
 repeat windowmaxiumpx

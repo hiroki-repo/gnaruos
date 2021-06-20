@@ -1,0 +1,19 @@
+#include "stdcall.as"
+if windowisnotfirstrun=0{
+windowisnotfirstrun=1
+}
+if mainlpjump=1{goto *mainlp}
+mainlpjump=1
+#module
+#deffunc mesc str prm_0,int prm_1
+prm_0x=prm_0
+for cntx,0,strlen(prm_0x),1
+ret=syscall(7,2,peek(prm_0x,cntx))
+next
+if prm_1=0{ret=syscall(7,2,0x0D)}
+return
+#global
+*mainlp
+ret=syscall(99,ginfo(20),ginfo(21))
+ret=syscall(7,0)
+return
