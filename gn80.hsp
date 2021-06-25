@@ -318,13 +318,12 @@ windowtaskenable=1
 ret=syscall(4,pid,varptr("Gocaine N80"))
 color 255,255,255
 boxf windowx,windowy+8,windowx+windowmaxx,windowy+windowmaxy
-ret=syscall(93,lpeek(*syscallprt,0),7,varptr(address),4200*6,lpeek(*vbiupdateaction,0))
+ret=syscall(93,lpeek(*syscallprt,0),7,varptr(address),4200*5,lpeek(*vbiupdateaction,0))
 gosub *drawbackground
 redraw 1
 //gsel 0,0
 pos windowx,windowy+8
 gzoom windowmaxx,windowmaxy-8,bufferidpxy(3),0,0,640,480,grpbfsetting
-cntmain++
 }
 pnotfirstrun=1
 return
@@ -898,6 +897,7 @@ mmplay 0
 return
 
 *vbiupdateaction
+cntmain++
 interruptformt=1
 vbismacs=1
 emulatorexeci=0
