@@ -1,0 +1,39 @@
+#include "stdcall.as"
+dupptr inkey,sysvalptr@stdcallinterface(17),4,4
+dupptr mclick,sysvalptr@stdcallinterface(18),4,4
+if windowisnotfirstrun=0{
+windowx=pid*8
+windowy=pid*8
+windowmaxx=128
+windowmaxy=128
+windowisnotfirstrun=1
+inket="":inkeys=""
+paintscreen=ginfo(25)
+buffer paintscreen,windowmaxx,windowmaxy-8
+ret=syscall(13,0x201,lpeek(*mdown,0))
+ret=syscall(13,0x202,lpeek(*mup,0))
+}
+if pnotfirstrun=1{
+windowtaskenable=1
+	ret=syscall(4,pid,varptr("PAINT"))
+color 255,255,255
+boxf windowx,windowy+8,windowx+windowmaxx,windowy+windowmaxy
+pos windowx,windowy+8
+gzoom windowmaxx,windowmaxy-8,paintscreen,0,0,windowmaxx,windowmaxy-8,0
+paintx=mx-windowx:painty=my-windowy-8
+ginfo3now=ginfo(3)
+gsel paintscreen,0
+if mousecled=1{if paintx<=windowmaxx and painty<=windowmaxy-8{pset paintx,painty}}
+gsel ginfo3now,0
+/*if inkey!inkeyold{if inkey=0x0D or inkey=0x0A {inkey=0:inkeyold=0:inketx="":cmdline="":cmdline=inket:repeat:if strmid(cmdline,cnt,1)=" "{cmdline=strmid(cmdline,1,strlen(cmdline))}else{break}:loop:sdim cmdname,128,512:i=0:for cntx,0,strlen(cmdline),1:if peek(cmdline,cntx)=' '{i=i+1}else{cmdlinesliced="":poke cmdlinesliced,0,peek(cmdline,cntx):cmdname(i)=cmdname(i)+cmdlinesliced}:next:inketx=cmdname(0)+".otw":inketxopt="":inketxopt=strmid(cmdline,strlen(cmdname(0))+1,strlen(cmdline)):ret=syscall(12,varptr(inketxopt)):ret=syscall(45,varptr(inketx)):return:ret=syscall(7,0)}else{poke inkeys,0,inkey:inket+=inkeys}}:inkeyold=inkey
+sdim messages,64:messages=inket:repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8,varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop*/
+}
+pnotfirstrun=1
+return
+
+*mdown
+mousecled=1
+return
+*mup
+mousecled=0
+return
