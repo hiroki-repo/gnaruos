@@ -908,4 +908,13 @@ vbi=1
 }else{
 vbi=0
 }
+if (cnt\2048)=0{
+if (interruptix\2)=0 and (vbis=1) and (((((interruptlevel>>3)&1)=1) or (interruptlevel&0x7)>0)){if vbismacs=1{/*z80interrupt address,0,2*1:*/ret=syscall(93,lpeek(*syscallprt,0),1,varptr(address),2*1)}:vbis=0}
+if (((((interruptlevel>>3)&1)=1) or (interruptlevel&0x7)>1)){/*z80interrupt address,0,2*2:*/ret=syscall(93,lpeek(*syscallprt,0),1,varptr(address),2*2)}
+if (interruptix\3)=0 and ((((interruptlevel>>3)&1)=1) or (interruptlevel&0x7)>2){/*z80interrupt address,0,2*3:*/ret=syscall(93,lpeek(*syscallprt,0),1,varptr(address),2*3)}
+if (interruptix\5)=0 and ((((interruptlevel>>3)&1)=1) or (interruptlevel&0x7)>4){/*z80interrupt address,0,2*5:*/ret=syscall(93,lpeek(*syscallprt,0),1,varptr(address),2*5)}
+if vbis=1{vbis=0}
+emulatorexeci=0
+interruptix+=1:if interruptix>=100{interruptix=0}
+}
 return
