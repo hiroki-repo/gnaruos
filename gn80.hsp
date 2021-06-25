@@ -32,7 +32,7 @@ loop
 pos ginfo(22)+8,ginfo(23)
 return
 #global
-cls 4
+//cls 4
 dim rtctimetmp,6
 dim rtctime,6
 dim keyio,16
@@ -170,7 +170,7 @@ wpoke wavdata,4*8+2*1,8
 lpoke wavdata,4*9,0x61746164
 lpoke wavdata,4*10,varsize(wavdata)-44
 lpoke wavdata,4*7,lpeek(wavdata,4*6)*(wpeek(wavdata,4*8+2*1)/8)*wpeek(wavdata,4*5+2*1)
-mes lpeek(wavdata,4*6)*(wpeek(wavdata,4*8+2*1)/8)*wpeek(wavdata,4*5+2*1)
+//mes lpeek(wavdata,4*6)*(wpeek(wavdata,4*8+2*1)/8)*wpeek(wavdata,4*5+2*1)
 wpoke wavdata,4*8+2*0,(wpeek(wavdata,4*8+2*1)/8)*wpeek(wavdata,4*5+2*1)
 wavs=0
 repeat ((varsize(wavdata)-4*11)/4)
