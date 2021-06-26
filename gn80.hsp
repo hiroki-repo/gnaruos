@@ -228,7 +228,7 @@ palette 9+0x10,230,230,230,0
 palette 10,0,0,0,1
 bufferidpxy(3)=ginfo(25)
 buffer bufferidpxy(3),640,480
-
+cls 4
 gsel bufferidpxy(0),0
 dim dispysize,2
 dim dispysize2,4
@@ -313,15 +313,18 @@ ret=syscall(13,0x100,lpeek(*keydown,0))
 ret=syscall(13,0x101,lpeek(*keyup,0))
 oscmdlines=""+oscmdline:repeat:if strmid(oscmdlines,0,1)=" "{oscmdlines=strmid(oscmdlines,1,strlen(oscmdlines))}else{break}:loop
 diskfname@(0)=oscmdlines
+intcools=0
 }
 if pnotfirstrun=1{
 windowtaskenable=1
 ret=syscall(4,pid,varptr("Gocaine N80"))
 color 255,255,255
 boxf windowx,windowy+8,windowx+windowmaxx,windowy+windowmaxy
-ret=syscall(93,lpeek(*syscallprt,0),7,varptr(address),4200*5,lpeek(*vbiupdateaction,0))
-gosub *drawbackground
+ret=syscall(93,lpeek(*syscallprt,0),7,varptr(address),4200,lpeek(*vbiupdateaction,0))
+if intcools>=5{gosub *drawbackground
 redraw 1
+intcools=0
+}else{intcools++}
 //gsel 0,0
 pos windowx+1,windowy+8+1
 gzoom windowmaxx,windowmaxy-8,bufferidpxy(3),0,0,640,480,grpbfsetting
