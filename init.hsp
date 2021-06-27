@@ -3,6 +3,6 @@ if windowisnotfirstrun=0{
 iconno=0
 ret=syscall(0,varptr("DEM.OTW"))
 windowisnotfirstrun=1
-ret=syscall(99,800,480)
+ret=syscall(99,720,250)
 }
 return

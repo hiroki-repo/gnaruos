@@ -10,7 +10,7 @@ if windowisnotfirstrun=0{
 windowx=pid*8
 windowy=pid*8
 windowmaxx=640
-windowmaxy=400+8
+windowmaxy=200+8
 windowisnotfirstrun=1
 inket="":inkeys=""
 buttoni1=0
