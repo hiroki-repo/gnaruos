@@ -181,8 +181,8 @@ memfile wavdata,0,varsize(wavdata)
 //mmload "MEM:a.wav",0,1
 ret=syscall(89,0,varptr("MEM:a.wav"),1,0)
 
-oncmd gosub *keydown,$100
-oncmd gosub *keyup,$101
+/*oncmd gosub *keydown,$100
+oncmd gosub *keyup,$101*/
 dim bufferidpxy,12
 bufferidpxy(1)=ginfo(25)
 buffer bufferidpxy(1),640,200,1
@@ -877,14 +877,14 @@ return
 
 *keydown
 vbismacs=0
-wparam2=wparam
+wparam2=syscallopt@stdcallinterface(3)
 keytemp=keymap(wparam2)
 if keytemp=0xFF{return}
 keyio((keytemp>>4)&0xF)|=1<<(keytemp&0xF)
 if wparam2=37 or wparam2=40{keytemp=0x86:keyio((keytemp>>4)&0xF)|=1<<(keytemp&0xF)}
 return
 *keyup
-wparam2=wparam
+wparam2=syscallopt@stdcallinterface(3)
 keytemp=keymap(wparam2)
 if keytemp=0xFF{return}
 keyio((keytemp>>4)&0xF)^=1<<(keytemp&0xF)
