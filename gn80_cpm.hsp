@@ -1,0 +1,966 @@
+#include "stdcall.as"
+/*#module
+#defcfunc syscall int prm_0,int prm_1,int prm_2,int prm_3,int prm_4,int prm_5,int prm_6,int prm_7
+return 0
+#global*/
+#include "migs_stabilizer.as"
+dupptr inkey,sysvalptr@stdcallinterface(17),4,4
+dupptr mclick,sysvalptr@stdcallinterface(18),4,4
+if windowisnotfirstrun=0{
+windowx=pid*8
+windowy=pid*8
+windowmaxx=640
+windowmaxy=200+8
+windowisnotfirstrun=1
+inket="":inkeys=""
+buttoni1=0
+buttoni2=0
+buttoni3=""
+crtconsm=""
+ttyconsm=""
+sdim memory,65536
+sdim fontrom,0x800
+sdim rom,65536,16
+sdim exrom,65536,2
+#module
+#deffunc fontrend int prm_0
+repeat 8:y=cnt
+repeat 8:x=cnt
+if (peek(fontrom@,prm_0*8+y)<<x)&128{pset ginfo(22)+x,ginfo(23)+y}
+loop
+loop
+pos ginfo(22)+8,ginfo(23)
+return
+#global
+//cls 4
+dim rtctimetmp,6
+dim rtctime,6
+dim keyio,16
+dim keymap,256
+repeat 256:keymap(cnt)=0xFF:loop
+keymap(96)=0x00
+keymap(97)=0x01
+keymap(98)=0x02
+keymap(99)=0x03
+keymap(100)=0x04
+keymap(101)=0x05
+keymap(102)=0x06
+keymap(103)=0x07
+
+keymap(104)=0x10
+keymap(105)=0x11
+keymap(106)=0x12
+keymap(107)=0x13
+keymap(108)=0x14
+keymap(109)=0x15
+keymap(46)=0x16
+keymap(13)=0x17
+
+keymap(192)=0x20
+keymap(65)=0x21
+keymap(66)=0x22
+keymap(67)=0x23
+keymap(68)=0x24
+keymap(69)=0x25
+keymap(70)=0x26
+keymap(71)=0x27
+
+keymap(72)=0x30
+keymap(73)=0x31
+keymap(74)=0x32
+keymap(75)=0x33
+keymap(76)=0x34
+keymap(77)=0x35
+keymap(78)=0x36
+keymap(79)=0x37
+
+keymap(80)=0x40
+keymap(81)=0x41
+keymap(82)=0x42
+keymap(83)=0x43
+keymap(84)=0x44
+keymap(85)=0x45
+keymap(86)=0x46
+keymap(87)=0x47
+
+keymap(88)=0x50
+keymap(89)=0x51
+keymap(90)=0x52
+keymap(219)=0x53
+keymap(220)=0x54
+keymap(221)=0x55
+keymap(222)=0x56
+keymap(189)=0x57
+
+keymap(48)=0x60
+keymap(49)=0x61
+keymap(50)=0x62
+keymap(51)=0x63
+keymap(52)=0x64
+keymap(53)=0x65
+keymap(54)=0x66
+keymap(55)=0x67
+
+keymap(56)=0x70
+keymap(57)=0x71
+keymap(186)=0x72
+keymap(187)=0x73
+keymap(188)=0x74
+keymap(190)=0x75
+keymap(191)=0x76
+keymap(226)=0x77
+
+keymap(36)=0x80
+keymap(38)=0x81
+keymap(39)=0x82
+keymap(8)=0x83
+keymap(18)=0x84
+keymap(229)=0x85
+keymap(16)=0x86
+keymap(17)=0x87
+
+keymap(35)=0x90
+keymap(112)=0x91
+keymap(113)=0x92
+keymap(114)=0x93
+keymap(115)=0x94
+keymap(116)=0x95
+keymap(32)=0x96
+keymap(27)=0x97
+
+/*keymap(40)=0xb2
+keymap(37)=0xb3*/
+keymap(40)=0x81
+keymap(37)=0x82
+
+cmtdatard=0
+cmtdatawr=0
+cassettemtstate=0
+cmtbinsnd=0
+fddconnected=0
+uipin=0
+uopout=0
+pch=0
+grpbfsetting=0
+crtc2=0
+crtc3=0
+rommode=0
+graphicdraw=0
+romtype=0
+grpmode=0
+colorgraphicmode=0
+bgcolor=0
+bankid=0
+sdim memory,65536
+sdim fontrom,0x800
+sdim rom,65536,16
+sdim exrom,65536,2
+bload "EXROM.BIN",exrom
+
+volhz=2400
+sdim wavdata,(volhz)*100+4*11//0x0158AC*2+8
+lpoke wavdata,4*0,0x46464952
+lpoke wavdata,4*1,varsize(wavdata)-8
+lpoke wavdata,4*2,0x45564157
+lpoke wavdata,4*3,0x20746D66
+lpoke wavdata,4*4,16
+wpoke wavdata,4*5+2*0,1
+wpoke wavdata,4*5+2*1,1
+lpoke wavdata,4*6,(volhz)//0xAC44
+wpoke wavdata,4*8+2*1,8
+lpoke wavdata,4*9,0x61746164
+lpoke wavdata,4*10,varsize(wavdata)-44
+lpoke wavdata,4*7,lpeek(wavdata,4*6)*(wpeek(wavdata,4*8+2*1)/8)*wpeek(wavdata,4*5+2*1)
+//mes lpeek(wavdata,4*6)*(wpeek(wavdata,4*8+2*1)/8)*wpeek(wavdata,4*5+2*1)
+wpoke wavdata,4*8+2*0,(wpeek(wavdata,4*8+2*1)/8)*wpeek(wavdata,4*5+2*1)
+wavs=0
+repeat ((varsize(wavdata)-4*11)/4)
+wavs+=50:if wavs>=100{wavs=30}
+wpoke wavdata,4*11+cnt*2,0x6000//|rnd(45)//0x7fff
+loop
+memfile wavdata,0,varsize(wavdata)
+//mmload "MEM:a.wav",0,1
+ret=syscall(89,0,varptr("MEM:a.wav"),1,0)
+
+/*oncmd gosub *keydown,$100
+oncmd gosub *keyup,$101*/
+dim bufferidpxy,12
+bufferidpxy(1)=ginfo(25)
+buffer bufferidpxy(1),640,200,1
+palcolor 0:boxf
+repeat 8
+palette cnt,((cnt>>1)&0x01)*255,((cnt>>2)&0x01)*255,((cnt>>0)&0x01)*255,(cnt=7)
+loop
+repeat 8
+palette cnt+0x10,((cnt>>1)&0x01)*230,((cnt>>2)&0x01)*230,((cnt>>0)&0x01)*230,(cnt=7)
+loop
+repeat 8
+palette cnt+0x20,((cnt>>1)&0x01)*255,((cnt>>2)&0x01)*255,((cnt>>0)&0x01)*255,(cnt=7)
+loop
+repeat 8
+palette cnt+0x30,((cnt>>1)&0x01)*230,((cnt>>2)&0x01)*230,((cnt>>0)&0x01)*230,(cnt=7)
+loop
+palette 8,0,0,0,0
+palette 9,255,255,255,0
+palette 8+0x10,0,0,0,0
+palette 9+0x10,230,230,230,0
+palette 10,0,0,0,1
+mref vram600,66
+dupptr vram600lst,varptr(vram600)+varsize(vram600)-0x800,0x800,2
+bufferidpxy(2)=ginfo(25)
+buffer bufferidpxy(2),320,200,1
+gsel bufferidpxy(2),0
+repeat 8
+if cnt=3 or cnt=7{palette cnt,0,0,0,(cnt=7)}else{palette cnt,((cnt>>0)&0x01)*255,((cnt>>1)&0x01)*255,((cnt>>2)&0x01)*255,(cnt=7)}
+loop
+repeat 8
+if cnt=3 or cnt=7{palette cnt+0x10,0,0,0,(cnt=7)}else{palette cnt+0x10,((cnt>>0)&0x01)*230,((cnt>>1)&0x01)*230,((cnt>>2)&0x01)*230,(cnt=7)}
+loop
+repeat 8
+palette cnt+0x20,((cnt>>1)&0x01)*255,((cnt>>2)&0x01)*255,((cnt>>0)&0x01)*255,(cnt=7)
+loop
+repeat 8
+palette cnt+0x30,((cnt>>1)&0x01)*230,((cnt>>2)&0x01)*230,((cnt>>0)&0x01)*230,(cnt=7)
+loop
+palette 8,0,0,0,0
+palette 9,255,255,255,0
+palette 8+0x10,0,0,0,0
+palette 9+0x10,230,230,230,0
+palette 10,0,0,0,1
+bufferidpxy(3)=ginfo(25)
+buffer bufferidpxy(3),640,480
+cls 4
+gsel bufferidpxy(0),0
+dim dispysize,2
+dim dispysize2,4
+dim displaydispc,4
+dim displaydispc2,4
+dim displaydispc3,4
+dim crtmodectrls,4
+dispysize(0)=20
+dispysize(1)=25
+dispysize2(0)=40
+dispysize2(1)=80
+dispysize2(2)=40
+dispysize2(3)=80
+displaydispc(0)=1
+displaydispc(1)=0
+displaydispc(2)=1
+displaydispc(3)=0
+displaydispc2(0)=0
+displaydispc2(1)=0
+displaydispc2(2)=1
+displaydispc2(3)=1
+displaydispc3(0)=0
+displaydispc3(1)=1
+displaydispc3(2)=1
+displaydispc3(3)=0
+crtmodectrls(0)=0
+crtmodectrls(1)=1
+crtmodectrls(2)=0
+crtmodectrls(3)=1
+bload "N80BASIC.ROM",rom(0)
+dim vramattribute,20,2,25
+dim vramattributes,80,25
+dim vramattributem,80,25,4
+bload "FONT.ROM",fontrom
+bankmax=4
+dim bankstat,bankmax
+dim bankwriteable,256,bankmax
+dim bank,bankmax
+graphicdraw=1
+cursx=-1
+cursy=-1
+//vramaddr=0xF300
+//grpmode=1
+//vramaddr=0x6780
+//crtmodectrl=1
+repeat 3:bankstat(cnt)=0xFF:loop
+dim cntxp,2
+dim cputimeforz80,2
+cputimeforz80(0)=5750
+cputimeforz80(1)=7000
+//sdim vrambuffer,120*25
+/*poke memory,0xF300,65
+poke memory,0xF301,66
+poke memory,0xF300+80,00
+poke memory,0xF300+81,8|128|64|32//|16
+poke memory,0xF300+82,00
+//poke memory,0xF300+83,128*/
+//onexit goto *appexitforemuendproc
+gettmex=gettime(7)
+gettmex2=gettime(6)
+ddim sgatt,2400
+gsel bufferidpxy(0),0
+blinktimest(0)=16,32,48,64
+//settimer hwnd,2,25,0
+/*repeat
+z80jitrun address
+loop
+end*/
+#module
+#deffunc z80memaccess int prm_0,int prm_1,int prm_2
+_z80_addr@=prm_0
+_z80_data@=prm_1
+_z80_accesstype@=prm_2
+goto *memoryaccesshnd@
+#defcfunc z80readmem int prm_0
+z80memaccess prm_0,0,1
+statue=stat
+return statue
+#global
+address=0
+ret=syscall(13,0x100,lpeek(*keydown,0))
+ret=syscall(13,0x101,lpeek(*keyup,0))
+oscmdlines=""+oscmdline:repeat:if strmid(oscmdlines,0,1)=" "{oscmdlines=strmid(oscmdlines,1,strlen(oscmdlines))}else{break}:loop
+diskfname@(0)=oscmdlines
+intcools=0
+}
+if pnotfirstrun=1{
+windowtaskenable=1
+ret=syscall(4,pid,varptr("Gocaine N80"))
+color 255,255,255
+boxf windowx,windowy+8,windowx+windowmaxx,windowy+windowmaxy
+ret=syscall(93,lpeek(*syscallprt,0),7,varptr(address),4200,lpeek(*vbiupdateaction,0))
+if intcools>=5{gosub *drawbackground
+redraw 1
+intcools=0
+}else{intcools++}
+//gsel 0,0
+pos windowx+1,windowy+8+1
+gzoom windowmaxx,windowmaxy-8,bufferidpxy(3),0,0,640,480,grpbfsetting
+}
+pnotfirstrun=1
+return
+
+*syscallprt
+dim paramate,3
+bload "MEM:ORY",paramate
+z80memaccess paramate(0),paramate(1),paramate(2)
+statue=stat
+return statue
+
+*keydownhandler
+keydowned=1
+if syscallopt@stdcallinterface(3)!0 and syscallopt@stdcallinterface(3)!16 and syscallopt@stdcallinterface(3)!17{keydownedx=1}
+return
+
+*keyuphandler
+keydowned=0
+return
+
+*mpower1
+if mpower=0{mpower=1}else{mpower=0}
+return
+
+*memoryaccesshnd
+//if z80jitfreezeblockerget()\16=0 or cntmain\16=0{
+/*if cntmain\16=0{
+vbi=1
+}else{
+vbi=0
+}*/
+switch _z80_accesstype
+case 0
+if _z80_addr<0x8000{
+if rommode=0{
+return
+}
+if bankid=0{
+poke memory,_z80_addr,_z80_data
+}else{
+if bankwriteable(bankid,2)=1{
+poke bnkmemory(bankid-1),_z80_addr,_z80_data
+}
+}
+return
+}
+poke memory,_z80_addr,_z80_data
+return
+swbreak
+case 1
+/*if interruptformt=0{
+if coutepx=32{
+if cntmain\2=0{
+vbi=1
+}else{
+vbi=0
+}
+coutepx=0
+}else{coutepx+=1}
+}*/
+if _z80_addr<0x8000 {
+if rommode=0{
+if _z80_addr<0x6000 {
+return peek(rom(rombank),_z80_addr&0x7FFF)
+}
+if _z80_addr<0x8000 {
+return peek(exrom(romtype),_z80_addr&0x1FFF)
+}
+}
+if bankid=0{
+return peek(memory,_z80_addr)
+}else{
+return peek(bnkmemory(bankid-1),_z80_addr)
+}
+}
+return peek(memory,_z80_addr)
+swbreak
+case 2
+	logmes "I/O Written:"+str(strf("%02X",_z80_addr&0xFF))
+	switch _z80_addr&0xFF
+	case 0x10
+	case 0x11
+	case 0x12
+	case 0x13
+	case 0x14
+	case 0x15
+	case 0x16
+	case 0x17
+	case 0x18
+	case 0x19
+	case 0x1A
+	case 0x1B
+	case 0x1C
+	case 0x1D
+	case 0x1E
+	case 0x1F
+		pch=_z80_data
+	swbreak
+	case 0x30
+	case 0x32
+	case 0x34
+	case 0x36
+	case 0x38
+	case 0x3A
+	case 0x3C
+	case 0x3E
+	//dialog _z80_addr&0xF
+		cmtbinsnd=(_z80_data>>4)&0x3
+		cassettemtstate=(_z80_data>>3)&0x1
+		cmtdatawr=(_z80_data>>2)&0x1
+		crtmodectrl=(_z80_data>>1)&0x1
+		pc8001widthflag=(_z80_data>>0)&0x1
+	swbreak
+	case 0x31
+	case 0x33
+	case 0x35
+	case 0x37
+	case 0x39
+	case 0x3B
+	case 0x3D
+	case 0x3F
+		crtc3=_z80_addr
+		bgcolor=(_z80_data>>5)&0x7
+		colorgraphicmode=(_z80_data>>4)&0x1
+		graphicdraw=(_z80_data>>3)&0x1
+		grpmode=(_z80_data>>2)&0x1
+		rommode=(_z80_data>>1)&0x1
+		romtype=(_z80_data>>0)&0x1
+	swbreak
+	/*case 0x31
+		romtype=(_z80_data>>0)&0x1
+		rommode=(_z80_data>>1)&0x1
+		grpmode=(_z80_data>>2)&0x1
+		//crtmodectrl=(_z80_data>>2)&0x1
+		graphicdraw=(_z80_data>>3)&0x1
+		colorgraphicmode=(_z80_data>>4)&0x1
+		bgcolor=(_z80_data>>5)&0x7
+	swbreak
+	case 0x32
+		crtc2=_z80_data
+		rombank=_z80_data&0x3
+		outputmode=(_z80_data>>2)&0x3
+		vrammode=(_z80_data>>4)&0x01
+		colourmode=(_z80_data>>5)&0x01
+		vramaccessmode=(_z80_data>>6)&0x01
+		soundintmaskmode=(_z80_data>>7)&0x01
+	swbreak*/
+	case 0x40
+	case 0x41
+	case 0x42
+	case 0x43
+	case 0x44
+	case 0x45
+	case 0x46
+	case 0x47
+	case 0x48
+	case 0x49
+	case 0x4A
+	case 0x4B
+	case 0x4C
+	case 0x4D
+	case 0x4E
+	case 0x4F
+	//dialog strf("%04X",address)
+		uopout=(_z80_data>>6)&0x03
+		beepenable=(_z80_data>>5)&0x01
+		crtcldsclkenable=(_z80_data>>3)&0x01
+		rtcclkenable=(_z80_data>>2)&0x01
+		rtcstbenable=(_z80_data>>1)&0x01
+		if rtcstbenable=1{gosub *rtcstrobe}else{if rtcclkenable=1{gosub *rtcshift}}
+		prtenable=(_z80_data>>0)&0x01:gosub *prtstrobe
+		gosub *bpsoundctlr
+	swbreak
+	case 0x50
+	case 0x52
+	case 0x54
+	case 0x56
+	case 0x58
+	case 0x5A
+	case 0x5C
+	case 0x5E
+	upd3301prm=_z80_data
+		if seq{
+			seq-=1
+			switch seq+1
+				case 1
+					colorgraphicmode=(_z80_data>>4)&0x1
+					crtcactive=0
+				swbreak
+				case 3
+					grpheight25=(_z80_data & 0x1f) < 9
+					blinkingtime=((_z80_data>>6) & 3)
+				swbreak
+				case 6
+					cursx=cursxtmp
+					cursy=_z80_data
+					seq=0
+				swbreak
+				case 7
+					cursxtmp=_z80_data
+				swbreak
+			swend
+		}
+	swbreak
+	case 0x51
+	case 0x53
+	case 0x55
+	case 0x57
+	case 0x59
+	case 0x5B
+	case 0x5D
+	case 0x5F
+	upd3301cmd=_z80_data
+		switch _z80_data & 0xF0
+		case 0x00
+			seq=5
+			crtcactive=0
+		swbreak
+		case 0x80
+			if ((_z80_data&0xF)&0x01)=0{
+				cursx=-1
+				cursy=-1
+				gettmex2=gettime(6)
+			}
+			if ((_z80_data&0xF)&0x01)=1{
+				seq=7
+			}
+		swbreak
+		swend
+	swbreak
+	/*case 0x52
+		bgcolor=(_z80_data>>3)&0x7
+	swbreak*/
+	/*case 0x60
+	case 0x61
+	case 0x62
+	case 0x63*/
+	case 0x64
+	/*case 0x65
+	case 0x66
+	case 0x67
+	case 0x69
+	case 0x6A
+	case 0x6B
+	case 0x6C
+	case 0x6D
+	case 0x6E
+	case 0x6F*/
+		poke vramaddr,dma2stackcount,_z80_data
+		dma2stackcount=dma2stackcount+1
+		if dma2stackcount=2{dma2stackcount=0}
+	swbreak
+	case 0x68
+		dmamodestat=_z80_data
+		dmaseq=2
+	swbreak
+	case 0x90
+	case 0x91
+	case 0x92
+	case 0x93
+	case 0x94
+	case 0x95
+	case 0x96
+	case 0x97
+	case 0x98
+	case 0x99
+	case 0x9A
+	case 0x9B
+	case 0x9C
+	case 0x9D
+	case 0x9E
+	case 0x9F
+		sgtbl=0.250000f, 0.198582f, 0.157739f, 0.125297f, 0.099527f, 0.079057f, 0.062797f, 0.049882f, 0.039622f, 0.031473f, 0.025000f, 0.019858f, 0.015774f, 0.012530f, 0.009953f, 0.000000f
+		if _z80_data&0x80{
+			sgregnum = _z80_data >> 4 & 7
+			sgosc=sgregnum>>1
+			switch sgregnum
+			case 0
+			case 2
+			case 4
+				sgtmp=_z80_data&0x0F
+			swbreak
+			case 1
+			case 3
+			case 5
+			case 7
+				sgatt(sgosc)=sgtbl(_z80_data&0x0F)
+			swbreak
+			case 6
+				sgnf = (_z80_data & 3) == 3
+				if sgnf{sgfreq(3) = sgfreq(2) << 1}else{sgfreq(3) = 0x20 << (_z80_data & 3)}
+				sgwhite = (_z80_data & 4) != 0
+			swbreak
+			swend
+		}else{if sgosc!=3{
+							sgfreq(sgosc) = (_z80_data & 0x3f) << 4 | sgtmp
+							if (sgfreq(sgosc)=0){sgfreq(sgosc) = 1024}
+							if (sgnf && sgosc == 2){sgfreq(3) = sgfreq(2) << 1}
+						}
+		}
+	swbreak
+	case 0xA0
+		poke cpmdskdmaptr,0,_z80_data
+	swbreak
+	case 0xA1
+		poke cpmdskdmaptr,1,_z80_data
+	swbreak
+	case 0xA2
+		poke cpmdsksectrackptr,0,_z80_data
+	swbreak
+	case 0xA3
+		poke cpmdsksectrackptr,1,_z80_data
+	swbreak
+	case 0xA4
+	sdim dmabuf,128
+	dskstat=-1:exist oscmdlines:if strsize!-1{dskstat=0
+		switch (_z80_data&1)
+		case 0
+			bload oscmdlines,dmabuf,128,(cpmdsksectrackptr*128)
+			for dmacnt,0,128,1:z80memaccess dmacnt+cpmdskdmaptr,peek(dmabuf,dmacnt),0:next
+		swbreak
+		case 1
+			for dmacnt,0,128,1:z80memaccess dmacnt+cpmdskdmaptr,0,1:poke dmabuf,dmacnt,stat:next
+			bsave oscmdlines,dmabuf,128,(cpmdsksectrackptr*128)
+		swbreak
+		swend
+	}
+	swbreak
+	case 0xE0
+	case 0xE1
+	case 0xE2
+		bankstat(_switch_val-0xE0)=_z80_data^0xFF:repeat 4:bankwriteable(cnt,_switch_val-0xE0)=0:if (_z80_data>>(cnt+4))&0x01 {bankwriteable(cnt,_switch_val-0xE0)=1}:loop:repeat 4:if (_z80_data>>cnt)&0x01 {bank(_switch_val-0xE0)=cnt:break}:loop
+	swbreak
+	case 0xE3
+		bankid=_z80_data
+	swbreak
+	case 0xE4
+		interruptlevel=_z80_data&0xF
+	swbreak
+	case 0xE6
+		interruptphb=_z80_data&0x7
+	swbreak
+	swend
+swbreak
+case 3
+	logmes "I/O Read:"+str(strf("%02X",_z80_addr&0xFF))
+	switch _z80_addr&0xFF
+	case 0x00
+	case 0x01
+	case 0x02
+	case 0x03
+	case 0x04
+	case 0x05
+	case 0x06
+	case 0x07
+	case 0x08
+	case 0x09
+	case 0x0A
+	case 0x0B
+	case 0x0C
+	case 0x0D
+	case 0x0E
+	case 0x0F
+		return 0xFF^keyio(_z80_addr&0xF)
+	swbreak
+	case 0x20
+	case 0x21
+	case 0x22
+	case 0x23
+	case 0x24
+	case 0x25
+	case 0x26
+	case 0x27
+	case 0x28
+	case 0x29
+	case 0x2A
+	case 0x2B
+	case 0x2C
+	case 0x2D
+	case 0x2E
+	case 0x2F
+		return (_switch_val&0x01)*0xE1
+	swbreak
+	case 0x30
+	case 0x32
+	case 0x34
+	case 0x36
+	case 0x38
+	case 0x3A
+	case 0x3C
+	case 0x3E
+		return crtc2
+	swbreak
+	case 0x31
+	case 0x33
+	case 0x35
+	case 0x37
+	case 0x39
+	case 0x3B
+	case 0x3D
+	case 0x3F
+		return ((bgcolor&0x7)<<5)|((colorgraphicmode&0x01)<<4)|((graphicdraw&0x01)<<3)|((grpmode&0x01)<<2)|((rommode&0x01)<<1)|((romtype&0x01)<<0)
+	swbreak
+	case 0x40
+	case 0x41
+	case 0x42
+	case 0x43
+	case 0x44
+	case 0x45
+	case 0x46
+	case 0x47
+	case 0x48
+	case 0x49
+	case 0x4A
+	case 0x4B
+	case 0x4C
+	case 0x4D
+	case 0x4E
+	case 0x4F
+	logmes "0x40 i/o access:"+strf("%04X",address)
+		return ((uipin&3)<<6)|(vbi<<5)|((rtcdata&1)<<4)|(((fddconnected&1)!1)<<3)|((cmtdatard&1)<<2)|((prtready&1)<<0)//0x0a//0x5//|0x0a
+	swbreak
+	case 0x50
+	case 0x52
+	case 0x54
+	case 0x56
+	case 0x58
+	case 0x5A
+	case 0x5C
+	case 0x5E
+		return upd3301prm
+	swbreak
+	case 0x51
+	case 0x53
+	case 0x55
+	case 0x57
+	case 0x59
+	case 0x5B
+	case 0x5D
+	case 0x5F
+		return upd3301cmd
+	swbreak
+	case 0x68
+		return dmamodestat
+	swbreak
+	case 0xA0
+		return peek(cpmdskdmaptr,0)
+	swbreak
+	case 0xA1
+		return peek(cpmdskdmaptr,1)
+	swbreak
+	case 0xA2
+		return peek(cpmdsksectrackptr,0)
+	swbreak
+	case 0xA3
+		return peek(cpmdsksectrackptr,1)
+	swbreak
+	case 0xA4
+		return dskstat
+	swbreak
+	case 0xE0
+	case 0xE1
+	case 0xE2
+		return bankstat(_switch_val-0xE0)
+	swbreak
+	case 0xE3
+		return bankid
+	swbreak
+	case 0xE4
+		return interruptlevel
+	swbreak
+	case 0xFE
+		logmes "0xFE i/o access:"+strf("%04X",address)
+		return 0
+	swbreak
+	swend
+swbreak
+swend
+return
+
+*rtcstrobe
+switch pch & 0xF
+case 1
+rtcpos=0
+dim rtctimetmp,5
+rtctime(4)=gettime(1)<<4
+rtctime(3)=((gettime(3)/10)<<4)+gettime(3)\10
+rtctime(2)=((gettime(4)/10)<<4)+gettime(4)\10
+rtctime(1)=((gettime(5)/10)<<4)+gettime(5)\10
+rtctime(0)=((gettime(6)/10)<<4)+gettime(6)\10
+rtcdata=rtctime(0)&0x01
+swbreak
+case 2
+repeat 5:rtctime(cnt)=rtctimetmp(cnt):loop
+swbreak
+swend
+return
+*rtcshift
+if rtcpos<40{
+rtctimetmp(rtcpos>>3)|= (pch >> 3 & 1) << (rtcpos & 7)
+rtcpos+=1
+rtcdata=rtctime(rtcpos >> 3) >> (rtcpos & 7) & 1
+}
+return
+
+*prtstrobe
+	if prtenable & prtenable0!=0 & pch!='\r'{}
+	prtenable0=prtenable
+return
+
+*drawbackground
+ginfo3baka=ginfo(3)
+interruptformtbakfordw=interruptformt
+interruptformt=1:functyper=1|(0<<4):repeat plaginmax:if plaginconf(0,cnt)=1{if plaginconf(1,cnt)=functyper or plaginconf(2,cnt)=functyper or plaginconf(3,cnt)=functyper or plaginconf(4,cnt)=functyper or plaginconf(5,cnt)=functyper{}else{continue cnt+1}}:if lpeek(plaginptr(cnt),0)!0{memfile plaginconfptr:lpoke plaginconfptr,4*0,varptr(plaginconfptr):lpoke plaginconfptr,4*1,functyper:lpoke plaginconfptr,4*2,sysfunctyper:lpoke plaginconfptr,4*6,varptr(plaginconf(0,cnt)):pluginid=cnt:gosub plaginptr(cnt)}:loop:interruptformt=1
+emulatorexeci=0
+cntmaincs+=((blinktimest(blinkingtime))-1)
+vbis=1
+if graphicdraw=1{
+gsel bufferidpxy(1+displaydispc(pc8001widthflag|(colorgraphicmode<<1))),0
+redraw 0
+//repeat 120*25:poke vrambuffer,cnt,z80readmem(vramaddr+cnt):loop
+//vbi=1
+switch videomode
+case 0
+if crtmodectrl=0{palcolor bgcolor:boxf}else{palcolor 8:boxf}
+palcolor 9+0x10:if cursx!-1 and cursy!-1{if (cntmain\blinktimest(blinkingtime))<(blinktimest(blinkingtime)/2){boxf ((cursx/((pc8001widthflag=0)+1))*8),(cursy*8),((cursx/((pc8001widthflag=0)+1))*8)+7,(cursy*8)+7}}
+repeat 20*25:vramattribute((cnt\20),0,(cnt/20))=z80readmem(vramaddr+80+((cnt\20)*2)+((cnt/20)*120)+0)&127:vramattribute((cnt\20),1,(cnt/20))=z80readmem(vramaddr+80+((cnt\20)*2)+((cnt/20)*120)+1):loop
+executext=0:cntx=0:repeat 80*25:cntap=cnt:repeat 20:if vramattribute((cnt\20),0,(cntap/80))<=(cntap\80) /*and ((vramattribute((cntx\20),1,(cnt/80))&8)!0)=0*/{cntx=cnt}:loop:if vramattribute((cntx\20),0,(cnt/80))<=(cnt\80){vramattributem((cnt\80),(cnt/80),3)=vramattribute((cntx\20),1,(cnt/80))}:/*loop:executext=0:cntx=0:repeat 80*25:*/cntap=cnt:repeat 20:if vramattribute((cnt\20),0,(cntap/80))<=(cntap\80) and ((vramattribute((cnt\20),1,(cntap/80))&8)!0)=0 /*and ((vramattribute((cntx\20),1,(cnt/80))&8)!0)=0*/{cntx=cnt}:loop:if vramattribute((cntx\20),0,(cnt/80))<=(cnt\80) and ((vramattribute((cntx\20),1,(cnt/80))&8)!0)=0{vramattributem((cnt\80),(cnt/80),0)=vramattribute((cntx\20),1,(cnt/80))}:if crtmodectrl=0{cntap=cnt:repeat 20:if vramattribute((cnt\20),0,(cntap/80))<=(cntap\80) and ((vramattribute((cnt\20),1,(cntap/80))&8)!0)=1/* and ((vramattribute((cnt\20),1,(cntap/80))&16)!0)=0*/{cntx=cnt}:loop:if vramattribute((cntx\20),0,(cnt/80))<=(cnt\80) and ((vramattribute((cntx\20),1,(cnt/80))&8)!0)=1 /*and ((vramattribute((cnt\20),1,(cntap/80))&16)!0)=0*/{vramattributem((cnt\80),(cnt/80),1)=vramattribute((cntx\20),1,(cnt/80))}/*:cntap=cnt:repeat 20:if vramattribute((cnt\20),0,(cntap/80))<=(cntap\80) and ((vramattribute((cnt\20),1,(cntap/80))&8)!0)=1 and ((vramattribute((cnt\20),1,(cntap/80))&16)!0)=1{cntx=cnt}:loop:if vramattribute((cntx\20),0,(cnt/80))<=(cnt\80) and ((vramattribute((cntx\20),1,(cnt/80))&8)!0)=1 and ((vramattribute((cntx\20),1,(cnt/80))&16)!0)=1{vramattributem((cnt\80),(cnt/80),2)=vramattribute((cntx\20),1,(cnt/80))}*/}:grpccnt=cnt
+fontid=z80readmem(vramaddr+(120*(grpccnt/80))+((grpccnt\80)*((displaydispc2(pc8001widthflag|(colorgraphicmode<<1))=0)+1)))
+attributedata=vramattributem((cnt\80),(cnt/80),0)
+attributedata2=vramattributem((cnt\80),(cnt/80),3)
+switch crtmodectrl
+case 0
+if colorgraphicmode=0 and grpmode=1{palcolor 9+(0x10*(((attributedata>>1)&0x1)=0))}else{palletedcolorchk=(vramattributem((cnt\80),(cnt/80),/*1+((((attributedata2>>7)and(attributedata2>>3))|((attributedata2>>4)&(vramattributem((cnt\80),(cnt/80),0)>>3)))&0x1)*/1)>>5)+(0x10*(((attributedata>>1)&0x1)=0))+(0x20*((grpmode=0))):palcolor palletedcolorchk}
+swbreak
+case 1
+palcolor 9+(0x10*(((attributedata>>1)&0x1)=0))
+swbreak
+swend
+//if grpmode=0{attributedata=vramattributem((cnt\80),(cnt/80),0):palcolor (vramattributem((cnt\80),(cnt/80),1+((attributedata>>7)&0x1))>>5)}
+//dialog attributedata
+//stop
+if attributedata&0x1{}else{
+if (displaydispc3(pc8001widthflag|(colorgraphicmode<<1))=0)=0 and grpccnt\2=1{}else{
+if (((attributedata2&128)!0) and ((attributedata2&8)=0)) or (((attributedata2&16)!0) and ((attributedata2&8)=8)) {
+repeat 8
+if (fontid>>cnt) & 0x01{boxf (((grpccnt\80)/(displaydispc3(pc8001widthflag|(colorgraphicmode<<1))+1))*8)+4*(cnt/4),((grpccnt/80)*8)+2*(cnt\4),(((grpccnt\80)/(displaydispc3(pc8001widthflag|(colorgraphicmode<<1))+1))*8)+4*((cnt/4)+1)-1,((grpccnt/80)*8)+2*((cnt\4)+1)-1}
+loop
+}else{
+/*fontidx="":lpoke fontidx,0,fontid
+dialog fontidx*/
+if attributedata&0x4{boxf ((int(double(0.5*((pc8001widthflag!0)+1))*(grpccnt\80)))*8),((grpccnt/80)*8),((int(double(0.5*((pc8001widthflag!0)+1))*(grpccnt\80)))*8)+8,(((grpccnt/80)*8)+8):if crtmodectrl=0{palcolor bgcolor}else{palcolor 8}}
+if cursx!-1 and cursy!-1{if (cntmain\blinktimest(blinkingtime))<(blinktimest(blinkingtime)/2){if cursx=(grpccnt\80) and cursy=(grpccnt/80){if crtmodectrl=0{palcolor bgcolor}else{palcolor 8}}}}
+if (attributedata&0x1)=0 and (attributedata&0x2)=2 and (cntmain\(blinktimest(blinkingtime)*2))>((blinktimest(blinkingtime)*2)/4){boxf ((int(double(0.5*((pc8001widthflag!0)+1))*(grpccnt\80)))*8),((grpccnt/80)*8),((int(double(0.5*((pc8001widthflag!0)+1))*(grpccnt\80)))*8)+8,(((grpccnt/80)*8)+8):if crtmodectrl=0{palcolor bgcolor}else{palcolor 8}}
+pos ((grpccnt\80)/(displaydispc3(pc8001widthflag|(colorgraphicmode<<1))+1))*8,(grpccnt/80)*8
+fontrend fontid
+}
+if attributedata&16{boxf (((grpccnt\80)/(displaydispc3(pc8001widthflag|(colorgraphicmode<<1))+1))*8),((grpccnt/80)*8)+7,(((grpccnt\80)/(displaydispc3(pc8001widthflag|(colorgraphicmode<<1))+1))*8)+8,((grpccnt/80)*8)+8}
+if attributedata&32{boxf (((grpccnt\80)/(displaydispc3(pc8001widthflag|(colorgraphicmode<<1))+1))*8),((grpccnt/80)*8),(((grpccnt\80)/(displaydispc3(pc8001widthflag|(colorgraphicmode<<1))+1))*8)+8,((grpccnt/80)*8)+1}
+if attributedata&64{boxf (((grpccnt\80)/(displaydispc3(pc8001widthflag|(colorgraphicmode<<1))+1))*8)+4,((grpccnt/80)*8),(((grpccnt\80)/(displaydispc3(pc8001widthflag|(colorgraphicmode<<1))+1))*8)+5,((grpccnt/80)*8)+8}
+}
+}
+loop
+swbreak
+swend
+/*else{
+switch crtmodectrl
+case 0
+if colorgraphicmode=0 and grpmode=1{palcolor 9+(0x10*(((attributedata>>1)&0x1)=0))}else{palletedcolorchk=(vramattributem((cnt\80),(cnt/80),/*1+((((attributedata2>>7)and(attributedata2>>3))|((attributedata2>>4)&(vramattributem((cnt\80),(cnt/80),0)>>3)))&0x1)*//*1)>>5)+(0x10*(((attributedata>>1)&0x1)=0))+(0x20*((grpmode=0))):palcolor palletedcolorchk}
+swbreak
+case 1
+palcolor 9+(0x10*(((attributedata>>1)&0x1)=0))
+swbreak
+swend
+}*/
+//gettme2=gettime(6)-gettmex2:if gettme2<0{gettme2+=1000}
+//if crtmodectrl=0{}
+gsel bufferidpxy(3),0
+pos 0,0
+gzoom 640,480,bufferidpxy(1+displaydispc(pc8001widthflag|(colorgraphicmode<<1))),0,0,8*dispysize2(pc8001widthflag|(colorgraphicmode<<1)),8*dispysize(grpheight25),grpbfsetting
+redraw 1
+}else{gsel bufferidpxy(3),0:color 0,0,0:boxf:redraw 1}
+//await
+interruptformt=1:functyper=3|(0<<4):repeat plaginmax:if plaginconf(0,cnt)=1{if plaginconf(1,cnt)=functyper or plaginconf(2,cnt)=functyper or plaginconf(3,cnt)=functyper or plaginconf(4,cnt)=functyper or plaginconf(5,cnt)=functyper{}else{continue cnt+1}}:if lpeek(plaginptr(cnt),0)!0{memfile plaginconfptr:lpoke plaginconfptr,4*0,varptr(plaginconfptr):lpoke plaginconfptr,4*1,functyper:lpoke plaginconfptr,4*2,sysfunctyper:lpoke plaginconfptr,4*6,varptr(plaginconf(0,cnt)):pluginid=cnt:gosub plaginptr(cnt)}:loop:interruptformt=1
+interruptformt=interruptformtbakfordw
+gsel ginfo3baka,0
+return
+
+
+*keydown
+vbismacs=0
+wparam2=syscallopt@stdcallinterface(3)
+keytemp=keymap(wparam2)
+if keytemp=0xFF{return}
+keyio((keytemp>>4)&0xF)|=1<<(keytemp&0xF)
+if wparam2=37 or wparam2=40{keytemp=0x86:keyio((keytemp>>4)&0xF)|=1<<(keytemp&0xF)}
+return
+*keyup
+wparam2=syscallopt@stdcallinterface(3)
+keytemp=keymap(wparam2)
+if keytemp=0xFF{return}
+keyio((keytemp>>4)&0xF)^=1<<(keytemp&0xF)
+if wparam2=37 or wparam2=40{keytemp=0x86:keyio((keytemp>>4)&0xF)^=1<<(keytemp&0xF)}
+return
+
+
+*bpsoundctlr
+if playingbeep=0{
+if beepenable=1{
+playingbeep=1
+ret=syscall(89,1,0)
+//mmplay 0
+}else{/*mmstop 0*/:ret=syscall(89,2,0)}}else{if beepenable=0{/*mmstop 0*/:ret=syscall(89,2,0):playingbeep=0}}
+return
+
+*vbiupdateaction
+cntmain++
+interruptformt=1
+vbismacs=1
+emulatorexeci=0
+if ((cnt\128)>64)=0{
+vbi=1
+}else{
+vbi=0
+}
+if (cnt\2048)=0{
+if (interruptix\2)=0 and (vbis=1) and (((((interruptlevel>>3)&1)=1) or (interruptlevel&0x7)>0)){if vbismacs=1{/*z80interrupt address,0,2*1:*/ret=syscall(93,lpeek(*syscallprt,0),1,varptr(address),2*1)}:vbis=0}
+if (((((interruptlevel>>3)&1)=1) or (interruptlevel&0x7)>1)){/*z80interrupt address,0,2*2:*/ret=syscall(93,lpeek(*syscallprt,0),1,varptr(address),2*2)}
+if (interruptix\3)=0 and ((((interruptlevel>>3)&1)=1) or (interruptlevel&0x7)>2){/*z80interrupt address,0,2*3:*/ret=syscall(93,lpeek(*syscallprt,0),1,varptr(address),2*3)}
+if (interruptix\5)=0 and ((((interruptlevel>>3)&1)=1) or (interruptlevel&0x7)>4){/*z80interrupt address,0,2*5:*/ret=syscall(93,lpeek(*syscallprt,0),1,varptr(address),2*5)}
+if vbis=1{vbis=0}
+emulatorexeci=0
+interruptix+=1:if interruptix>=100{interruptix=0}
+}
+return
