@@ -55504,9 +55504,11 @@ case 64//memnativealloc
 	switch syscallptval(1)
 	case 0
 		VirtualAlloc syscallptval(2),syscallptval(3),syscallptval(4),syscallptval(5)
+		statue=stat
 	swbreak
 	case 1
 		VirtualFree syscallptval(2),syscallptval(3)
+		statue=stat
 	swbreak
 	swend
 swbreak
