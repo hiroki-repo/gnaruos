@@ -4,7 +4,7 @@ dupptr mclick,sysvalptr@stdcallinterface(18),4,4
 if windowisnotfirstrun=0{
 windowx=pid*8
 windowy=pid*8
-windowmaxx=200+(5*6)
+windowmaxx=400+(5*6)
 windowmaxy=160
 windowisnotfirstrun=1
 inket="":inkeys=""
@@ -227,7 +227,7 @@ minusin=0:plusin=0:sdim messages,64:crtconsms="":notesel crtconsm:notesel crtcon
 color 80,80,80
 boxf windowx,windowy+145+8,windowx+windowmaxx,windowy+windowmaxy
 ret=syscall(15,3,000,145,0,lpeek(*prevcrtcons,0))
-ret=syscall(15,3,223,145,1,lpeek(*nextcrtcons,0))
+ret=syscall(15,3,423,145,1,lpeek(*nextcrtcons,0))
 swbreak
 case 1
 color 1,1,1
@@ -237,7 +237,7 @@ minusin=0:plusin=0:sdim messages,64:ttyconsms="":notesel ttyconsm:notesel ttycon
 color 80,80,80
 boxf windowx,windowy+145+8,windowx+windowmaxx,windowy+windowmaxy
 ret=syscall(15,3,000,145,0,lpeek(*prevttycons,0))
-ret=syscall(15,3,223,145,1,lpeek(*nextttycons,0))
+ret=syscall(15,3,423,145,1,lpeek(*nextttycons,0))
 swbreak
 case 5
 color 30,100,255
@@ -256,15 +256,15 @@ sdim messages,64:messages="HL': "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,
 sdim messages,64:messages="AF': "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,00))+" "+strf("%02X",syscall(93,lpeek(*syscallprt,0),5,1,01)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+(cnt*6),int(windowy)+8+16+(8*11),varptr("BGF1"),peek(messages,cnt),0,varptr(1.0)):loop
 color 255,255,255
 boxf windowx+(6*10),windowy+8+16,windowx+windowmaxx,windowy+windowmaxy
-for cntxxxx,0,8,1
-sdim messages,64:messages=strf("%02X",(cntxxxx\8)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+((cnt+10+0+5+(3*(cntxxxx\8)))*6),int(windowy)+8+16+(8*(cntxxxx/8)),varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop
+for cntxxxx,0,16,1
+sdim messages,64:messages=strf("%02X",(cntxxxx\16)):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+((cnt+10+0+5+(3*(cntxxxx\16)))*6),int(windowy)+8+16+(8*(cntxxxx/16)),varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop
 next
-for cntxxxx,0,8*15,1
-sdim messages,64:messages=strf("%04X",(startptr*8)+(8*(cntxxxx/8))):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+((cnt+10+0)*6),int(windowy)+8+16+8+(8*(cntxxxx/8)),varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop
-sdim messages,64:messages=strf("%02X",peek(memory,cntxxxx+(startptr*8))):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+((cnt+10+(3*(cntxxxx\8))+5)*6),int(windowy)+8+16+8+(8*(cntxxxx/8)),varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop
+for cntxxxx,0,16*15,1
+sdim messages,64:messages=strf("%04X",(startptr*16)+(16*(cntxxxx/16))):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+((cnt+10+0)*6),int(windowy)+8+16+8+(8*(cntxxxx/16)),varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop
+sdim messages,64:messages=strf("%02X",peek(memory,cntxxxx+(startptr*16))):repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+((cnt+10+(3*(cntxxxx\16))+5)*6),int(windowy)+8+16+8+(8*(cntxxxx/16)),varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):loop
 next
-ret=syscall(15,3,231-(8*2),145,2,lpeek(*prevmemdata,0))
-ret=syscall(15,3,231-(8*1),145,3,lpeek(*nextmemdata,0))
+ret=syscall(15,3,431-(8*2),145,2,lpeek(*prevmemdata,0))
+ret=syscall(15,3,431-(8*1),145,3,lpeek(*nextmemdata,0))
 swbreak
 swend
 color 10,10,10
@@ -292,11 +292,11 @@ return
 
 *prevmemdata
 startptr-=1
-if startptr<=-1{startptr=0x1FF1}
+if startptr<=-1{startptr=0xFF1}
 return
 *nextmemdata
 startptr+=1
-if startptr>=0x1FF2{startptr=0}
+if startptr>=0xFF2{startptr=0}
 return
 
 *changecrt
