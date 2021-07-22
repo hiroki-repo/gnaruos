@@ -1,0 +1,70 @@
+#include "stdcall.as"
+dupptr inkey,sysvalptr@stdcallinterface(17),4,4
+dupptr mclick,sysvalptr@stdcallinterface(18),4,4
+if windowisnotfirstrun=0{
+windowx=pid*8
+windowy=pid*8
+windowmaxx=128
+windowmaxy=96
+windowisnotfirstrun=1
+inket="":inkeys=""
+buttoni1=0
+buttoni2=0
+buttoni3=""
+iconno=48
+textdata=""
+}
+if pnotfirstrun=1{
+windowtaskenable=1
+color 255,255,255
+boxf windowx,windowy+8,windowx+windowmaxx,windowy+windowmaxy
+if fname!="" and actionid=1{
+notesel textdata
+notesave fname
+actionid=0:fname=""
+}
+if fname!="" and actionid=2{
+notesel textdata
+exist fname:if strsize!-1{
+noteload fname}else{
+cmdlineopx="File not found!"
+//cmdlineopx="zasm.com"
+ret=syscall(12,varptr(cmdlineopx))
+cmdlineopx2="dlg.otw"
+ret=syscall(11,varptr(cmdlineopx2))
+}
+actionid=0:fname=""
+}
+/*ret=syscall(15,0,0,8*0,varptr(buttoni1))
+ret=syscall(15,1,0,8*1,varptr(buttoni2))*/
+ret=syscall(15,2,8*0,8*0,8*4,8*1,varptr("LOAD"),lpeek(*loaddata,0))
+ret=syscall(15,2,8*4,8*0,8*8,8*1,varptr("SAVE"),lpeek(*savedata,0))
+/*if inkey!inkeyold{if inkey=0x0D or inkey=0x0A {inkey=0:inkeyold=0:inketx="":inketx=inket+".otw":ret=syscall(11,varptr(inketx)):ret=syscall(7,0)}else{poke inkeys,0,inkey:inket+=inkeys}}*/
+cntplusy=0:cntminusx=0
+sdim messages,64:messages=textdata:repeat:if cnt=strlen(messages){break}:ret=syscall(5,int(windowx)+((cnt-cntminusx)*6),int(windowy)+(8*(cntplusy+2)),varptr("BGF1"),peek(messages,cnt),1,varptr(1.0)):if peek(messages,cnt)=13{cntplusy+=1:cntminusx=cnt}:loop
+}
+pnotfirstrun=1
+return
+
+*loaddata
+fname=""
+dim datastrct,8:datastrct(0)=varptr(fname),varptr("LOAD")
+cmdlineopx=str(varptr(datastrct))
+//cmdlineopx="zasm.com"
+ret=syscall(12,varptr(cmdlineopx))
+cmdlineopx2="filedlg.otw"
+ret=syscall(11,varptr(cmdlineopx2))
+//repeat:ret=syscall(94):if fname!=""{break}:await:loop
+actionid=2
+return
+*savedata
+fname=""
+dim datastrct,8:datastrct(0)=varptr(fname),varptr("SAVE")
+cmdlineopx=str(varptr(datastrct))
+//cmdlineopx="zasm.com"
+ret=syscall(12,varptr(cmdlineopx))
+cmdlineopx2="filedlg.otw"
+ret=syscall(11,varptr(cmdlineopx2))
+//repeat:ret=syscall(94):if fname!=""{break}:await:loop
+actionid=1
+return
