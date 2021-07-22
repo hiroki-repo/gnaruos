@@ -259,12 +259,28 @@ crtmodectrls(0)=0
 crtmodectrls(1)=1
 crtmodectrls(2)=0
 crtmodectrls(3)=1
+exist "N80BASIC.ROM":if strsize!-1{
 bload "N80BASIC.ROM",rom(0)
+}else{
+cmdlineopx="N80BASIC.ROM not found!"
+//cmdlineopx="zasm.com"
+ret=syscall(12,varptr(cmdlineopx))
+cmdlineopx2="dlg.otw"
+ret=syscall(11,varptr(cmdlineopx2))
+}
 dim vramattribute,40,3,25
 dim vramattributes,80,25
 dim vramattributem,80,25,4
 dim vramattributent,25
+exist "FONT.ROM":if strsize!-1{
 bload "FONT.ROM",fontrom
+}else{
+cmdlineopx="FONT.ROM not found!"
+//cmdlineopx="zasm.com"
+ret=syscall(12,varptr(cmdlineopx))
+cmdlineopx2="dlg.otw"
+ret=syscall(11,varptr(cmdlineopx2))
+}
 bankmax=4
 dim bankstat,bankmax
 dim bankwriteable,256,bankmax
