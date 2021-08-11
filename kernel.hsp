@@ -53628,6 +53628,185 @@ oncmd gosub *clickup3, 0x0205
 #define FD_ACCEPT       $00000008
 #define ADDR_ANY        $00000000
 
+#module
+#uselib "cygwin1.dll"
+#func cygwin_dll_init "cygwin_dll_init"
+#cfunc _access "access" int,int
+#cfunc _alarm "alarm" int
+#cfunc _brk "brk" int
+#cfunc _chdir "chdir" int
+#cfunc _chmod "chmod" int,int
+#cfunc _chown "chown" int,int,int
+#cfunc _close "close" int
+#cfunc _getset "getset" int,int
+#cfunc _dup "dup" int
+#cfunc _dup2 "dup2" int,int
+#cfunc _execve "execve" int,int,int
+#cfunc _exit "exit" int
+#cfunc _fork "fork" //int
+#cfunc _fstat "fstat" int,int
+#cfunc _getfsys "getfsys" int,int
+#cfunc _ioctl "ioctl" int,int,int
+#cfunc _kill "kill" int,int
+#cfunc _link "link" int,int
+#cfunc _mknod "mknod" int,int,int
+#cfunc _mount "mount" int,int,int
+#cfunc _open "open" int,int
+#cfunc _pause "pause" //int
+#cfunc _pipe "pipe" int
+#cfunc _read "read" int,int,int
+#cfunc _sbrk "sbrk" int
+#cfunc _lseek "lseek" int,int,int
+#cfunc _signal "signal" int,int
+#cfunc _stat "stat" int,int
+#cfunc _stime "stime" int
+#cfunc _sync "sync" //int
+#cfunc _time "time" int
+#cfunc _times "times" int
+#cfunc _umount "umount" int
+#cfunc _unlink "unlink" int
+#cfunc _utime "utime" int,int
+#cfunc _waitpid "waitpid" int,int,int
+#cfunc _write "write" int,int,int
+#cfunc _reboot "reboot" int,int
+#cfunc _symlink "symlink" int,int
+#cfunc _chroot "chroot" int
+#cfunc _getopt "getopt" int,int
+#defcfunc local _getactualptr int prm_0ab
+prm_0x=prm_0ab:if prm_0x<0x10000 and prm_0x!0{return (prm_0x+ptrfor8bitsys@)}
+return prm_0x
+#defcfunc _posix_svc int prm_0,int prm_1,int prm_2,int prm_3,int prm_4,int prm_5,int prm_6,int prm_7,int prm_8,int prm_9
+if cdieced=0{cygwin_dll_init:cdieced=1}
+switch prm_0
+case 0
+return _access(_getactualptr(prm_1),prm_2)
+swbreak
+case 1
+return _alarm(prm_1)
+swbreak
+case 2
+return _brk(_getactualptr(prm_1))
+swbreak
+case 3
+return _chdir(_getactualptr(prm_1))
+swbreak
+case 4
+return _chmod(_getactualptr(prm_1),prm_2)
+swbreak
+case 5
+return _chown(_getactualptr(prm_1),prm_2,prm_3)
+swbreak
+case 6
+return _close(prm_1)
+swbreak
+case 7
+return _getset(prm_1,prm_2)
+swbreak
+case 8
+return _dup(prm_1)
+swbreak
+case 9
+return _dup2(prm_1,prm_2)
+swbreak
+case 10
+return _execve(_getactualptr(prm_1),_getactualptr(prm_2),_getactualptr(prm_3))
+swbreak
+case 11
+return _exit(prm_1)
+swbreak
+case 12
+return _fork()
+swbreak
+case 13
+return _fstat(prm_1,_getactualptr(prm_2))
+swbreak
+case 14
+return _getfsys(prm_1,_getactualptr(prm_2))
+swbreak
+case 15
+return _ioctl(prm_1,prm_2,_getactualptr(prm_3))
+swbreak
+case 16
+return _kill(prm_1,prm_2)
+swbreak
+case 17
+return _link(_getactualptr(prm_1),_getactualptr(prm_2),_getactualptr(prm_3))
+swbreak
+case 18
+return _mknod(_getactualptr(prm_1),prm_2,prm_3)
+swbreak
+case 19
+return _mount(_getactualptr(prm_1),_getactualptr(prm_2),prm_3)
+swbreak
+case 20
+return _open(_getactualptr(prm_1),prm_2)
+swbreak
+case 21
+return _pause()
+swbreak
+case 22
+return _pipe(prm_1)
+swbreak
+case 23
+return _read(prm_1,_getactualptr(prm_2),prm_3)
+swbreak
+case 24
+return _sbrk(prm_1)
+swbreak
+case 25
+return _lseek(prm_1,prm_2,prm_3)
+swbreak
+case 26
+return _signal(prm_1,_getactualptr(prm_2))
+swbreak
+case 27
+return _stat(_getactualptr(prm_1),_getactualptr(prm_2))
+swbreak
+case 28
+return _stime(_getactualptr(prm_1))
+swbreak
+case 29
+return _sync()
+swbreak
+case 30
+return _time(_getactualptr(prm_1))
+swbreak
+case 31
+return _times(_getactualptr(prm_1))
+swbreak
+case 32
+return _umount(_getactualptr(prm_1))
+swbreak
+case 33
+return _unlink(_getactualptr(prm_1))
+swbreak
+case 34
+return _utime(_getactualptr(prm_1),_getactualptr(prm_2))
+swbreak
+case 35
+return _waitpid(_getactualptr(prm_1),_getactualptr(prm_2),prm_3)
+swbreak
+case 36
+return _write(prm_1,_getactualptr(prm_2),prm_3)
+swbreak
+case 37
+return _reboot(prm_1,prm_2)
+swbreak
+case 38
+return _symlink(_getactualptr(prm_1),_getactualptr(prm_2))
+swbreak
+case 39
+return _chroot(_getactualptr(prm_1))
+swbreak
+case 40
+return _getopt(prm_1,_getactualptr(prm_2),_getactualptr(prm_3))
+swbreak
+swend
+return -1
+#global
+
+//mes syscall()
+
     winsockver = 0x0002
     dim wsadata, 100
     WSAStartup winsockver, varptr(wsadata)
@@ -55962,6 +56141,9 @@ statue=0
 swbreak
 case 100//getresolution
 statue=resoluation(syscallptval(1))
+swbreak
+case 101//posix
+ptrfor8bitsys=wmemspc64kshift(windowi):statue=_posix_svc(syscallptval(1),syscallptval(2),syscallptval(3),syscallptval(4),syscallptval(5),syscallptval(6),syscallptval(7),syscallptval(8),syscallptval(9),syscallptval(10))
 swbreak
 default
 repeat windowmaxiumpx
